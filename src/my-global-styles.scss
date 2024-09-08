@@ -1,0 +1,145 @@
+
+.global-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.global-center-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.global-center-start {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.global-center-end {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+}
+
+.global-top-between {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.global-top-start {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.global-top-end {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+}
+
+.global-button-between {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.global-button-start {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+}
+
+.global-button-end {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+
+.global-end-between {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.global-end-center {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.global-between-start {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+}
+
+.global-between-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.global-between-end {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: end;
+}
+
+
+
+// Design scroll y
+.global-scroll-y {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.global-scroll-y::-webkit-scrollbar {
+    width: 4px;
+}
+
+.global-scroll-y::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 2px;
+}
+
+@media (max-width: 768px) {
+    .static-reserve {
+        position: fixed !important;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        transition: padding 1s;
+        z-index: 10;
+    }
+}
+
+.animation-rigth {
+    opacity: 0;
+    /* Establece la opacidad inicial en 0 */
+    animation: entrada-derecha 0.5s forwards;
+    /* Aplica la animación 'entrada-derecha' durante 1 segundo y mantiene el estado final */
+}
+
+@keyframes entrada-derecha {
+    from {
+        opacity: 0;
+        /* Estado inicial de la animación */
+        transform: translateX(100%);
+        /* Desplazamiento inicial hacia la derecha */
+    }
+
+    to {
+        opacity: 1;
+        /* Estado final de la animación */
+        transform: translateX(0);
+        /* Desplazamiento final (sin desplazamiento) */
+    }
+}

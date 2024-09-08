@@ -1,0 +1,18 @@
+.login {  
+  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7)),
+  url("./../../models/assets/home-image.jpeg");
+  background-size: cover;
+  background-position: start;
+  background-repeat: no-repeat;
+  background-color: black;
+  min-height: 100vh;
+  min-width: 100vw;
+}
+
+.image-container {
+  
+  background-image: url("./../../models/assets/Logo.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
