@@ -18,12 +18,12 @@ export class NavbarViewComponent implements OnInit {
   sidebarItems: any[] = [
     {
       name: 'Inicio',
-      route: '/home',
+      route: '/admin/home',
       icon: 'pi pi-home'
     },
     {
-      name: 'Mis Cursos',
-      route: '/home/courses',
+      name: 'Eventos',
+      route: '/admin/eventos/list',
       icon: 'pi pi-book'
     },
     {

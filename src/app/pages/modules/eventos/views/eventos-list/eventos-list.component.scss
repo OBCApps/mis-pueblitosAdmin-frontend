@@ -1,0 +1,35 @@
+:host ::ng-deep .p-dialog .product-image {
+    width: 150px;
+    margin: 0 auto 2rem auto;
+    display: block;
+}
+
+
+
+.tableColumnCheckbox {
+    width: 2rem;
+}
+
+
+.tableColumnDate,
+.tableColumnCurrency,
+.tableColumnState {
+    text-align: center !important;
+    width: 150px;
+}
+
+.tableColumnDescription-xl {
+    text-align: center !important;
+    width: 300px;
+}
+
+.tableColumnDescription-xs {
+    text-align: center !important;
+    width: 200px;
+}
+
+
+.tableColumnName {
+    text-align: start !important;
+    width: 250px;
+}

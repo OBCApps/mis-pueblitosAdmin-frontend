@@ -3,6 +3,7 @@
     <p-toolbar styleClass="mb-4 gap-2">
         <ng-template pTemplate="left">
             <p-button severity="success" label="New" icon="pi pi-plus" class="mr-2" (onClick)="openNew()" />
+            <p-button severity="warning" label="Buscar" icon="pi pi-search" class="mr-2" (onClick)="coreBuscar()" />
             <p-button severity="danger" label="Delete" icon="pi pi-trash" (onClick)="deleteSelectedProducts()"
                 [disabled]="!selectedProducts || !selectedProducts.length" />
         </ng-template>
@@ -16,79 +17,73 @@
 
     <p-table #dt [value]="products" [rows]="10" [paginator]="true"
         [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
-        [tableStyle]="{ 'min-width': '75rem' }" [(selection)]="selectedProducts" [rowHover]="true" dataKey="id"
+        [(selection)]="selectedProducts" [rowHover]="true" dataKey="id"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
             <div class="global-center-between">
-                <h5 class="m-0">Manage Products</h5>
+                <h5 class="m-0">Administrar Eventos</h5>
                 <span class="p-input-icon-left">
-                    <i class="pi pi-search "></i>
-                    
-                    <input pInputText type="text" placeholder="Search..." (input)="dt.filterGlobal($event, 'contains')"  />
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="onFilterGlobal($event)" placeholder="Search..." />
                 </span>
             </div>
         </ng-template>
         <ng-template pTemplate="header">
-            <tr>
-                <th style="width: 4rem">
+            <tr class="text-sm">
+                <th class="tableColumnCheckbox">
                     <p-tableHeaderCheckbox />
                 </th>
-                <th pSortableColumn="name" style="min-width:15rem">
-                    Name <p-sortIcon field="name" />
+                <th class="tableColumnName" pSortableColumn="nombre">
+                    Name <p-sortIcon field="nombre" />
                 </th>
-                <th>
-                    Image
+                <th class="tableColumnDescription-xs ">
+                    Lugar <p-sortIcon field="nombre" />
                 </th>
-                <th pSortableColumn="price">
-                    Price <p-sortIcon field="price" />
+                <th class="tableColumnDescription-xs " pSortableColumn="ubicacionExacta">
+                    Ubicación <p-sortIcon field="ubicacionExacta" />
                 </th>
-                <th pSortableColumn="category" style="min-width:10rem">
-                    Category <p-sortIcon field="category" />
+                <th class="tableColumnDate" pSortableColumn="fechaInicio">
+                    Fecha Inicio <p-sortIcon field="fechaInicio" />
                 </th>
-                <th pSortableColumn="rating">
-                    Reviews <p-sortIcon field="rating" />
+                <th class="tableColumnDate" pSortableColumn="fechaFin">
+                    Fecha Fin <p-sortIcon field="fechaFin" />
                 </th>
-                <th pSortableColumn="inventoryStatus" style="min-width:10rem">
-                    Status <p-sortIcon field="inventoryStatus" />
-                </th>
+
                 <th></th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-product>
-            <tr>
+            <tr class="text-xs">
                 <td>
                     <p-tableCheckbox [value]="product" />
                 </td>
-                <td>
-                    {{ product.name }}
+                <td class="tableColumnName">
+                    {{ product.nombre }}
+                </td>
+
+                <td class="tableColumnDescription-xs ">
+                    {{ product.lugar.nombre}}
+                </td>
+
+                <td class="tableColumnDescription-xs ">
+                    {{ product.ubicacionExacta }}
+                </td>
+                <td class="tableColumnDate">
+                    {{ product.fechaInicio }}
+                </td>
+                <td class="tableColumnDate">
+                    {{ product.fechaFin }}
                 </td>
                 <td>
-                    <img [src]="'https://primefaces.org/cdn/primeng/images/demo/product/' + product.image"
-                        [alt]="product.name" width="50" class="shadow-4" />
-                </td>
-                <td>
-                    {{ product.price }}
-                </td>
-                <td>
-                    {{ product.category }}
-                </td>
-                <td>
-                    <p-rating [(ngModel)]="product.rating" [readonly]="true" [cancel]="false" />
-                </td>
-                <td>
-                    <p-tag [value]="product.inventoryStatus" />
-                    <!-- [severity]="getSeverity(product.inventoryStatus)" -->
-                </td>
-                <td>
-                    <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" severity="success"
+                    <!-- <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" severity="success"
                         (onClick)="editProduct(product)" />
                     <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
-                        (onClick)="deleteProduct(product)" />
+                        (onClick)="deleteProduct(product)" /> -->
                 </td>
             </tr>
         </ng-template>
         <ng-template pTemplate="summary">
-            <div class="flex align-items-center justify-content-between">
+            <div class="global-center-between text-sm">
                 In total there are {{ products ? products.length : 0 }} products.
             </div>
         </ng-template>
@@ -97,36 +92,35 @@
     <p-dialog [(visible)]="productDialog" [style]="{ width: '450px' }" header="Product Details" [modal]="true"
         styleClass="p-fluid">
         <ng-template pTemplate="content">
-            <img [src]="'https://primefaces.org/cdn/primeng/images/demo/product/' + product.image" [alt]="product.image"
-                class="block m-auto pb-3" *ngIf="product.image" />
+            <!--  <img [src]="'https://primefaces.org/cdn/primeng/images/demo/product/' + product.image" [alt]="product.image"
+                class="block m-auto pb-3" *ngIf="product.nombre" /> -->
             <div class="field">
                 <label for="name">Name</label>
-                <input type="text" pInputText id="name" [(ngModel)]="product.name" required autofocus />
-                <small class="p-error" *ngIf="submitted && !product.name">
+                <input type="text" pInputText id="name" [(ngModel)]="product.nombre" required autofocus />
+                <small class="p-error" *ngIf="submitted && !product.nombre">
                     Name is required.
                 </small>
             </div>
             <div class="field">
                 <label for="description">Description</label>
-                <textarea id="description" pInputTextarea [(ngModel)]="product.description" required rows="3" cols="20">
+                <textarea id="description" pInputTextarea [(ngModel)]="product.descripcion" required rows="3" cols="20">
                     </textarea>
             </div>
 
-            <div class="field">
+            <!-- <div class="field">
                 <label for="inventoryStatus">Inventory Status</label>
                 <p-dropdown [(ngModel)]="product.inventoryStatus" inputId="inventoryStatus" [options]="statuses">
                     <ng-template pTemplate="selectedItem">
-                        <p-tag [value]="product.inventoryStatus.toUpperCase()" />
-                        <!-- [severity]="getSeverity(product.inventoryStatus.toUpperCase())"  -->
+                        <p-tag [value]="product.inventoryStatus.toUpperCase()"
+                            [severity]="getSeverity(product.inventoryStatus.toUpperCase())" />
                     </ng-template>
                     <ng-template let-option pTemplate="item">
-                        <p-tag [value]="option.label" />
-                        <!-- [severity]="getSeverity(option.label)"  -->
+                        <p-tag [value]="option.label" [severity]="getSeverity(option.label)" />
                     </ng-template>
                 </p-dropdown>
-            </div>
+            </div> -->
 
-            <div class="field">
+            <!--  <div class="field">
                 <label class="mb-3">Category</label>
                 <div class="formgrid grid">
                     <div class="field-radiobutton col-6">
@@ -148,19 +142,19 @@
                         <label for="category4">Fitness</label>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
-            <div class="formgrid grid">
+            <!-- <div class="formgrid grid">
                 <div class="field col">
                     <label for="price">Price</label>
-                    <p-inputNumber id="price" [(ngModel)]="product.price" mode="currency" currency="USD"
+                    <p-inputNumber id="price" [(ngModel)]="product.horaInicio" mode="currency" currency="USD"
                         locale="en-US" />
                 </div>
                 <div class="field col">
                     <label for="quantity">Quantity</label>
-                    <p-inputNumber id="quantity" [(ngModel)]="product.quantity" />
+                    <p-inputNumber id="quantity" [(ngModel)]="product.horaFin" />
                 </div>
-            </div>
+            </div> -->
         </ng-template>
 
         <ng-template pTemplate="footer">

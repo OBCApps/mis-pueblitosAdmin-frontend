@@ -1,5 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { Product } from '../../models/product';
+import { Table } from 'primeng/table';
+import { EventoService } from '../../services/eventosService';
+import { DtoEventos } from '../../models/DtoEventos';
 
 @Component({
   selector: 'app-eventos-list',
@@ -9,55 +13,38 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 export class EventosListComponent implements OnInit {
   productDialog: boolean = false;
 
-  products!: any[];
+  products!: DtoEventos[];
 
-  product!: any;
+  product!: DtoEventos;
 
-  selectedProducts!: any[] | null;
+  selectedProducts!: DtoEventos[] | null;
 
   submitted: boolean = false;
 
   statuses!: any[];
 
-  constructor(private messageService: MessageService, private confirmationService: ConfirmationService) { }
+  constructor(
+    private eventoService: EventoService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
+  ) { }
 
   ngOnInit() {
-    //this.productService.getProducts().then((data) => (this.products = data));
-    this.products = [
-      {
-        id: '1000',
-        code: 'f230fh0g3',
-        name: 'Bamboo Watch',
-        description: 'Product Description',
-        image: 'bamboo-watch.jpg',
-        price: 65,
-        category: 'Accessories',
-        quantity: 24,
-        inventoryStatus: 'INSTOCK',
-        rating: 5
-      },
-      {
-        id: '1000',
-        code: 'f230fh0g3',
-        name: 'Bamboo Watch',
-        description: 'Product Description',
-        image: 'bamboo-watch.jpg',
-        price: 65,
-        category: 'Accessories',
-        quantity: 24,
-        inventoryStatus: 'INSTOCK',
-        rating: 5
-      },
-    ]
+    this.coreBuscar()
+
+
     this.statuses = [
       { label: 'INSTOCK', value: 'instock' },
       { label: 'LOWSTOCK', value: 'lowstock' },
       { label: 'OUTOFSTOCK', value: 'outofstock' }
     ];
   }
-
+  coreBuscar() {
+    this.products = [];
+    this.eventoService.get_listado_eventos().subscribe((data) => (this.products = data));
+  }
   openNew() {
-    this.product = {};
+    this.product = new DtoEventos();
     this.submitted = false;
     this.productDialog = true;
   }
@@ -75,19 +62,19 @@ export class EventosListComponent implements OnInit {
     });
   }
 
-  editProduct(product: any) {
+  editProduct(product: DtoEventos) {
     this.product = { ...product };
     this.productDialog = true;
   }
 
-  deleteProduct(product: any) {
+  deleteProduct(product: DtoEventos) {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete ' + product.name + '?',
+      message: 'Are you sure you want to delete ' + product.nombre + '?',
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.products = this.products.filter((val) => val.id !== product.id);
-        this.product = {};
+        this.product = new DtoEventos();
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
       }
     });
@@ -101,20 +88,20 @@ export class EventosListComponent implements OnInit {
   saveProduct() {
     this.submitted = true;
 
-    if (this.product.name?.trim()) {
+    if (this.product.nombre?.trim()) {
       if (this.product.id) {
         this.products[this.findIndexById(this.product.id)] = this.product;
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
       } else {
         this.product.id = this.createId();
-        this.product.image = 'product-placeholder.svg';
+        //this.product.image = 'product-placeholder.svg';
         this.products.push(this.product);
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
       }
 
       this.products = [...this.products];
       this.productDialog = false;
-      this.product = {};
+      this.product = new DtoEventos();
     }
   }
 
@@ -147,7 +134,12 @@ export class EventosListComponent implements OnInit {
         return 'warning';
       case 'OUTOFSTOCK':
         return 'danger';
-      default: return ''
+      default: return 'danger'
     }
+  }
+  @ViewChild('dt') dt: Table | undefined;
+  onFilterGlobal(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    this.dt.filterGlobal(inputElement.value, 'contains');
   }
 }

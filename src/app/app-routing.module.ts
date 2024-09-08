@@ -79,11 +79,9 @@ const routes: Routes = [
       {
         path: 'eventos',
         children: [
+          { path: '', component: EventosListComponent },
           { path: 'list', component: EventosListComponent },
-          {
-            path: 'manage',
-            component: EventosManageComponent,
-          },
+          { path: 'manage', component: EventosManageComponent, },
         ],
       },
       /*  {
