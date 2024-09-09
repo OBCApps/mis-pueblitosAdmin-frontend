@@ -6,41 +6,49 @@
 
             <div class="col-span-2">
                 <label for="Nombre" class="block text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
-                <input [(ngModel)]="filter.nombre" type="text" id="Nombre" aria-describedby="Nombre-help"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <!-- <input [(ngModel)]="filter.nombre" type="text" id="Nombre" aria-describedby="Nombre-help"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"> -->
+                <input type="text" class="w-full" pInputText [(ngModel)]="filter.nombre" />
             </div>
 
             <div class="col-span-1">
                 <label for="descripcion" class="block text-sm font-medium text-gray-900 dark:text-white">
                     Descripción
                 </label>
-                <input [(ngModel)]="filter.descripcion" type="text" id="Descripcion" aria-describedby="Descripcion-help"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <!-- <input [(ngModel)]="filter.descripcion" type="text" id="Descripcion" aria-describedby="Descripcion-help"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"> -->
+                <input type="text" class="w-full" pInputText [(ngModel)]="filter.descripcion" />
             </div>
 
             <div class="col-span-1">
                 <label for="ubicacionExacta" class="block text-sm font-medium text-gray-900 dark:text-white">
                     Ubicación
                 </label>
-                <input [(ngModel)]="filter.ubicacionExacta" type="text" id="ubicacionExacta"
+                <!-- <input [(ngModel)]="filter.ubicacionExacta" type="text" id="ubicacionExacta"
                     aria-describedby="ubicacionExacta-help"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"> -->
+                <input type="text" class="w-full" pInputText [(ngModel)]="filter.ubicacionExacta" />
+
             </div>
 
             <div class="col-span-1">
                 <label for="fechaInicio" class="block text-sm font-medium text-gray-900 dark:text-white">
                     Fecha Inicio
                 </label>
-                <input [(ngModel)]="filter.fechaInicio" type="text" id="fechaInicio" aria-describedby="fechaInicio-help"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <!-- <input [(ngModel)]="filter.fechaInicio" type="text" id="fechaInicio" aria-describedby="fechaInicio-help"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"> -->
+                <p-calendar class="w-full" [(ngModel)]="filter.fechaInicio" [iconDisplay]="'input'" [showIcon]="true"
+                    inputId="icondisplay" />
             </div>
 
             <div class="col-span-1">
                 <label for="fechaFin" class="block text-sm font-medium text-gray-900 dark:text-white">
                     Fecha Fin
                 </label>
-                <input [(ngModel)]="filter.fechaFin" type="text" id="fechaFin" aria-describedby="fechaFin-help"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <!-- <input [(ngModel)]="filter.fechaFin" type="text" id="fechaFin" aria-describedby="fechaFin-help"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"> -->
+                <p-calendar class="w-full" [(ngModel)]="filter.fechaFin" [iconDisplay]="'input'" [showIcon]="true"
+                    inputId="icondisplay" />
             </div>
 
             <div class="col-span-1">
@@ -48,16 +56,18 @@
                     Tipo
                 </label>
 
-                <input [(ngModel)]="filter.type" type="text" id="type" aria-describedby="type-help"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <!-- <input [(ngModel)]="filter.type" type="text" id="type" aria-describedby="type-help"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"> -->
+                <input type="text" class="w-full" pInputText [(ngModel)]="filter.type" />
             </div>
 
             <div class="col-span-1">
                 <label for="name_route" class="block text-sm font-medium text-gray-900 dark:text-white">
                     Ruta
                 </label>
-                <input [(ngModel)]="filter.name_route" type="text" id="name_route" aria-describedby="name_route-help"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <!-- <input [(ngModel)]="filter.name_route" type="text" id="name_route" aria-describedby="name_route-help"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"> -->
+                <input type="text" class="w-full" pInputText [(ngModel)]="filter.name_route" />
             </div>
 
             <div class="col-span-2">
@@ -67,11 +77,11 @@
 
             <div class="col-span-2 global-center-end mt-3">
                 <p-button severity="success" label="Nuevo" icon="pi pi-plus" class="ml-2 text-sm p-1"
-                    (onClick)="openNew()" />
+                    (onClick)="coreNew()" />
                 <p-button severity="warning" label="Buscar" icon="pi pi-search" class="ml-2 text-sm p-1"
-                    (onClick)="coreBuscar()" />
-                <p-button severity="danger" label="Borrar" icon="pi pi-trash" class="ml-2 text-sm p-1"
-                    (onClick)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length" />
+                    (onClick)="coreSearch()" />
+                <p-button severity="danger" label="Limpiar" icon="pi pi-trash" class="ml-2 text-sm p-1"
+                    (onClick)="clearFilter()" />
             </div>
 
 
@@ -79,11 +89,11 @@
     </p-toolbar>
 
 
-    <p-table #dt [value]="products" [rows]="10" [paginator]="true"
-        [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
-        [(selection)]="selectedProducts" [rowHover]="true" dataKey="id"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
-        <ng-template pTemplate="caption">
+    <p-table #dt [value]="listFilter" [rows]="10" [paginator]="true"
+        [globalFilterFields]="['nombre', 'ubicacionExacta', 'fechaInicio', 'fechaFin']" [(selection)]="itemSelected"
+        [rowHover]="true" dataKey="id" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [showCurrentPageReport]="true">
+        <!-- <ng-template pTemplate="caption">
             <div class="global-center-between">
                 <h5 class="m-0">Administrar Eventos</h5>
                 <span class="p-input-icon-left">
@@ -91,18 +101,14 @@
                     <input pInputText type="text" (input)="onFilterGlobal($event)" placeholder="Search..." />
                 </span>
             </div>
-        </ng-template>
+        </ng-template> -->
         <ng-template pTemplate="header">
             <tr class="text-sm">
-                <th class="tableColumnCheckbox">
-                    <p-tableHeaderCheckbox />
-                </th>
+
                 <th class="tableColumnName" pSortableColumn="nombre">
                     Name <p-sortIcon field="nombre" />
                 </th>
-                <th class="tableColumnDescription-xs ">
-                    Lugar <p-sortIcon field="nombre" />
-                </th>
+
                 <th class="tableColumnDescription-xs " pSortableColumn="ubicacionExacta">
                     Ubicación <p-sortIcon field="ubicacionExacta" />
                 </th>
@@ -116,39 +122,40 @@
                 <th></th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-product>
+        <ng-template pTemplate="body" let-row>
             <tr class="text-xs">
-                <td>
-                    <p-tableCheckbox [value]="product" />
-                </td>
+
                 <td class="tableColumnName">
-                    {{ product.nombre }}
+                    {{ row.nombre }}
                 </td>
 
-                <td class="tableColumnDescription-xs ">
-                    {{ product.lugar.nombre}}
-                </td>
+                <!-- <td class="tableColumnDescription-xs ">
+                    
+                      xd
+                </td> -->
 
                 <td class="tableColumnDescription-xs ">
-                    {{ product.ubicacionExacta }}
+                    {{ row.ubicacionExacta }}
                 </td>
                 <td class="tableColumnDate">
-                    {{ product.fechaInicio }}
+                    {{ row.fechaInicio }}
                 </td>
                 <td class="tableColumnDate">
-                    {{ product.fechaFin }}
+                    {{ row.fechaFin }}
                 </td>
                 <td>
-                    <!-- <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" severity="success"
-                        (onClick)="editProduct(product)" />
-                    <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
-                        (onClick)="deleteProduct(product)" /> -->
+                    <div class="card flex items-center justify-center">
+                        <p-menu #menu [model]="items" [popup]="true" appendTo="body" />
+                        <p-button (onClick)="menu.toggle($event)" (onClick)="itemSelected = row"
+                            icon="pi pi-ellipsis-v" />
+                    </div>
+
                 </td>
             </tr>
         </ng-template>
         <ng-template pTemplate="summary">
             <div class="global-center-between text-sm">
-                In total there are {{ products ? products.length : 0 }} products.
+                Existen {{ listFilter ? listFilter.length : 0 }} elementos.
             </div>
         </ng-template>
     </p-table>

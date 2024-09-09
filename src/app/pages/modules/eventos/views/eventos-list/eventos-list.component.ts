@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { Product } from '../../models/product';
 import { Table } from 'primeng/table';
 import { EventoService } from '../../services/eventosService';
 import { DtoEventos } from '../../models/DtoEventos';
 import { FilterEvento } from '../../models/FilterEvento';
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-eventos-list',
@@ -14,17 +14,19 @@ import { FilterEvento } from '../../models/FilterEvento';
 export class EventosListComponent implements OnInit {
   productDialog: boolean = false;
 
-  products!: DtoEventos[];
+  listFilter!: DtoEventos[];
 
   product!: DtoEventos;
 
-  selectedProducts!: DtoEventos[] | null;
+  itemSelected!: DtoEventos | null;
 
   submitted: boolean = false;
 
   statuses!: any[];
 
   filter: FilterEvento = new FilterEvento()
+
+  items: MenuItem[] | undefined;
 
   constructor(
     private eventoService: EventoService,
@@ -33,40 +35,72 @@ export class EventosListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.coreBuscar()
+    this.coreSearch()
 
 
-    this.statuses = [
-      { label: 'INSTOCK', value: 'instock' },
-      { label: 'LOWSTOCK', value: 'lowstock' },
-      { label: 'OUTOFSTOCK', value: 'outofstock' }
+    this.items = [
+      {
+        label: 'Ver',
+        icon: 'pi pi-eye',
+        command: () => {
+          this.coreView()
+        },
+      },
+      {
+        label: 'Editar',
+        icon: 'pi pi-pencil',
+        command: () => {
+          this.coreEdit()
+        },
+      },
+      {
+        label: 'Eliminar',
+        icon: 'pi pi-trash',
+        command: () => {
+          this.coreDelete()
+        },
+      }
+
     ];
   }
-  coreBuscar() {
+  coreSearch() {
     console.log("FIlter", this.filter);
 
-    this.products = [];
-    this.eventoService.search(this.filter).subscribe((data) => (this.products = data));
+    this.listFilter = [];
+    this.eventoService.search(this.filter).subscribe((data) => (this.listFilter = data));
   }
-  openNew() {
+  coreNew() {
     this.product = new DtoEventos();
     this.submitted = false;
     this.productDialog = true;
   }
 
-  deleteSelectedProducts() {
+  coreView() {
+    console.log("VER", this.itemSelected);
+
+  }
+
+  coreEdit() {
+    console.log("EDITAR", this.itemSelected);
+
+  }
+
+  coreDelete() {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete the selected products?',
+      message: 'Está seguro de borrar?',
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.products = this.products.filter((val) => !this.selectedProducts?.includes(val));
-        this.selectedProducts = null;
+        console.log("ELIMINADO", this.itemSelected);
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
       }
     });
   }
 
+  clearFilter() {
+    this.filter = new FilterEvento();
+    this.coreSearch()
+  }
   editProduct(product: DtoEventos) {
     this.product = { ...product };
     this.productDialog = true;
@@ -78,7 +112,7 @@ export class EventosListComponent implements OnInit {
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.products = this.products.filter((val) => val.id !== product.id);
+        this.listFilter = this.listFilter.filter((val) => val.id !== product.id);
         this.product = new DtoEventos();
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
       }
@@ -95,16 +129,16 @@ export class EventosListComponent implements OnInit {
 
     if (this.product.nombre?.trim()) {
       if (this.product.id) {
-        this.products[this.findIndexById(this.product.id)] = this.product;
+        this.listFilter[this.findIndexById(this.product.id)] = this.product;
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
       } else {
         this.product.id = this.createId();
         //this.product.image = 'product-placeholder.svg';
-        this.products.push(this.product);
+        this.listFilter.push(this.product);
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
       }
 
-      this.products = [...this.products];
+      this.listFilter = [...this.listFilter];
       this.productDialog = false;
       this.product = new DtoEventos();
     }
@@ -112,8 +146,8 @@ export class EventosListComponent implements OnInit {
 
   findIndexById(id: string): number {
     let index = -1;
-    for (let i = 0; i < this.products.length; i++) {
-      if (this.products[i].id === id) {
+    for (let i = 0; i < this.listFilter.length; i++) {
+      if (this.listFilter[i].id === id) {
         index = i;
         break;
       }
@@ -147,4 +181,6 @@ export class EventosListComponent implements OnInit {
     const inputElement = event.target as HTMLInputElement;
     this.dt.filterGlobal(inputElement.value, 'contains');
   }
+
+
 }

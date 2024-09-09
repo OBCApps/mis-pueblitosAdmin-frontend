@@ -24,7 +24,7 @@ export class EventoService {
   }
 
   search(data: FilterEvento): Observable<DtoEventos[]> {
-    return this.http.get<DtoEventos[]>(this.API_SERVER_EVENTO + '/filter').pipe(
+    return this.http.post<DtoEventos[]>(this.API_SERVER_EVENTO + '/filter-list', data).pipe(
       map((response) => {
         return response;
       })

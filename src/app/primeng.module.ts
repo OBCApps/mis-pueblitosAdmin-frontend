@@ -13,6 +13,9 @@ import { DialogModule } from 'primeng/dialog';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { CalendarModule } from 'primeng/calendar';
+import { InputTextModule } from 'primeng/inputtext';
+import { MenuModule } from 'primeng/menu';
 
 @NgModule({
   imports: [
@@ -29,7 +32,10 @@ import { InputNumberModule } from 'primeng/inputnumber';
     RadioButtonModule,
     DropdownModule,
     InputNumberModule,
-    SidebarModule
+    SidebarModule,
+    CalendarModule,
+    InputTextModule,
+    MenuModule
   ],
   exports: [
     SidebarModule,
@@ -45,7 +51,10 @@ import { InputNumberModule } from 'primeng/inputnumber';
     RadioButtonModule,
     DropdownModule,
     InputNumberModule,
-    SidebarModule
+    SidebarModule,
+    CalendarModule,
+    InputTextModule,
+    MenuModule
   ],
   providers: [ConfirmationService, MessageService]
 })
