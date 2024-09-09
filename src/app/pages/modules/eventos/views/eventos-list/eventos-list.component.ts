@@ -4,6 +4,7 @@ import { Product } from '../../models/product';
 import { Table } from 'primeng/table';
 import { EventoService } from '../../services/eventosService';
 import { DtoEventos } from '../../models/DtoEventos';
+import { FilterEvento } from '../../models/FilterEvento';
 
 @Component({
   selector: 'app-eventos-list',
@@ -23,6 +24,8 @@ export class EventosListComponent implements OnInit {
 
   statuses!: any[];
 
+  filter: FilterEvento = new FilterEvento()
+
   constructor(
     private eventoService: EventoService,
     private messageService: MessageService,
@@ -40,8 +43,10 @@ export class EventosListComponent implements OnInit {
     ];
   }
   coreBuscar() {
+    console.log("FIlter", this.filter);
+
     this.products = [];
-    this.eventoService.get_listado_eventos().subscribe((data) => (this.products = data));
+    this.eventoService.search(this.filter).subscribe((data) => (this.products = data));
   }
   openNew() {
     this.product = new DtoEventos();

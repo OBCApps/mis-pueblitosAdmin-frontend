@@ -1,19 +1,83 @@
 <div class="card">
     <p-toast />
     <p-toolbar styleClass="mb-4 gap-2">
-        <ng-template pTemplate="left">
-            <p-button severity="success" label="New" icon="pi pi-plus" class="mr-2" (onClick)="openNew()" />
-            <p-button severity="warning" label="Buscar" icon="pi pi-search" class="mr-2" (onClick)="coreBuscar()" />
-            <p-button severity="danger" label="Delete" icon="pi pi-trash" (onClick)="deleteSelectedProducts()"
-                [disabled]="!selectedProducts || !selectedProducts.length" />
-        </ng-template>
+        <div class="grid grid-cols-6 gap-2">
 
-        <ng-template pTemplate="right">
-            <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import"
-                class="mr-2 inline-block" />
-            <p-button severity="help" label="Export" icon="pi pi-upload" />
-        </ng-template>
+
+            <div class="col-span-2">
+                <label for="Nombre" class="block text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
+                <input [(ngModel)]="filter.nombre" type="text" id="Nombre" aria-describedby="Nombre-help"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            </div>
+
+            <div class="col-span-1">
+                <label for="descripcion" class="block text-sm font-medium text-gray-900 dark:text-white">
+                    Descripción
+                </label>
+                <input [(ngModel)]="filter.descripcion" type="text" id="Descripcion" aria-describedby="Descripcion-help"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            </div>
+
+            <div class="col-span-1">
+                <label for="ubicacionExacta" class="block text-sm font-medium text-gray-900 dark:text-white">
+                    Ubicación
+                </label>
+                <input [(ngModel)]="filter.ubicacionExacta" type="text" id="ubicacionExacta"
+                    aria-describedby="ubicacionExacta-help"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            </div>
+
+            <div class="col-span-1">
+                <label for="fechaInicio" class="block text-sm font-medium text-gray-900 dark:text-white">
+                    Fecha Inicio
+                </label>
+                <input [(ngModel)]="filter.fechaInicio" type="text" id="fechaInicio" aria-describedby="fechaInicio-help"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            </div>
+
+            <div class="col-span-1">
+                <label for="fechaFin" class="block text-sm font-medium text-gray-900 dark:text-white">
+                    Fecha Fin
+                </label>
+                <input [(ngModel)]="filter.fechaFin" type="text" id="fechaFin" aria-describedby="fechaFin-help"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            </div>
+
+            <div class="col-span-1">
+                <label for="type" class="block text-sm font-medium text-gray-900 dark:text-white">
+                    Tipo
+                </label>
+
+                <input [(ngModel)]="filter.type" type="text" id="type" aria-describedby="type-help"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            </div>
+
+            <div class="col-span-1">
+                <label for="name_route" class="block text-sm font-medium text-gray-900 dark:text-white">
+                    Ruta
+                </label>
+                <input [(ngModel)]="filter.name_route" type="text" id="name_route" aria-describedby="name_route-help"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            </div>
+
+            <div class="col-span-2">
+
+            </div>
+
+
+            <div class="col-span-2 global-center-end mt-3">
+                <p-button severity="success" label="Nuevo" icon="pi pi-plus" class="ml-2 text-sm p-1"
+                    (onClick)="openNew()" />
+                <p-button severity="warning" label="Buscar" icon="pi pi-search" class="ml-2 text-sm p-1"
+                    (onClick)="coreBuscar()" />
+                <p-button severity="danger" label="Borrar" icon="pi pi-trash" class="ml-2 text-sm p-1"
+                    (onClick)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length" />
+            </div>
+
+
+        </div>
     </p-toolbar>
+
 
     <p-table #dt [value]="products" [rows]="10" [paginator]="true"
         [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
