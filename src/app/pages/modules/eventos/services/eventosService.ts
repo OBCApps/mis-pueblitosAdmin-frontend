@@ -2,8 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { API_SERVICE_ADMIN } from '../../../../../environments/environment.prod';
-import { DtoEvento, DtoEventos } from '../models/DtoEventos';
-import { FilterEvento } from '../models/FilterEvento';
+
+import { FilterEvento, listFilterEvento } from '../models/FilterEvento';
+import { DtoEvento } from '../models/DtoEventos';
 
 
 @Injectable({
@@ -15,16 +16,16 @@ export class EventoService {
   constructor(private http: HttpClient) {}
 
   // -------- LISTADO DE ENTIDADES ---------- \\
-  get_listado_eventos(): Observable<DtoEventos[]> {
-    return this.http.get<DtoEventos[]>(this.API_SERVER_EVENTO).pipe(
+  get_listado_eventos(): Observable<DtoEvento[]> {
+    return this.http.get<DtoEvento[]>(this.API_SERVER_EVENTO).pipe(
       map((response) => {
         return response;
       })
     );
   }
 
-  search(data: FilterEvento): Observable<DtoEventos[]> {
-    return this.http.post<DtoEventos[]>(this.API_SERVER_EVENTO + '/filter-list', data).pipe(
+  search(data: FilterEvento): Observable<listFilterEvento[]> {
+    return this.http.post<listFilterEvento[]>(this.API_SERVER_EVENTO + '/filter-list', data).pipe(
       map((response) => {
         return response;
       })

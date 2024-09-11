@@ -16,7 +16,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { CalendarModule } from 'primeng/calendar';
 import { InputTextModule } from 'primeng/inputtext';
 import { MenuModule } from 'primeng/menu';
-
+import { DividerModule } from 'primeng/divider';
+import { TabViewModule } from 'primeng/tabview';
 @NgModule({
   imports: [
     SidebarModule,
@@ -35,7 +36,9 @@ import { MenuModule } from 'primeng/menu';
     SidebarModule,
     CalendarModule,
     InputTextModule,
-    MenuModule
+    MenuModule,
+    DividerModule,
+    TabViewModule
   ],
   exports: [
     SidebarModule,
@@ -54,7 +57,9 @@ import { MenuModule } from 'primeng/menu';
     SidebarModule,
     CalendarModule,
     InputTextModule,
-    MenuModule
+    MenuModule,
+    DividerModule,
+    TabViewModule
   ],
   providers: [ConfirmationService, MessageService]
 })

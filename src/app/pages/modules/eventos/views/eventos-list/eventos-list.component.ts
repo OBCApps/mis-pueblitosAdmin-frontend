@@ -2,9 +2,12 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { EventoService } from '../../services/eventosService';
-import { DtoEventos } from '../../models/DtoEventos';
-import { FilterEvento } from '../../models/FilterEvento';
+
+import { FilterEvento, listFilterEvento } from '../../models/FilterEvento';
 import { MenuItem } from 'primeng/api';
+import { Router } from '@angular/router';
+import { ConstantEvents } from '../../eventos.constant';
+
 
 @Component({
   selector: 'app-eventos-list',
@@ -14,24 +17,22 @@ import { MenuItem } from 'primeng/api';
 export class EventosListComponent implements OnInit {
   productDialog: boolean = false;
 
-  listFilter!: DtoEventos[];
+  listFilter!: listFilterEvento[];
 
-  product!: DtoEventos;
 
-  itemSelected!: DtoEventos | null;
 
-  submitted: boolean = false;
+  itemSelected!: listFilterEvento | null; // 
 
-  statuses!: any[];
 
-  filter: FilterEvento = new FilterEvento()
+  filter: FilterEvento = new FilterEvento(); // Filtros de busqueda
 
-  items: MenuItem[] | undefined;
+  items: MenuItem[] | undefined; // Acciones Ver, Editar
 
   constructor(
     private eventoService: EventoService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -70,9 +71,7 @@ export class EventosListComponent implements OnInit {
     this.eventoService.search(this.filter).subscribe((data) => (this.listFilter = data));
   }
   coreNew() {
-    this.product = new DtoEventos();
-    this.submitted = false;
-    this.productDialog = true;
+    this.router.navigate([ConstantEvents.event_manage, 'EDITAR'], { skipLocationChange: true })
   }
 
   coreView() {
@@ -101,19 +100,19 @@ export class EventosListComponent implements OnInit {
     this.filter = new FilterEvento();
     this.coreSearch()
   }
-  editProduct(product: DtoEventos) {
-    this.product = { ...product };
+  editProduct(product: any) {
+
     this.productDialog = true;
   }
 
-  deleteProduct(product: DtoEventos) {
+  deleteProduct(product: any) {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete ' + product.nombre + '?',
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.listFilter = this.listFilter.filter((val) => val.id !== product.id);
-        this.product = new DtoEventos();
+
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
       }
     });
@@ -121,28 +120,10 @@ export class EventosListComponent implements OnInit {
 
   hideDialog() {
     this.productDialog = false;
-    this.submitted = false;
+
   }
 
-  saveProduct() {
-    this.submitted = true;
 
-    if (this.product.nombre?.trim()) {
-      if (this.product.id) {
-        this.listFilter[this.findIndexById(this.product.id)] = this.product;
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
-      } else {
-        this.product.id = this.createId();
-        //this.product.image = 'product-placeholder.svg';
-        this.listFilter.push(this.product);
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
-      }
-
-      this.listFilter = [...this.listFilter];
-      this.productDialog = false;
-      this.product = new DtoEventos();
-    }
-  }
 
   findIndexById(id: string): number {
     let index = -1;

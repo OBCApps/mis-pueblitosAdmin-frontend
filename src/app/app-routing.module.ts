@@ -18,6 +18,15 @@ const routes: Routes = [
     path: 'admin',
     component: NavbarViewComponent,
     children: [
+
+      {
+        path: 'eventos',
+        children: [          
+          { path: 'list', component: EventosListComponent },
+          { path: 'manage/:accion', component: EventosManageComponent, },
+          { path: 'manage/:accion/:dto', component: EventosManageComponent, },
+        ],
+      },
       /* {
         path: 'hoteles',
         children: [
@@ -76,14 +85,6 @@ const routes: Routes = [
           },
         ],
       }, */
-      {
-        path: 'eventos',
-        children: [
-          { path: '', component: EventosListComponent },
-          { path: 'list', component: EventosListComponent },
-          { path: 'manage', component: EventosManageComponent, },
-        ],
-      },
       /*  {
          path: 'subeventos',
          children: [

@@ -12,13 +12,15 @@ import { LoginComponent } from './pages/shared/navigations/auths/login/views/log
 //import { EventosModule } from './pages/modules/eventos/eventos.module';
 import { NavbarViewComponent } from './pages/shared/navigations/navbar/views/navbar-view/navbar-view.component';
 import { EventosListComponent } from './pages/modules/eventos/views/eventos-list/eventos-list.component';
+import { EventosManageComponent } from './pages/modules/eventos/views/eventos-manage/eventos-manage.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     NavbarViewComponent,
-    EventosListComponent
+    EventosListComponent,
+    EventosManageComponent
   ],
   imports: [
     PrimeNgModule,

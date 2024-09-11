@@ -1,1 +1,230 @@
-<p>eventos-manage works!</p>
+<div class="card">
+    <p-tabView>
+        <p-tabPanel header="Información del Evento">
+
+            <div>
+                <p-toolbar styleClass="mb-4 gap-2">
+                    <h1>Datos del Evento</h1>
+                    <p-divider />
+                    <div class="grid grid-cols-4 gap-2 w-full">
+
+                        <div class="col-span-2">
+                            <label for="Nombre"
+                                class="block text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
+                            <input type="text" class="w-full" pInputText [(ngModel)]="dtoRegister.nombre" />
+                        </div>
+
+                        <div class="col-span-2">
+                            <label for="descripcion" class="block text-sm font-medium text-gray-900 dark:text-white">
+                                Descripción
+                            </label>
+
+                            <input type="text" class="w-full" pInputText [(ngModel)]="dtoRegister.descripcion" />
+                        </div>
+
+                        <div class="col-span-2">
+                            <label for="ubicacionExacta"
+                                class="block text-sm font-medium text-gray-900 dark:text-white">
+                                Ubicación
+                            </label>
+                            <input type="text" class="w-full" pInputText [(ngModel)]="dtoRegister.ubicacionExacta" />
+
+                        </div>
+
+                        <div class="col-span-1">
+                            <label for="fechaInicio" class="block text-sm font-medium text-gray-900 dark:text-white">
+                                Fecha Inicio
+                            </label>
+
+                            <p-calendar class="w-full" [(ngModel)]="dtoRegister.fechaInicio" [iconDisplay]="'input'"
+                                [showIcon]="true" inputId="icondisplay" />
+                        </div>
+
+                        <div class="col-span-1">
+                            <label for="fechaFin" class="block text-sm font-medium text-gray-900 dark:text-white">
+                                Fecha Fin
+                            </label>
+
+                            <p-calendar class="w-full" [(ngModel)]="dtoRegister.fechaFin" [iconDisplay]="'input'"
+                                [showIcon]="true" inputId="icondisplay" />
+                        </div>
+
+                        <div class="col-span-2">
+                            <label for="type" class="block text-sm font-medium text-gray-900 dark:text-white">
+                                Tipo
+                            </label>
+
+
+                            <input type="text" class="w-full" pInputText [(ngModel)]="dtoRegister.type" />
+                        </div>
+
+                        <div class="col-span-2">
+                            <label for="type" class="block text-sm font-medium text-gray-900 dark:text-white">
+                                Lugar ID
+                            </label>
+                            <input type="text" class="w-full" pInputText [(ngModel)]="dtoRegister.lugarId" />
+                        </div>
+
+
+                        <div class="col-span-2">
+                            <label for="name_route" class="block text-sm font-medium text-gray-900 dark:text-white">
+                                Ruta
+                            </label>
+                            <input type="text" class="w-full" pInputText [(ngModel)]="dtoRegister.name_route" />
+                        </div>
+                    </div>
+                </p-toolbar>
+
+                <p-toolbar styleClass="mb-4 gap-2">
+                    <h1>Foto Principal del Evento</h1>
+                    <p-divider />
+                    <div class="grid grid-cols-4 gap-2 w-full">
+                        <div class="col-span-2">
+                            <label for="name_route" class="block text-sm font-medium text-gray-900 dark:text-white">
+                                ENLACE
+                            </label>
+                            <input type="text" class="w-full" pInputText [(ngModel)]="dtoRegister.foto.url" />
+                        </div>
+
+                        <div class="col-span-2">
+                            <label for="name_route" class="block text-sm font-medium text-gray-900 dark:text-white">
+                                LUGAR
+                            </label>
+                            <input type="text" class="w-full" pInputText [(ngModel)]="dtoRegister.foto.lugar" />
+                        </div>
+
+                        <div class="col-span-2">
+                            <label for="name_route" class="block text-sm font-medium text-gray-900 dark:text-white">
+                                TITULO
+                            </label>
+                            <input type="text" class="w-full" pInputText [(ngModel)]="dtoRegister.foto.titulo" />
+                        </div>
+
+                        <div class="col-span-2">
+                            <label for="name_route" class="block text-sm font-medium text-gray-900 dark:text-white">
+                                PROVEEDOR ID
+                            </label>
+                            <input type="text" class="w-full" pInputText [(ngModel)]="dtoRegister.foto.proveedorId" />
+                        </div>
+                    </div>
+                </p-toolbar>
+
+
+            </div>
+        </p-tabPanel>
+
+
+        <p-tabPanel header="Listado de Sub-Eventos">
+            <p-button (onClick)="addItemSubEvento()" label="NUEVO" />
+
+            <div>
+                @for (item of dtoRegister.subeventos; track $index) {
+                <p-toolbar styleClass="mb-4 gap-2">
+                    <h1>Datos</h1>
+                    <p-divider />
+                    <div class="grid grid-cols-4 gap-2 w-full">
+
+                        <div class="col-span-2">
+                            <label for="Nombre"
+                                class="block text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
+                            <input type="text" class="w-full" pInputText [(ngModel)]="item.nombre" />
+                        </div>
+
+                        <div class="col-span-2">
+                            <label for="descripcion" class="block text-sm font-medium text-gray-900 dark:text-white">
+                                Descripción
+                            </label>
+
+                            <input type="text" class="w-full" pInputText [(ngModel)]="item.descripcion" />
+                        </div>
+
+
+
+                        <div class="col-span-1">
+                            <label for="fechaInicio" class="block text-sm font-medium text-gray-900 dark:text-white">
+                                dia
+                            </label>
+
+                            <p-calendar class="w-full" [(ngModel)]="item.dia" [iconDisplay]="'input'" [showIcon]="true"
+                                inputId="icondisplay" />
+                        </div>
+                        <div class="col-span-1">
+                            <label for="fechaFin" class="block text-sm font-medium text-gray-900 dark:text-white">
+                                Hora Inicio
+                            </label>
+
+                            <p-calendar [(ngModel)]="item.horaInicio" [iconDisplay]="'input'" [showIcon]="true"
+                                [timeOnly]="true" inputId="templatedisplay">
+                                <ng-template pTemplate="inputicon" let-clickCallBack="clickCallBack">
+                                    <i class="pi pi-user pointer-events-none" (click)="clickCallBack($event)"></i>
+                                </ng-template>
+                            </p-calendar>
+                        </div>
+                        <div class="col-span-1">
+                            <label for="fechaFin" class="block text-sm font-medium text-gray-900 dark:text-white">
+                                Hora Fin
+                            </label>
+
+                            <p-calendar [(ngModel)]="item.horaFin" [iconDisplay]="'input'" [showIcon]="true"
+                                [timeOnly]="true" inputId="templatedisplay">
+                                <ng-template pTemplate="inputicon" let-clickCallBack="clickCallBack">
+                                    <i class="pi pi-user pointer-events-none" (click)="clickCallBack($event)"></i>
+                                </ng-template>
+                            </p-calendar>
+                        </div>
+
+                        <div class="col-span-2">
+                            <label for="type" class="block text-sm font-medium text-gray-900 dark:text-white">
+                                Evento ID
+                            </label>
+
+
+                            <input type="text" class="w-full" pInputText [(ngModel)]="item.eventoId" />
+                        </div>
+
+
+                        <div class="col-span-2">
+                            <label for="name_route" class="block text-sm font-medium text-gray-900 dark:text-white">
+                                ENLACE FOTO
+                            </label>
+                            <input type="text" class="w-full" pInputText [(ngModel)]="item.foto.url" />
+                        </div>
+
+                        <div class="col-span-2">
+                            <label for="name_route" class="block text-sm font-medium text-gray-900 dark:text-white">
+                                LUGAR FOTO
+                            </label>
+                            <input type="text" class="w-full" pInputText [(ngModel)]="item.foto.lugar" />
+                        </div>
+
+                        <div class="col-span-2">
+                            <label for="name_route" class="block text-sm font-medium text-gray-900 dark:text-white">
+                                TITULO FOTO
+                            </label>
+                            <input type="text" class="w-full" pInputText [(ngModel)]="item.foto.titulo" />
+                        </div>
+
+                        <div class="col-span-2">
+                            <label for="name_route" class="block text-sm font-medium text-gray-900 dark:text-white">
+                                PROVEEDOR ID FOTO
+                            </label>
+                            <input type="text" class="w-full" pInputText [(ngModel)]="item.foto.proveedorId" />
+                        </div>
+                    </div>
+                </p-toolbar>
+
+                }@empty {
+                Agregúe Subeventos
+                }
+
+
+
+
+
+            </div>
+        </p-tabPanel>
+
+    </p-tabView>
+
+    <p-button (onClick)="coreNew()" label="GUARDAR" />
+</div>
