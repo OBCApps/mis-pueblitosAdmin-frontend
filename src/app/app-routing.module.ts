@@ -21,10 +21,9 @@ const routes: Routes = [
 
       {
         path: 'eventos',
-        children: [          
+        children: [
           { path: 'list', component: EventosListComponent },
-          { path: 'manage/:accion', component: EventosManageComponent, },
-          { path: 'manage/:accion/:dto', component: EventosManageComponent, },
+          { path: 'manage', component: EventosManageComponent, }
         ],
       },
       /* {

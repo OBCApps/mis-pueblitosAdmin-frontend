@@ -33,8 +33,8 @@ export class EventoService {
   }
 
   // -------- CRUD ENTIDADES ---------- \\
-  get_evento(id: any): Observable<DtoEvento> {
-    return this.http.get<DtoEvento>(this.API_SERVER_EVENTO + '/' + id).pipe(
+  getEventoByID(id: any): Observable<DtoEvento> {
+    return this.http.get<DtoEvento>(this.API_SERVER_EVENTO + '/getByID/' + id).pipe(
       map((response) => {
         return response;
       })

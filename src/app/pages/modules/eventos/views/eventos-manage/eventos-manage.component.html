@@ -37,7 +37,7 @@
                             </label>
 
                             <p-calendar class="w-full" [(ngModel)]="dtoRegister.fechaInicio" [iconDisplay]="'input'"
-                                [showIcon]="true" inputId="icondisplay" />
+                                [showIcon]="true" inputId="icondisplay" dateFormat="dd/mm/yy" />
                         </div>
 
                         <div class="col-span-1">
@@ -115,10 +115,10 @@
 
 
         <p-tabPanel header="Listado de Sub-Eventos">
-            <p-button (onClick)="addItemSubEvento()" label="NUEVO" />
+           
 
             <div>
-                @for (item of dtoRegister.subeventos; track $index) {
+                @for (item of dtoRegister.subEventos; track $index) {
                 <p-toolbar styleClass="mb-4 gap-2">
                     <h1>Datos</h1>
                     <p-divider />
@@ -226,5 +226,5 @@
 
     </p-tabView>
 
-    <p-button (onClick)="coreNew()" label="GUARDAR" />
+    <p-button (onClick)="coreSave()" label="GUARDAR" />
 </div>

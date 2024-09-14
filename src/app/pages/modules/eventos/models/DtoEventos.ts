@@ -6,9 +6,10 @@ export class DtoEvento {
   fechaInicio: string
   fechaFin: string
   type: string
+  id: string
   lugarId: string
   name_route: string
-  subeventos: DtoSubEvento[] = []
+  subEventos: DtoSubEvento[] = []
 }
 
 
@@ -27,7 +28,7 @@ export class DtoSubEvento {
   horaInicio: string
   horaFin: string
   eventoId: string
-  subEventosDetalle: DtoSubEventoDetalle[] = []
+  subEventoDetalles: DtoSubEventoDetalle[] = []
 }
 export class DtoSubEventoDetalle {
   detalle: string

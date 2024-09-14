@@ -7,6 +7,7 @@ import { FilterEvento, listFilterEvento } from '../../models/FilterEvento';
 import { MenuItem } from 'primeng/api';
 import { Router } from '@angular/router';
 import { ConstantEvents } from '../../eventos.constant';
+import { BaseComponents } from '../../../../shared/global-components/BaseComponents';
 
 
 @Component({
@@ -71,17 +72,19 @@ export class EventosListComponent implements OnInit {
     this.eventoService.search(this.filter).subscribe((data) => (this.listFilter = data));
   }
   coreNew() {
-    this.router.navigate([ConstantEvents.event_manage, 'EDITAR'], { skipLocationChange: true })
+    BaseComponents.saveLocalStorageToManage('NEW', this.itemSelected)
+    this.router.navigate([ConstantEvents.event_manage])
   }
 
   coreView() {
-    console.log("VER", this.itemSelected);
+    BaseComponents.saveLocalStorageToManage('VIEW', this.itemSelected)
+    this.router.navigate([ConstantEvents.event_manage])
 
   }
 
   coreEdit() {
-    console.log("EDITAR", this.itemSelected);
-
+    BaseComponents.saveLocalStorageToManage('EDIT', this.itemSelected)
+    this.router.navigate([ConstantEvents.event_manage])
   }
 
   coreDelete() {
