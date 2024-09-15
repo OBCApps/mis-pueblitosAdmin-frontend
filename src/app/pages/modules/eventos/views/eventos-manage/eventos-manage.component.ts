@@ -1,10 +1,13 @@
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DtoEvento, DtoSubEvento } from '../../models/DtoEventos';
 import { BaseComponents } from '../../../../shared/global-components/BaseComponents';
 import { EventoService } from '../../services/eventosService';
 import { response } from 'express';
 import { isPlatformBrowser } from '@angular/common';
+import { Table } from 'primeng/table';
+import { LugarSelectorViewComponent } from '../../../../shared/global-components/selectors/lugar-selector/views/lugar-selector-view/lugar-selector-view.component';
+import { MessageController } from '../../../../shared/global-components/MessageController';
 
 @Component({
   selector: 'app-eventos-manage',
@@ -90,4 +93,18 @@ export class EventosManageComponent implements OnInit {
   ngOnDestroy(): void {
     BaseComponents.removeLocalStorageToManage('dtoSelected');
   }
+
+  @ViewChild('dt') dt: Table | undefined;
+  onFilterGlobal(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    this.dt.filterGlobal(inputElement.value, 'contains');
+  }
+
+
+  @ViewChild(LugarSelectorViewComponent, { static: false }) LugarSelectorViewComponent: LugarSelectorViewComponent;
+  coreShowSelectors(type: string) {
+
+    this.LugarSelectorViewComponent.coreInitSelector(new MessageController(this));
+  }
+
 }

@@ -13,6 +13,7 @@ import { LoginComponent } from './pages/shared/navigations/auths/login/views/log
 import { NavbarViewComponent } from './pages/shared/navigations/navbar/views/navbar-view/navbar-view.component';
 import { EventosListComponent } from './pages/modules/eventos/views/eventos-list/eventos-list.component';
 import { EventosManageComponent } from './pages/modules/eventos/views/eventos-manage/eventos-manage.component';
+import { LugarSelectorViewComponent } from './pages/shared/global-components/selectors/lugar-selector/views/lugar-selector-view/lugar-selector-view.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { EventosManageComponent } from './pages/modules/eventos/views/eventos-ma
     LoginComponent,
     NavbarViewComponent,
     EventosListComponent,
-    EventosManageComponent
+    EventosManageComponent,
+    LugarSelectorViewComponent
   ],
   imports: [
     PrimeNgModule,

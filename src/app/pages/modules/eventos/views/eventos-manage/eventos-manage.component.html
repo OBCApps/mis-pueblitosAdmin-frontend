@@ -58,7 +58,7 @@
                             <input type="text" class="w-full" pInputText [(ngModel)]="dtoRegister.type" />
                         </div>
 
-                        <div class="col-span-2">
+                        <div class="col-span-2" (click)="coreShowSelectors('lugar')">
                             <label for="type" class="block text-sm font-medium text-gray-900 dark:text-white">
                                 Lugar ID
                             </label>
@@ -115,8 +115,77 @@
 
 
         <p-tabPanel header="Listado de Sub-Eventos">
-           
 
+            <p-table #dt [value]="this.dtoRegister.subEventos" [rows]="10"
+                [globalFilterFields]="['nombre', 'ubicacionExacta', 'fechaInicio', 'fechaFin']" [rowHover]="true"
+                dataKey="id" [showCurrentPageReport]="true">
+                <ng-template pTemplate="caption">
+                    <div class="global-center-between">
+                        <h5 class="m-0">Administrar SubEventos</h5>
+                        <span class="p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="onFilterGlobal($event)" placeholder="Search..." />
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr class="text-sm">
+
+                        <th class="tableColumnName" pSortableColumn="nombre">
+                            Name <p-sortIcon field="nombre" />
+                        </th>
+
+                        <th class="tableColumnDescription-xs " pSortableColumn="ubicacionExacta">
+                            Ubicación <p-sortIcon field="ubicacionExacta" />
+                        </th>
+                        <th class="tableColumnDate" pSortableColumn="fechaInicio">
+                            Fecha Inicio <p-sortIcon field="fechaInicio" />
+                        </th>
+                        <th class="tableColumnDate" pSortableColumn="fechaFin">
+                            Fecha Fin <p-sortIcon field="fechaFin" />
+                        </th>
+
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-row>
+                    <tr class="text-xs">
+
+                        <td class="tableColumnName">
+                            {{ row.nombre }}
+                        </td>
+
+                        <!-- <td class="tableColumnDescription-xs ">
+                    
+                      xd
+                </td> -->
+
+                        <td class="tableColumnDescription-xs ">
+                            {{ row.ubicacionExacta }}
+                        </td>
+                        <td class="tableColumnDate">
+                            {{ row.fechaInicio }}
+                        </td>
+                        <td class="tableColumnDate">
+                            {{ row.fechaFin }}
+                        </td>
+                        <td>
+                            <!-- <div class="card flex items-center justify-center">
+                                <p-menu #menu [model]="items" [popup]="true" appendTo="body" />
+                                <p-button (onClick)="menu.toggle($event)" (onClick)="itemSelected = row"
+                                    icon="pi pi-ellipsis-v" />
+                            </div> -->
+
+                        </td>
+                    </tr>
+                </ng-template>
+                <!-- <ng-template pTemplate="summary">
+                    <div class="global-center-between text-sm">
+                        Existen {{ listFilter ? listFilter.length : 0 }} elementos.
+                    </div>
+                </ng-template> -->
+            </p-table>
+            <!-- 
             <div>
                 @for (item of dtoRegister.subEventos; track $index) {
                 <p-toolbar styleClass="mb-4 gap-2">
@@ -216,15 +285,14 @@
                 }@empty {
                 Agregúe Subeventos
                 }
-
-
-
-
-
-            </div>
+            </div> 
+            -->
         </p-tabPanel>
 
     </p-tabView>
 
     <p-button (onClick)="coreSave()" label="GUARDAR" />
 </div>
+
+
+<app-lugar-selector-view></app-lugar-selector-view>
