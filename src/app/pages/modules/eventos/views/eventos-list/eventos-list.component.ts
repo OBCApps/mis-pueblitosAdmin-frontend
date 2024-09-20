@@ -93,8 +93,17 @@ export class EventosListComponent implements OnInit {
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        console.log("ELIMINADO", this.itemSelected);
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
+        
+        this.eventoService.delete(this.itemSelected).subscribe(
+          (response) => {
+            this.messageService.add({ severity: 'success', summary: 'Agregado Correctamente', detail: '', life: 3000 });
+            this.coreSearch()
+          },
+          (err) => {
+            this.messageService.add({ severity: 'error', summary: 'Error al Agregar', detail: '', life: 3000 });
+          }
+        );
+       
       }
     });
   }

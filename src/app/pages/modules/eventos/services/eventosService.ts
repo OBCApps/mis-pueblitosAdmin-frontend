@@ -13,7 +13,7 @@ import { DtoEvento } from '../models/DtoEventos';
 export class EventoService {
   private API_SERVER_EVENTO = API_SERVICE_ADMIN + 'evento';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // -------- LISTADO DE ENTIDADES ---------- \\
   get_listado_eventos(): Observable<DtoEvento[]> {
@@ -50,7 +50,7 @@ export class EventoService {
 
   update(data: any): Observable<DtoEvento> {
     return this.http
-      .patch<DtoEvento>(this.API_SERVER_EVENTO + '/update', data)
+      .patch<DtoEvento>(this.API_SERVER_EVENTO + '/update/' + data.id, data)
       .pipe(
         map((response) => {
           return response;
@@ -59,7 +59,7 @@ export class EventoService {
   }
 
   delete(data: any): Observable<any> {
-    return this.http.delete<any>(this.API_SERVER_EVENTO + '/delete').pipe(
+    return this.http.delete<any>(this.API_SERVER_EVENTO + '/delete/' + data.id).pipe(
       map((response) => {
         return response;
       })

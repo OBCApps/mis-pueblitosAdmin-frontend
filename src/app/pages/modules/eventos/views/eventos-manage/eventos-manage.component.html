@@ -1,3 +1,4 @@
+<p-toast />
 <div class="card">
     <p-tabView>
         <p-tabPanel header="Información del Evento">
@@ -11,7 +12,8 @@
                         <div class="col-span-2">
                             <label for="Nombre"
                                 class="block text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
-                            <input type="text" class="w-full" (input)="create_nameRoute(dtoRegister.nombre)" pInputText [(ngModel)]="dtoRegister.nombre" />
+                            <input type="text" class="w-full" (input)="create_nameRoute(dtoRegister.nombre)" pInputText
+                                [(ngModel)]="dtoRegister.nombre" />
                         </div>
 
                         <div class="col-span-2">
@@ -54,7 +56,7 @@
                                 Tipo
                             </label>
                             <p-dropdown [options]="list_types" class="w-full" [(ngModel)]="dtoRegister.type"
-                                optionLabel="name" placeholder="Selecciona el tipo de evento" />
+                                optionLabel="name" optionValue="code" placeholder="Selecciona el tipo de evento" />
 
 
                         </div>
@@ -197,9 +199,7 @@
 
     </p-tabView>
     <div class="global-center">
-
-
-        <p-button (onClick)="coreSave()" label="GUARDAR" />
+        <p-button (onClick)="coreSave()" [label]="action == 'NEW' ? 'GUARDAR' : 'ACTUALIZAR' " />
     </div>
 </div>
 

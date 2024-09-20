@@ -9,6 +9,7 @@ import { Table } from 'primeng/table';
 import { LugarSelectorViewComponent } from '../../../../shared/global-components/selectors/lugar-selector/views/lugar-selector-view/lugar-selector-view.component';
 import { MessageController } from '../../../../shared/global-components/MessageController';
 import { ProveedorSelectorViewComponent } from '../../../../shared/global-components/selectors/proveedor-selector/views/proveedor-selector-view/proveedor-selector-view.component';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-eventos-manage',
@@ -24,7 +25,8 @@ export class EventosManageComponent implements OnInit {
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
-    private eventoService: EventoService
+    private eventoService: EventoService,
+    private messageService: MessageService,
   ) {
 
   }
@@ -68,11 +70,48 @@ export class EventosManageComponent implements OnInit {
 
   coreNew() {
     console.log("NEW", this.dtoRegister);
-
+    this.eventoService.create(this.dtoRegister).subscribe(
+      (response) => {
+        this.messageService.add({ severity: 'success', summary: 'Agregado Correctamente', detail: '', life: 3000 });
+      },
+      (err) => {
+        this.messageService.add({ severity: 'error', summary: 'Error al Agregar', detail: '', life: 3000 });
+      }
+    );
   }
 
   coreEdit() {
-    console.log("EDIT", this.dtoRegister);
+
+    console.log("NEW", this.dtoRegister);
+    this.eventoService.update(this.dtoRegister).subscribe(
+      (response) => {
+        this.messageService.add({ severity: 'success', summary: 'Actualizado Correctamente', detail: '', life: 3000 });
+      },
+      (err) => {
+        this.messageService.add({ severity: 'error', summary: 'Error al Agregar', detail: '', life: 3000 });
+      }
+    );
+  }
+
+
+  @ViewChild(LugarSelectorViewComponent, { static: false }) LugarSelectorViewComponent: LugarSelectorViewComponent;
+  @ViewChild(ProveedorSelectorViewComponent, { static: false }) ProveedorSelectorViewComponent: ProveedorSelectorViewComponent;
+  coreShowSelectors(nameSelector: string) {
+    switch (nameSelector) {
+      case ('LugarSelector'): {
+        this.LugarSelectorViewComponent.coreInitSelector(new MessageController(this, nameSelector));
+        break;
+      }
+      case ('ProveedorSelector'): {
+        this.ProveedorSelectorViewComponent.coreInitSelector(new MessageController(this, nameSelector));
+
+        break;
+      }
+      case ('LugarSelectorPhoto'): {
+        this.LugarSelectorViewComponent.coreInitSelector(new MessageController(this, nameSelector));
+        break;
+      }
+    }
 
   }
 
@@ -98,12 +137,17 @@ export class EventosManageComponent implements OnInit {
   }
 
 
+
   getAllInfo() {
 
     this.eventoService.getEventoByID(this.dtoSelected.id).subscribe(
       data => {
         console.log("INFORMACION OBTENIDA");
         this.dtoRegister = data;
+
+        this.dtoRegister.fechaInicio = new Date(`${this.dtoRegister.fechaInicio}T05:00:00.000Z`)
+        
+        this.dtoRegister.fechaFin = new Date(`${this.dtoRegister.fechaFin}T05:00:00.000Z`)
       }, err => {
         console.log("error");
 
@@ -126,26 +170,7 @@ export class EventosManageComponent implements OnInit {
   }
 
 
-  @ViewChild(LugarSelectorViewComponent, { static: false }) LugarSelectorViewComponent: LugarSelectorViewComponent;
-  @ViewChild(ProveedorSelectorViewComponent, { static: false }) ProveedorSelectorViewComponent: ProveedorSelectorViewComponent;
-  coreShowSelectors(nameSelector: string) {
-    switch (nameSelector) {
-      case ('LugarSelector'): {
-        this.LugarSelectorViewComponent.coreInitSelector(new MessageController(this, nameSelector));
-        break;
-      }
-      case ('ProveedorSelector'): {
-        this.ProveedorSelectorViewComponent.coreInitSelector(new MessageController(this, nameSelector));
 
-        break;
-      }
-      case ('LugarSelectorPhoto'): {
-        this.LugarSelectorViewComponent.coreInitSelector(new MessageController(this, nameSelector));
-        break;
-      }
-    }
-
-  }
 
   create_nameRoute(item: any) {
     const nameRouteWithoutSpaces = item.replace(/\s/g, '-').toLowerCase();

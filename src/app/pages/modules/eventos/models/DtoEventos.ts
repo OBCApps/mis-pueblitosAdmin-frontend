@@ -3,8 +3,8 @@ export class DtoEvento {
   descripcion: string
   foto: DtoFotoEvento = new DtoFotoEvento()
   ubicacionExacta: string
-  fechaInicio: string
-  fechaFin: string
+  fechaInicio: Date
+  fechaFin: Date
   type: string
   id: string
   lugarId: string
