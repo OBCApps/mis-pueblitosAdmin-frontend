@@ -1,12 +1,19 @@
 export class MessageController {
 
-    constructor(currenComponent: any,) {
-        this.currenComponent = currenComponent;
-
+    constructor(currentComponent: any,nameSelector : string) {
+        this.currentComponent = currentComponent;
+        this.nameSelector = nameSelector;
     }
 
 
 
     // componente que recepciona el mensaje 
-    currenComponent: any;
+    currentComponent: any;
+
+    // Nombre del Selector que se abrira
+    nameSelector : string | any;
+    
+    // Elemento seleccionado desde el Selector
+    selected: any;
+
 }

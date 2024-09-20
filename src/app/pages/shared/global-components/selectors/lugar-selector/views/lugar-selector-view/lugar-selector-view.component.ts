@@ -3,41 +3,58 @@ import { MessageController } from '../../../../MessageController';
 import { LugarSelectorService } from '../../services/lugar-selector.service';
 import { FilterLugar } from '../../models/FilterLugar';
 import { DtoLugarSelector } from '../../models/DtoLugarSelector';
+import { BaseVariables } from '../../../../BaseVariables';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
   selector: 'app-lugar-selector-view',
   templateUrl: './lugar-selector-view.component.html',
   styleUrl: './lugar-selector-view.component.scss'
 })
-export class LugarSelectorViewComponent {
+export class LugarSelectorViewComponent extends BaseVariables  {
   visible: boolean = false;
 
+  boolLoadData: boolean = false;
   constructor(
-    private lugarSelectorService: LugarSelectorService
+    private lugarSelectorService: LugarSelectorService,
   ) {
-
+    super()
   }
 
-  coreInitSelector(msj: MessageController) {
-    console.log("meSAJE", msj);
-
-    this.loadLugar();
+  coreInitSelector(message: MessageController) {
+    this.messageController = message;
     this.visible = true;
-
-
+    this.loadLugar();
   }
 
-  messageController: MessageController;
+
 
   coreSelect(dto: any) {
-    //this.messageController.resultado = dto;
-    this.messageController.currenComponent.coreMensaje(this.messageController);
-    //this.coreSalir();
+    console.log("DTO", dto);
+
+    this.messageController.selected = dto;
+    this.messageController.currentComponent.coreMessage(this.messageController);
+    this.coreCloseSelector();
+  }
+
+  coreCloseSelector() {
+    
+    this.visible = false;
   }
 
   listFilter: DtoLugarSelector[] = []
   loadLugar() {
+    this.boolLoadData = true;
     const filter = new FilterLugar()
-    this.lugarSelectorService.search(filter).subscribe((data) => (this.listFilter = data));
+    this.listFilter = [];
+    this.lugarSelectorService.search(filter).subscribe(
+      (data: FilterLugar[]) => {
+        this.boolLoadData = false;
+        this.listFilter = data;
+      }
+    );
   }
+
+
+
 }

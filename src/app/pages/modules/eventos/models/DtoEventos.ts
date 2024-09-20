@@ -8,6 +8,7 @@ export class DtoEvento {
   type: string
   id: string
   lugarId: string
+  lugarDesc: string
   name_route: string
   subEventos: DtoSubEvento[] = []
 }
@@ -18,6 +19,7 @@ export class DtoFotoEvento {
   lugar: string
   titulo: string
   proveedorId: string
+  proveedorDesc: string
 }
 
 export class DtoSubEvento {

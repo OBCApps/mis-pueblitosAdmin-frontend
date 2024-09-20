@@ -18,6 +18,9 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MenuModule } from 'primeng/menu';
 import { DividerModule } from 'primeng/divider';
 import { TabViewModule } from 'primeng/tabview';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { InputGroupModule } from 'primeng/inputgroup';
+
 @NgModule({
   imports: [
     SidebarModule,
@@ -38,7 +41,9 @@ import { TabViewModule } from 'primeng/tabview';
     InputTextModule,
     MenuModule,
     DividerModule,
-    TabViewModule
+    TabViewModule,
+    InputGroupAddonModule,
+    InputGroupModule
   ],
   exports: [
     SidebarModule,
@@ -59,7 +64,9 @@ import { TabViewModule } from 'primeng/tabview';
     InputTextModule,
     MenuModule,
     DividerModule,
-    TabViewModule
+    TabViewModule,
+    InputGroupAddonModule,
+    InputGroupModule
   ],
   providers: [ConfirmationService, MessageService]
 })

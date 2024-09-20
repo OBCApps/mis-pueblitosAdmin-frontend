@@ -41,7 +41,7 @@ export class EventoService {
     );
   }
   create(data: any): Observable<DtoEvento> {
-    return this.http.post<DtoEvento>(this.API_SERVER_EVENTO, data).pipe(
+    return this.http.post<DtoEvento>(this.API_SERVER_EVENTO + '/register', data).pipe(
       map((response) => {
         return response;
       })
@@ -50,7 +50,7 @@ export class EventoService {
 
   update(data: any): Observable<DtoEvento> {
     return this.http
-      .patch<DtoEvento>(this.API_SERVER_EVENTO + '/' + data.id, data)
+      .patch<DtoEvento>(this.API_SERVER_EVENTO + '/update', data)
       .pipe(
         map((response) => {
           return response;
@@ -59,7 +59,7 @@ export class EventoService {
   }
 
   delete(data: any): Observable<any> {
-    return this.http.delete<any>(this.API_SERVER_EVENTO + '/' + data.id).pipe(
+    return this.http.delete<any>(this.API_SERVER_EVENTO + '/delete').pipe(
       map((response) => {
         return response;
       })

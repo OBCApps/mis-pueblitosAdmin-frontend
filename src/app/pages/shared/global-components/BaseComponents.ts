@@ -1,7 +1,10 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, PLATFORM_ID } from '@angular/core';
+import { MessageController } from './MessageController';
 
 export class BaseComponents {
+  
+  
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
 
   static saveLocalStorageToManage(action: string, data: any): void {   
@@ -46,5 +49,5 @@ export class BaseComponents {
     } else {
       console.error('localStorage no está disponible');
     }
-  }
+  }  
 }

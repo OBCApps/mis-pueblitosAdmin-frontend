@@ -14,6 +14,7 @@ import { NavbarViewComponent } from './pages/shared/navigations/navbar/views/nav
 import { EventosListComponent } from './pages/modules/eventos/views/eventos-list/eventos-list.component';
 import { EventosManageComponent } from './pages/modules/eventos/views/eventos-manage/eventos-manage.component';
 import { LugarSelectorViewComponent } from './pages/shared/global-components/selectors/lugar-selector/views/lugar-selector-view/lugar-selector-view.component';
+import { ProveedorSelectorViewComponent } from './pages/shared/global-components/selectors/proveedor-selector/views/proveedor-selector-view/proveedor-selector-view.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { LugarSelectorViewComponent } from './pages/shared/global-components/sel
     NavbarViewComponent,
     EventosListComponent,
     EventosManageComponent,
-    LugarSelectorViewComponent
+    LugarSelectorViewComponent,
+    ProveedorSelectorViewComponent
   ],
   imports: [
     PrimeNgModule,

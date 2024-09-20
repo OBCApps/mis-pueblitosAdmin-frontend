@@ -8,6 +8,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { Table } from 'primeng/table';
 import { LugarSelectorViewComponent } from '../../../../shared/global-components/selectors/lugar-selector/views/lugar-selector-view/lugar-selector-view.component';
 import { MessageController } from '../../../../shared/global-components/MessageController';
+import { ProveedorSelectorViewComponent } from '../../../../shared/global-components/selectors/proveedor-selector/views/proveedor-selector-view/proveedor-selector-view.component';
 
 @Component({
   selector: 'app-eventos-manage',
@@ -19,6 +20,7 @@ export class EventosManageComponent implements OnInit {
 
   dtoSelected: DtoEvento = new DtoEvento();
 
+  list_types: any[] | undefined;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -31,16 +33,20 @@ export class EventosManageComponent implements OnInit {
       this.action = this.getInfoDtoSelected()[0];
       this.dtoSelected = this.getInfoDtoSelected()[1];
 
+
+
       if (this.action == 'NEW') {
         this.dtoRegister = new DtoEvento()
       } else {
+        this.getAllInfo();
 
-        this.getAllInfo()
       }
+      this.list_types = [
+        { name: 'Festividad', code: 'Festividad' },
+        { name: 'Evento', code: 'Evento' },
 
+      ];
     }
-
-
   }
 
 
@@ -70,7 +76,26 @@ export class EventosManageComponent implements OnInit {
 
   }
 
+  coreMessage(message: MessageController): void {
+    console.log("MESSANJE", message);
 
+    switch (message.nameSelector) {
+      case ('LugarSelector'): {
+        this.dtoRegister.lugarDesc = message.selected.nombre;
+        this.dtoRegister.lugarId = message.selected.id
+        break;
+      }
+      case ('ProveedorSelector'): {
+        this.dtoRegister.foto.proveedorId = message.selected.id
+        this.dtoRegister.foto.proveedorDesc = message.selected.nombre
+        break;
+      }
+      case ('LugarSelectorPhoto'): {
+        this.dtoRegister.foto.lugar = message.selected.nombre;
+        break;
+      }
+    }
+  }
 
 
   getAllInfo() {
@@ -102,9 +127,28 @@ export class EventosManageComponent implements OnInit {
 
 
   @ViewChild(LugarSelectorViewComponent, { static: false }) LugarSelectorViewComponent: LugarSelectorViewComponent;
-  coreShowSelectors(type: string) {
+  @ViewChild(ProveedorSelectorViewComponent, { static: false }) ProveedorSelectorViewComponent: ProveedorSelectorViewComponent;
+  coreShowSelectors(nameSelector: string) {
+    switch (nameSelector) {
+      case ('LugarSelector'): {
+        this.LugarSelectorViewComponent.coreInitSelector(new MessageController(this, nameSelector));
+        break;
+      }
+      case ('ProveedorSelector'): {
+        this.ProveedorSelectorViewComponent.coreInitSelector(new MessageController(this, nameSelector));
 
-    this.LugarSelectorViewComponent.coreInitSelector(new MessageController(this));
+        break;
+      }
+      case ('LugarSelectorPhoto'): {
+        this.LugarSelectorViewComponent.coreInitSelector(new MessageController(this, nameSelector));
+        break;
+      }
+    }
+
   }
 
+  create_nameRoute(item: any) {
+    const nameRouteWithoutSpaces = item.replace(/\s/g, '-').toLowerCase();
+    this.dtoRegister.name_route = nameRouteWithoutSpaces;
+  }
 }
