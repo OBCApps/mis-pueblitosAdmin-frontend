@@ -1,7 +1,12 @@
-<p-dialog header="Header" [modal]="true" [(visible)]="visible" [style]="{ width: '50rem' }"
+<p-dialog header="SubEvento Detalle" [modal]="true" [(visible)]="visible" [style]="{ width: '50rem' }"
     [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
     <div class="card">
-        <button (click)="listDtoRegister.push(dtoRegister)">agregar</button>
+        <div class="global-center-end">
+
+            <p-button severity="success" label="AGREGAR" icon="pi pi-plus" class="mr-2"
+                (onClick)="listDtoRegister.push(dtoRegister)" />
+        </div>
+
         <p-table [value]="listDtoRegister" dataKey="id" [tableStyle]="{ 'min-width': '50rem' }">
             <ng-template pTemplate="header">
                 <tr>
@@ -65,5 +70,9 @@
             </ng-template>
         </p-table>
 
+        <div>
+            <p-button label="Cancel" icon="pi pi-times" [text]="true" (onClick)="coreCloseSelector()" />
+            <p-button label="Save" icon="pi pi-check" [text]="true" (onClick)="saveItem()" />
+        </div>
     </div>
 </p-dialog>

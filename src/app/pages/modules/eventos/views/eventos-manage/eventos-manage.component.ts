@@ -13,6 +13,7 @@ import { MenuItem, MessageService } from 'primeng/api';
 import { ConstantEvents } from '../../eventos.constant';
 import { SubeventosManageComponent } from '../subeventos-manage/subeventos-manage.component';
 import { SubeventosdetalleManageComponent } from '../subeventosdetalle-manage/subeventosdetalle-manage.component';
+import { DtoSubEvento } from '../../models/DtoSubEvento';
 
 @Component({
   selector: 'app-eventos-manage',
@@ -23,12 +24,13 @@ export class EventosManageComponent implements OnInit {
   action: string;
 
   dtoSelected: DtoEvento = new DtoEvento();
+  subEventoSelected: DtoSubEvento = new DtoSubEvento();
 
   list_types: any[] | undefined;
 
   items: MenuItem[] | undefined; // Acciones Ver, Editar
 
-  itemSelected!: any | null;
+  
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private eventoService: EventoService,
@@ -52,17 +54,17 @@ export class EventosManageComponent implements OnInit {
       }
       this.items = [
         {
-          label: 'Ver SubEventoDetalles',
+          label: 'Ver Detalles',
           icon: 'pi pi-eye',
           command: () => {
-            this.coreShowDependences('SubEventoDetalleManage', 'NEW');
+            this.coreShowDependences('SubEventoDetalleManage', 'NEW', this.subEventoSelected);
           },
         },
         {
           label: 'Editar',
           icon: 'pi pi-pencil',
           command: () => {
-            this.coreShowDependences('SubEventoManage', 'EDIT')
+            this.coreShowDependences('SubEventoManage', 'EDIT', this.subEventoSelected)
           },
         },
         {
@@ -74,6 +76,11 @@ export class EventosManageComponent implements OnInit {
         }
 
       ];
+
+      this.list_types = [
+        {name: 'Festividad',code: 'Festividad'},
+        {name: 'Evento',code: 'Evento'},
+      ]
     }
   }
 
@@ -101,7 +108,7 @@ export class EventosManageComponent implements OnInit {
 
   coreNew() {
     console.log("NEW", this.dtoRegister);
-    this.eventoService.create(this.dtoRegister).subscribe(
+    /* this.eventoService.create(this.dtoRegister).subscribe(
       (response) => {
         this.messageService.add({ severity: 'success', summary: 'Agregado Correctamente', detail: '', life: 3000 });
         this.coreExit();
@@ -109,13 +116,13 @@ export class EventosManageComponent implements OnInit {
       (err) => {
         this.messageService.add({ severity: 'error', summary: 'Error al Agregar', detail: '', life: 3000 });
       }
-    );
+    ); */
   }
 
   coreEdit() {
 
-    console.log("NEW", this.dtoRegister);
-    this.eventoService.update(this.dtoRegister).subscribe(
+    console.log("UPDATE", this.dtoRegister);
+    /* this.eventoService.update(this.dtoRegister).subscribe(
       (response) => {
         this.messageService.add({ severity: 'success', summary: 'Actualizado Correctamente', detail: '', life: 3000 });
         this.coreExit();
@@ -123,7 +130,7 @@ export class EventosManageComponent implements OnInit {
       (err) => {
         this.messageService.add({ severity: 'error', summary: 'Error al Agregar', detail: '', life: 3000 });
       }
-    );
+    ); */
   }
 
 
@@ -173,6 +180,12 @@ export class EventosManageComponent implements OnInit {
         }
         break;
       }
+      case ('SubEventoDetalleManage'): {
+        if (message.method == 'NEW') {
+          this.dtoRegister.subEventos.push(message.selected)
+        }
+        break;
+      }
     }
   }
 
@@ -217,15 +230,15 @@ export class EventosManageComponent implements OnInit {
 
   @ViewChild(SubeventosManageComponent, { static: false }) SubeventosManageComponent: SubeventosManageComponent;
   @ViewChild(SubeventosdetalleManageComponent, { static: false }) SubeventosdetalleManageComponent: SubeventosdetalleManageComponent;
-  
-  coreShowDependences(nameTable: string, method: string) {
+
+  coreShowDependences(nameTable: string, method: string, selected: any = null) {
     switch (nameTable) {
       case ('SubEventoManage'): {
-        this.SubeventosManageComponent.coreInitSelector(new MessageController(this, nameTable, method));
+        this.SubeventosManageComponent.coreInitSelector(new MessageController(this, nameTable, method, selected));
         break;
       }
       case ('SubEventoDetalleManage'): {
-        this.SubeventosdetalleManageComponent.coreInitSelector(new MessageController(this, nameTable, method));
+        this.SubeventosdetalleManageComponent.coreInitSelector(new MessageController(this, nameTable, method, selected));
 
         break;
       }

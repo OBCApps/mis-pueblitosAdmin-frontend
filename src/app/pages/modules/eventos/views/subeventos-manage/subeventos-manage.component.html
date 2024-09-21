@@ -1,72 +1,151 @@
 <p-dialog [(visible)]="visible" [style]="{ width: '650px' }" header="Sub Evento Información" [modal]="true"
-    styleClass="p-fluid">
-    <ng-template pTemplate="content">
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true" styleClass="p-fluid">
+    <div class="grid grid-cols-3 gap-2">
+        <div class="col-span-3 md:col-span-1 gap-2">
 
-        <div class="field">
-            <label for="name">Nombre</label>
-            <input type="text" pInputText id="name" [(ngModel)]="dtoRegister.nombre" required autofocus />
-            <!--  <small class="p-error" *ngIf="submitted && !product.name">
-                Name is required.
-            </small> -->
-        </div>
-        <div class="field">
-            <label for="description">Descripción</label>
-            <textarea id="description" pInputTextarea [(ngModel)]="dtoRegister.descripcion" required rows="3" cols="20">
-                    </textarea>
-        </div>
-        <div class="field">
-            <label for="dia">
-                DIA
-            </label>
-            <p-calendar class="w-full" [(ngModel)]="dtoRegister.dia" [iconDisplay]="'input'" [showIcon]="true"
-                inputId="icondisplay" dateFormat="dd/mm/yy" />
-        </div>
-        <div class="grid grid-cols-2">
-            <div class="field col">
-                <label for="horaInicio">horaInicio</label>
-                <p-calendar class="w-full" [(ngModel)]="dtoRegister.horaInicio" [timeOnly]="true"
-                    [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" dateFormat="dd/mm/yy" />
+            <div class="field">
+                <label for="name">Nombre</label>
+                <input type="text" pInputText id="name" [(ngModel)]="dtoRegister.nombre" required autofocus />
+                <!--  <small class="p-error" *ngIf="submitted && !product.name">
+                        Name is required.
+                    </small> -->
             </div>
-            <div class="field col">
-                <label for="horaFin">horaFin</label>
-                <p-calendar class="w-full" [(ngModel)]="dtoRegister.horaFin" [timeOnly]="true" [iconDisplay]="'input'"
-                    [showIcon]="true" inputId="icondisplay" dateFormat="dd/mm/yy" />
+            <div class="field">
+                <label for="description">Descripción</label>
+                <textarea id="description" pInputTextarea [(ngModel)]="dtoRegister.descripcion" required rows="3"
+                    cols="20">
+                            </textarea>
+            </div>
+            <div class="field">
+                <label for="dia">
+                    DIA
+                </label>
+                <p-calendar class="w-full" [(ngModel)]="dtoRegister.dia" [iconDisplay]="'input'" [showIcon]="true"
+                    inputId="icondisplay" dateFormat="dd/mm/yy" />
+            </div>
+            <div class="grid grid-cols-2">
+                <div class="field col">
+                    <label for="horaInicio">horaInicio</label>
+                    <p-calendar class="w-full" [(ngModel)]="dtoRegister.horaInicio" [timeOnly]="true"
+                        [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" dateFormat="dd/mm/yy" />
+                </div>
+                <div class="field col">
+                    <label for="horaFin">horaFin</label>
+                    <p-calendar class="w-full" [(ngModel)]="dtoRegister.horaFin" [timeOnly]="true"
+                        [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" dateFormat="dd/mm/yy" />
+
+                </div>
+            </div>
+            <p-divider></p-divider>
+            <div class="field">
+                <label for="description">Enlace Foto</label>
+                <input type="text" pInputText id="description" [(ngModel)]="dtoRegister.foto.url" required autofocus />
 
             </div>
-        </div>
-        <p-divider></p-divider>
-        <div class="field">
-            <label for="description">Enlace Foto</label>
-            <textarea id="description" pInputTextarea [(ngModel)]="dtoRegister.foto.url" required rows="3" cols="20">
-                    </textarea>
-        </div>
-        <div class="col-span-2">
-            <label for="name_route" class="block text-sm font-medium text-gray-900 dark:text-white">
-                LUGAR
-            </label>
-            <p-inputGroup>
-                <input type="text" class="w-full" pInputText [(ngModel)]="dtoRegister.foto.lugar" />
-                <button type="button" (click)="coreShowSelectors('LugarSelectorPhoto')" pButton
-                    icon="pi pi-search"></button>
-            </p-inputGroup>
-        </div>
-        <div class="field">
-            <label for="Titulo">Titulo</label>
-            <textarea id="Titulo" pInputTextarea [(ngModel)]="dtoRegister.foto.titulo" required rows="3" cols="20">
-                    </textarea>
-        </div>
-        <div class="col-span-2">
-            <label for="name_route" class="block text-sm font-medium text-gray-900 dark:text-white">
-                PROVEEDOR ID
-            </label>
-            <p-inputGroup>
-                <input type="text" class="w-full" pInputText [(ngModel)]="dtoRegister.foto.proveedorDesc" />
-                <button type="button" (click)="coreShowSelectors('ProveedorSelector')" pButton
-                    icon="pi pi-search"></button>
-            </p-inputGroup>
+            <div class="col-span-2">
+                <label for="name_route" class="block text-sm font-medium text-gray-900 dark:text-white">
+                    LUGAR
+                </label>
+                <p-inputGroup>
+                    <input type="text" class="w-full" pInputText [(ngModel)]="dtoRegister.foto.lugar" />
+                    <button type="button" (click)="coreShowSelectors('LugarSelectorPhoto')" pButton
+                        icon="pi pi-search"></button>
+                </p-inputGroup>
+            </div>
+            <div class="field">
+                <label for="Titulo">Titulo</label>
+                <textarea id="Titulo" pInputTextarea [(ngModel)]="dtoRegister.foto.titulo" required rows="3" cols="20">
+                            </textarea>
+            </div>
+            <div class="col-span-2">
+                <label for="name_route" class="block text-sm font-medium text-gray-900 dark:text-white">
+                    PROVEEDOR ID
+                </label>
+                <p-inputGroup>
+                    <input type="text" class="w-full" pInputText [(ngModel)]="dtoRegister.foto.proveedorDesc" />
+                    <button type="button" (click)="coreShowSelectors('ProveedorSelector')" pButton
+                        icon="pi pi-search"></button>
+                </p-inputGroup>
+
+            </div>
 
         </div>
-    </ng-template>
+        <div class="col-span-3 md:col-span-2 gap-2">
+            <div class="global-center-end">
+                <p-button severity="success" label="AGREGAR" icon="pi pi-plus" class="mr-2"
+                    (onClick)="addSubEvento()" />
+            </div>
+            <p-table [value]="dtoRegister.subEventoDetalles" dataKey="id" [tableStyle]="{ 'min-width': '50rem' }">
+                <ng-template pTemplate="header">
+                    <tr class="text-xs text-center">
+                        <th style="width:15%">
+                            Titulo
+                        </th>
+                        <th style="width:75%">
+                            Detalle
+                        </th>
+                        <th style="width:5%">
+                            Hora Inicio
+                        </th>
+                        <th style="width:5%">
+                            Hora Fin
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-item let-editing="editing">
+                    <tr class="text-xs text-justify">
+                        <td [pEditableColumn]="item.organizador" pEditableColumnField="organizador">
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input pInputText type="text" [(ngModel)]="item.organizador" />
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{ item.organizador }}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td [pEditableColumn]="item.detalle" pEditableColumnField="detalle">
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                                                    
+
+                                    <textarea pInputTextarea [(ngModel)]="item.detalle" required
+                                        rows="8" cols="20"></textarea>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{ item.detalle }}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td [pEditableColumn]="item.horaInicio" pEditableColumnField="horaInicio">
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+
+                                    
+                                    <input pInputText type="text" [(ngModel)]="item.horaInicio" />
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{ item.horaInicio }}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td [pEditableColumn]="item.horaFin" pEditableColumnField="horaFin">
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                   
+                                    <input pInputText type="text" [(ngModel)]="item.horaFin" />
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{ item.horaFin }}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+
 
     <ng-template pTemplate="footer">
         <p-button label="Cancel" icon="pi pi-times" [text]="true" (onClick)="hideDialog()" />

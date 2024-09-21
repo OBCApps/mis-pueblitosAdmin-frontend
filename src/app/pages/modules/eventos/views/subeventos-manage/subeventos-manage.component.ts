@@ -8,7 +8,7 @@ import { BaseComponents } from '../../../../shared/global-components/BaseCompone
 import { Table } from 'primeng/table';
 import { LugarSelectorViewComponent } from '../../../../shared/global-components/selectors/lugar-selector/views/lugar-selector-view/lugar-selector-view.component';
 import { ProveedorSelectorViewComponent } from '../../../../shared/global-components/selectors/proveedor-selector/views/proveedor-selector-view/proveedor-selector-view.component';
-import { DtoSubEvento } from '../../models/DtoSubEvento';
+import { DtoSubEvento, DtoSubEventoDetalle } from '../../models/DtoSubEvento';
 import { BaseVariables } from '../../../../shared/global-components/BaseVariables';
 
 @Component({
@@ -19,10 +19,18 @@ import { BaseVariables } from '../../../../shared/global-components/BaseVariable
 export class SubeventosManageComponent extends BaseVariables {
   visible: boolean = false;
 
-  dtoRegister: DtoSubEvento = new DtoSubEvento()
+  dtoRegister: DtoSubEvento = new DtoSubEvento();
+  dtoSubEventoDetalle: DtoSubEventoDetalle = new DtoSubEventoDetalle();
   coreInitSelector(message: MessageController) {
-    console.log("MESSAGE", message);
+    if (message.method == 'NEW') {
+      this.dtoRegister = new DtoSubEvento();
+    }
 
+    if (message.method == 'EDIT') {
+      this.dtoRegister = message.selected;
+    }
+
+    console.log("MESSAGE", message);
     this.messageController = message;
     this.visible = true;
 
@@ -31,6 +39,7 @@ export class SubeventosManageComponent extends BaseVariables {
   hideDialog() {
 
   }
+
   saveItem() {
     console.log("DTOREGISTER", this.dtoRegister);
     this.messageController.selected = this.dtoRegister;
@@ -39,7 +48,6 @@ export class SubeventosManageComponent extends BaseVariables {
   }
 
   coreCloseSelector() {
-
     this.visible = false;
   }
 
@@ -68,7 +76,7 @@ export class SubeventosManageComponent extends BaseVariables {
     console.log("MESSANJE", message);
 
     switch (message.nameSelector) {
-      
+
       case ('ProveedorSelector'): {
         this.dtoRegister.foto.proveedorId = message.selected.id
         this.dtoRegister.foto.proveedorDesc = message.selected.nombre
@@ -80,10 +88,20 @@ export class SubeventosManageComponent extends BaseVariables {
       }
 
       case ('SubEventoManage'): {
-        
+
         break;
       }
     }
+  }
+
+  ngOnDestroy(): void {
+    this.dtoRegister = new DtoSubEvento();
+  }
+
+  addSubEvento(){
+    const copiaSubEventoDetalle = Object.assign({}, this.dtoSubEventoDetalle);  // Crear una copia
+
+    this.dtoRegister.subEventoDetalles.push(copiaSubEventoDetalle)
   }
 }
 

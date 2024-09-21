@@ -143,7 +143,7 @@
                 [showCurrentPageReport]="true">
                 <ng-template pTemplate="caption">
                     <div class="global-center-between">
-                        <h5 class="m-0">Administrar Eventos</h5>
+                        <h5 class="m-0">Administrar SubEventos</h5>
                         <p-button severity="success" label="Nuevo" icon="pi pi-plus" class="ml-2 text-sm p-1"
                             (onClick)="coreShowDependences('SubEventoManage', 'NEW')" />
                         <span class="p-input-icon-left">
@@ -193,7 +193,7 @@
                         <td>
                             <div class="card flex items-center justify-center">
                                 <p-menu #menu [model]="items" [popup]="true" appendTo="body" />
-                                <p-button (onClick)="menu.toggle($event)" (onClick)="itemSelected = row"
+                                <p-button (onClick)="menu.toggle($event)" (onClick)="subEventoSelected = row"
                                     icon="pi pi-ellipsis-v" />
                             </div>
 

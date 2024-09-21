@@ -12,8 +12,8 @@ export class SubeventosdetalleManageComponent extends BaseVariables {
   visible: boolean = false;
 
   listDtoRegister: DtoSubEventoDetalle[] = [];
-  dtoRegister : DtoSubEventoDetalle = new DtoSubEventoDetalle()
- 
+  dtoRegister: DtoSubEventoDetalle = new DtoSubEventoDetalle()
+
 
   coreInitSelector(message: MessageController) {
     console.log("MESSAGE", message);
@@ -21,5 +21,16 @@ export class SubeventosdetalleManageComponent extends BaseVariables {
     this.messageController = message;
     this.visible = true;
 
+  }
+  
+  saveItem() {
+    console.log("DTOREGISTER", this.dtoRegister);
+    this.messageController.selected = this.dtoRegister;
+    this.messageController.currentComponent.coreMessage(this.messageController);
+    this.coreCloseSelector();
+  }
+
+  coreCloseSelector() {
+    this.visible = false;
   }
 }

@@ -1,9 +1,10 @@
 export class MessageController {
 
-    constructor(currentComponent: any, nameSelector: string, method: string = null) {
+    constructor(currentComponent: any, nameSelector: string, method: string = null, selected: any = null) {
         this.currentComponent = currentComponent;
         this.nameSelector = nameSelector;
         this.method = method;
+        this.selected = selected;
     }
 
 
