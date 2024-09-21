@@ -17,6 +17,7 @@ import { LugarSelectorViewComponent } from './pages/shared/global-components/sel
 import { ProveedorSelectorViewComponent } from './pages/shared/global-components/selectors/proveedor-selector/views/proveedor-selector-view/proveedor-selector-view.component';
 import { SubeventosListComponent } from './pages/modules/eventos/views/subeventos-list/subeventos-list.component';
 import { SubeventosManageComponent } from './pages/modules/eventos/views/subeventos-manage/subeventos-manage.component';
+import { SubeventosdetalleManageComponent } from './pages/modules/eventos/views/subeventosdetalle-manage/subeventosdetalle-manage.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,9 @@ import { SubeventosManageComponent } from './pages/modules/eventos/views/subeven
     SubeventosManageComponent,
     EventosManageComponent,
     LugarSelectorViewComponent,
-    ProveedorSelectorViewComponent
+    ProveedorSelectorViewComponent,
+    SubeventosdetalleManageComponent,
+    
   ],
   imports: [
     PrimeNgModule,

@@ -9,8 +9,10 @@ import { Table } from 'primeng/table';
 import { LugarSelectorViewComponent } from '../../../../shared/global-components/selectors/lugar-selector/views/lugar-selector-view/lugar-selector-view.component';
 import { MessageController } from '../../../../shared/global-components/MessageController';
 import { ProveedorSelectorViewComponent } from '../../../../shared/global-components/selectors/proveedor-selector/views/proveedor-selector-view/proveedor-selector-view.component';
-import { MessageService } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { ConstantEvents } from '../../eventos.constant';
+import { SubeventosManageComponent } from '../subeventos-manage/subeventos-manage.component';
+import { SubeventosdetalleManageComponent } from '../subeventosdetalle-manage/subeventosdetalle-manage.component';
 
 @Component({
   selector: 'app-eventos-manage',
@@ -24,6 +26,9 @@ export class EventosManageComponent implements OnInit {
 
   list_types: any[] | undefined;
 
+  items: MenuItem[] | undefined; // Acciones Ver, Editar
+
+  itemSelected!: any | null;
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private eventoService: EventoService,
@@ -45,9 +50,28 @@ export class EventosManageComponent implements OnInit {
         this.getAllInfo();
 
       }
-      this.list_types = [
-        { name: 'Festividad', code: 'Festividad' },
-        { name: 'Evento', code: 'Evento' },
+      this.items = [
+        {
+          label: 'Ver SubEventoDetalles',
+          icon: 'pi pi-eye',
+          command: () => {
+            this.coreShowDependences('SubEventoDetalleManage', 'NEW');
+          },
+        },
+        {
+          label: 'Editar',
+          icon: 'pi pi-pencil',
+          command: () => {
+            this.coreShowDependences('SubEventoManage', 'EDIT')
+          },
+        },
+        {
+          label: 'Eliminar',
+          icon: 'pi pi-trash',
+          command: () => {
+            //this.coreDelete()
+          },
+        }
 
       ];
     }
@@ -142,6 +166,13 @@ export class EventosManageComponent implements OnInit {
         this.dtoRegister.foto.lugar = message.selected.nombre;
         break;
       }
+
+      case ('SubEventoManage'): {
+        if (message.method == 'NEW') {
+          this.dtoRegister.subEventos.push(message.selected)
+        }
+        break;
+      }
     }
   }
 
@@ -178,11 +209,27 @@ export class EventosManageComponent implements OnInit {
     this.dt.filterGlobal(inputElement.value, 'contains');
   }
 
-
-
-
   create_nameRoute(item: any) {
     const nameRouteWithoutSpaces = item.replace(/\s/g, '-').toLowerCase();
     this.dtoRegister.name_route = nameRouteWithoutSpaces;
+  }
+
+
+  @ViewChild(SubeventosManageComponent, { static: false }) SubeventosManageComponent: SubeventosManageComponent;
+  @ViewChild(SubeventosdetalleManageComponent, { static: false }) SubeventosdetalleManageComponent: SubeventosdetalleManageComponent;
+  
+  coreShowDependences(nameTable: string, method: string) {
+    switch (nameTable) {
+      case ('SubEventoManage'): {
+        this.SubeventosManageComponent.coreInitSelector(new MessageController(this, nameTable, method));
+        break;
+      }
+      case ('SubEventoDetalleManage'): {
+        this.SubeventosdetalleManageComponent.coreInitSelector(new MessageController(this, nameTable, method));
+
+        break;
+      }
+
+    }
   }
 }

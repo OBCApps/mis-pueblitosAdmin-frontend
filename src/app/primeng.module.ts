@@ -20,6 +20,7 @@ import { DividerModule } from 'primeng/divider';
 import { TabViewModule } from 'primeng/tabview';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputGroupModule } from 'primeng/inputgroup';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 @NgModule({
   imports: [
@@ -43,7 +44,9 @@ import { InputGroupModule } from 'primeng/inputgroup';
     DividerModule,
     TabViewModule,
     InputGroupAddonModule,
-    InputGroupModule
+    InputGroupModule,
+    InputTextareaModule,
+
   ],
   exports: [
     SidebarModule,
@@ -66,7 +69,9 @@ import { InputGroupModule } from 'primeng/inputgroup';
     DividerModule,
     TabViewModule,
     InputGroupAddonModule,
-    InputGroupModule
+    InputGroupModule,
+    InputTextareaModule,
+    
   ],
   providers: [ConfirmationService, MessageService]
 })

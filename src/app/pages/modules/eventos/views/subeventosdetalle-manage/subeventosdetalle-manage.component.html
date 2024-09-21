@@ -1,0 +1,69 @@
+<p-dialog header="Header" [modal]="true" [(visible)]="visible" [style]="{ width: '50rem' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
+    <div class="card">
+        <button (click)="listDtoRegister.push(dtoRegister)">agregar</button>
+        <p-table [value]="listDtoRegister" dataKey="id" [tableStyle]="{ 'min-width': '50rem' }">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width:25%">
+                        Titulo
+                    </th>
+                    <th style="width:25%">
+                        Detalle
+                    </th>
+                    <th style="width:25%">
+                        Hora Inicio
+                    </th>
+                    <th style="width:25%">
+                        Hora Fin
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item let-editing="editing">
+                <tr>
+                    <td [pEditableColumn]="item.organizador" pEditableColumnField="organizador">
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [(ngModel)]="item.organizador" />
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{ item.organizador }}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td [pEditableColumn]="item.detalle" pEditableColumnField="detalle">
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [(ngModel)]="item.detalle" required />
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{ item.detalle }}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td [pEditableColumn]="item.horaInicio" pEditableColumnField="horaInicio">
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText [(ngModel)]="item.horaInicio" />
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{ item.horaInicio }}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td [pEditableColumn]="item.horaFin" pEditableColumnField="horaFin">
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [(ngModel)]="item.horaFin" />
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{ item.horaFin | currency: 'USD' }}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+
+    </div>
+</p-dialog>

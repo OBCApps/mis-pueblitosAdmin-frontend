@@ -1,187 +1,78 @@
-<p-toast />
-<div class="card">
-    <p-tabView>
-        <p-tabPanel header="Información del Evento">
+<p-dialog [(visible)]="visible" [style]="{ width: '650px' }" header="Sub Evento Información" [modal]="true"
+    styleClass="p-fluid">
+    <ng-template pTemplate="content">
 
-            <div>
-                <p-toolbar styleClass="mb-4 gap-2">
-                    <h1>Datos del Evento</h1>
-                    <p-divider />
-                    <div class="grid grid-cols-4 gap-2 w-full">
-                        <div class="col-span-2">
-                            <label for="type" class="block text-sm font-medium text-gray-900 dark:text-white">
-                                Evento
-                            </label>
-                            <p-inputGroup>
-                                <input type="text" class="w-full" pInputText [(ngModel)]="dtoRegister.eventoId" />
-
-                                <button type="button" (click)="coreShowSelectors('LugarSelector')" pButton
-                                    icon="pi pi-search"></button>
-                            </p-inputGroup>
-
-                        </div>
-                        <div class="col-span-2">
-                            <label for="Nombre"
-                                class="block text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
-                            <input type="text" class="w-full" pInputText [(ngModel)]="dtoRegister.nombre" />
-                        </div>
-
-                        <div class="col-span-2">
-                            <label for="descripcion" class="block text-sm font-medium text-gray-900 dark:text-white">
-                                Descripción
-                            </label>
-
-                            <input type="text" class="w-full" pInputText [(ngModel)]="dtoRegister.descripcion" />
-                        </div>
-
-                        
-
-                        <div class="col-span-1">
-                            <label for="fechaInicio" class="block text-sm font-medium text-gray-900 dark:text-white">
-                                Hora Inicio
-                            </label>
-
-                            <p-calendar class="w-full" [(ngModel)]="dtoRegister.horaInicio" [iconDisplay]="'input'"
-                                [showIcon]="true" inputId="icondisplay" [timeOnly]="true" dateFormat="dd/mm/yy" />
-                        </div>
-
-                        <div class="col-span-1">
-                            <label for="fechaFin" class="block text-sm font-medium text-gray-900 dark:text-white">
-                                Hora Fin
-                            </label>
-
-                            <p-calendar class="w-full" [(ngModel)]="dtoRegister.horaFin" [iconDisplay]="'input'"
-                                [showIcon]="true" inputId="icondisplay" />
-                        </div>
-
-
-
-
-
-
-                        
-                    </div>
-                </p-toolbar>
-
-                <p-toolbar styleClass="mb-4 gap-2">
-                    <h1>Foto Principal del Sub Evento</h1>
-                    <p-divider />
-                    <div class="grid grid-cols-4 gap-2 w-full">
-                        <div class="col-span-2">
-                            <label for="name_route" class="block text-sm font-medium text-gray-900 dark:text-white">
-                                ENLACE
-                            </label>
-                            <input type="text" class="w-full" pInputText [(ngModel)]="dtoRegister.foto.url" />
-                        </div>
-
-                        <div class="col-span-2">
-                            <label for="name_route" class="block text-sm font-medium text-gray-900 dark:text-white">
-                                LUGAR
-                            </label>
-                            <p-inputGroup>
-                                <input type="text" class="w-full" pInputText [(ngModel)]="dtoRegister.foto.lugar" />
-                                <button type="button" (click)="coreShowSelectors('LugarSelectorPhoto')" pButton
-                                    icon="pi pi-search"></button>
-                            </p-inputGroup>
-
-
-                        </div>
-
-                        <div class="col-span-2">
-                            <label for="name_route" class="block text-sm font-medium text-gray-900 dark:text-white">
-                                TITULO
-                            </label>
-                            <input type="text" class="w-full" pInputText [(ngModel)]="dtoRegister.foto.titulo" />
-                        </div>
-
-                        <div class="col-span-2">
-                            <label for="name_route" class="block text-sm font-medium text-gray-900 dark:text-white">
-                                PROVEEDOR ID
-                            </label>
-                            <p-inputGroup>
-                                <input type="text" class="w-full" pInputText
-                                    [(ngModel)]="dtoRegister.foto.proveedorDesc" />
-                                <button type="button" (click)="coreShowSelectors('ProveedorSelector')" pButton
-                                    icon="pi pi-search"></button>
-                            </p-inputGroup>
-
-                        </div>
-                    </div>
-                </p-toolbar>
-
+        <div class="field">
+            <label for="name">Nombre</label>
+            <input type="text" pInputText id="name" [(ngModel)]="dtoRegister.nombre" required autofocus />
+            <!--  <small class="p-error" *ngIf="submitted && !product.name">
+                Name is required.
+            </small> -->
+        </div>
+        <div class="field">
+            <label for="description">Descripción</label>
+            <textarea id="description" pInputTextarea [(ngModel)]="dtoRegister.descripcion" required rows="3" cols="20">
+                    </textarea>
+        </div>
+        <div class="field">
+            <label for="dia">
+                DIA
+            </label>
+            <p-calendar class="w-full" [(ngModel)]="dtoRegister.dia" [iconDisplay]="'input'" [showIcon]="true"
+                inputId="icondisplay" dateFormat="dd/mm/yy" />
+        </div>
+        <div class="grid grid-cols-2">
+            <div class="field col">
+                <label for="horaInicio">horaInicio</label>
+                <p-calendar class="w-full" [(ngModel)]="dtoRegister.horaInicio" [timeOnly]="true"
+                    [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" dateFormat="dd/mm/yy" />
+            </div>
+            <div class="field col">
+                <label for="horaFin">horaFin</label>
+                <p-calendar class="w-full" [(ngModel)]="dtoRegister.horaFin" [timeOnly]="true" [iconDisplay]="'input'"
+                    [showIcon]="true" inputId="icondisplay" dateFormat="dd/mm/yy" />
 
             </div>
-        </p-tabPanel>
+        </div>
+        <p-divider></p-divider>
+        <div class="field">
+            <label for="description">Enlace Foto</label>
+            <textarea id="description" pInputTextarea [(ngModel)]="dtoRegister.foto.url" required rows="3" cols="20">
+                    </textarea>
+        </div>
+        <div class="col-span-2">
+            <label for="name_route" class="block text-sm font-medium text-gray-900 dark:text-white">
+                LUGAR
+            </label>
+            <p-inputGroup>
+                <input type="text" class="w-full" pInputText [(ngModel)]="dtoRegister.foto.lugar" />
+                <button type="button" (click)="coreShowSelectors('LugarSelectorPhoto')" pButton
+                    icon="pi pi-search"></button>
+            </p-inputGroup>
+        </div>
+        <div class="field">
+            <label for="Titulo">Titulo</label>
+            <textarea id="Titulo" pInputTextarea [(ngModel)]="dtoRegister.foto.titulo" required rows="3" cols="20">
+                    </textarea>
+        </div>
+        <div class="col-span-2">
+            <label for="name_route" class="block text-sm font-medium text-gray-900 dark:text-white">
+                PROVEEDOR ID
+            </label>
+            <p-inputGroup>
+                <input type="text" class="w-full" pInputText [(ngModel)]="dtoRegister.foto.proveedorDesc" />
+                <button type="button" (click)="coreShowSelectors('ProveedorSelector')" pButton
+                    icon="pi pi-search"></button>
+            </p-inputGroup>
 
+        </div>
+    </ng-template>
 
-        <!-- <p-tabPanel header="Listado de Sub-Eventos">
-
-            <p-table #dt [value]="this.dtoRegister.subEventos" [rows]="10"
-                [globalFilterFields]="['nombre', 'ubicacionExacta', 'fechaInicio', 'fechaFin']" [rowHover]="true"
-                dataKey="id" [showCurrentPageReport]="true">
-                <ng-template pTemplate="caption">
-                    <div class="global-center-between">
-                        <h5 class="m-0">Administrar SubEventos</h5>
-                        <span class="p-input-icon-left">
-                            <i class="pi pi-search"></i>
-                            <input pInputText type="text" (input)="onFilterGlobal($event)" placeholder="Search..." />
-                        </span>
-                    </div>
-                </ng-template>
-                <ng-template pTemplate="header">
-                    <tr class="text-sm">
-
-                        <th class="tableColumnName" pSortableColumn="nombre">
-                            Name <p-sortIcon field="nombre" />
-                        </th>
-
-                        <th class="tableColumnDescription-xs " pSortableColumn="ubicacionExacta">
-                            Ubicación <p-sortIcon field="ubicacionExacta" />
-                        </th>
-                        <th class="tableColumnDate" pSortableColumn="fechaInicio">
-                            Fecha Inicio <p-sortIcon field="fechaInicio" />
-                        </th>
-                        <th class="tableColumnDate" pSortableColumn="fechaFin">
-                            Fecha Fin <p-sortIcon field="fechaFin" />
-                        </th>
-
-                        <th></th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-row>
-                    <tr class="text-xs">
-
-                        <td class="tableColumnName">
-                            {{ row.nombre }}
-                        </td>
-
-                        
-
-                        <td class="tableColumnDescription-xs ">
-                            {{ row.ubicacionExacta }}
-                        </td>
-                        <td class="tableColumnDate">
-                            {{ row.fechaInicio }}
-                        </td>
-                        <td class="tableColumnDate">
-                            {{ row.fechaFin }}
-                        </td>
-                        <td>
-                            
-                        </td>
-                    </tr>
-                </ng-template>
-               
-            </p-table>
-            
-        </p-tabPanel> -->
-
-    </p-tabView>
-    <div class="global-center">
-        <p-button (onClick)="coreSave()" [label]="action == 'NEW' ? 'GUARDAR' : 'ACTUALIZAR' " />
-    </div>
-</div>
-
+    <ng-template pTemplate="footer">
+        <p-button label="Cancel" icon="pi pi-times" [text]="true" (onClick)="hideDialog()" />
+        <p-button label="Save" icon="pi pi-check" [text]="true" (onClick)="saveItem()" />
+    </ng-template>
+</p-dialog>
 
 <app-lugar-selector-view></app-lugar-selector-view>
 <app-proveedor-selector-view></app-proveedor-selector-view>
