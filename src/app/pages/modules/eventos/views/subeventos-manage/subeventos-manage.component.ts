@@ -1,34 +1,32 @@
-import { Component, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { DtoEvento } from '../../models/DtoEventos';
-import { BaseComponents } from '../../../../shared/global-components/BaseComponents';
-import { EventoService } from '../../services/eventosService';
-import { response } from 'express';
 import { isPlatformBrowser } from '@angular/common';
+import { Component, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
+import { MessageService } from 'primeng/api';
+import { EventoService } from '../../services/eventosService';
+import { SubEventoService } from '../../services/subeventoService';
+import { MessageController } from '../../../../shared/global-components/MessageController';
+import { BaseComponents } from '../../../../shared/global-components/BaseComponents';
 import { Table } from 'primeng/table';
 import { LugarSelectorViewComponent } from '../../../../shared/global-components/selectors/lugar-selector/views/lugar-selector-view/lugar-selector-view.component';
-import { MessageController } from '../../../../shared/global-components/MessageController';
 import { ProveedorSelectorViewComponent } from '../../../../shared/global-components/selectors/proveedor-selector/views/proveedor-selector-view/proveedor-selector-view.component';
-import { MessageService } from 'primeng/api';
-import { ConstantEvents } from '../../eventos.constant';
+import { DtoSubEvento } from '../../models/DtoSubEvento';
 
 @Component({
-  selector: 'app-eventos-manage',
-  templateUrl: './eventos-manage.component.html',
-  styleUrl: './eventos-manage.component.scss'
+  selector: 'app-subeventos-manage',
+  templateUrl: './subeventos-manage.component.html',
+  styleUrl: './subeventos-manage.component.scss'
 })
-export class EventosManageComponent implements OnInit {
+export class SubeventosManageComponent implements OnInit {
   action: string;
 
-  dtoSelected: DtoEvento = new DtoEvento();
+  dtoSelected: DtoSubEvento = new DtoSubEvento();
 
   list_types: any[] | undefined;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private eventoService: EventoService,
+    private subEventoService: SubEventoService,
     private messageService: MessageService,
-    private router: Router,
   ) {
 
   }
@@ -40,7 +38,7 @@ export class EventosManageComponent implements OnInit {
 
 
       if (this.action == 'NEW') {
-        this.dtoRegister = new DtoEvento()
+        this.dtoRegister = new DtoSubEvento()
       } else {
         this.getAllInfo();
 
@@ -54,16 +52,11 @@ export class EventosManageComponent implements OnInit {
   }
 
 
-  dtoRegister: DtoEvento = new DtoEvento();
+  dtoRegister: DtoSubEvento = new DtoSubEvento();
 
   getInfoDtoSelected(): [string, any] {
     const localData = JSON.parse(localStorage.getItem('dtoSelected'));
     return [localData.action, localData.data]
-  }
-
-  coreExit() {
-    this.router.navigate([ConstantEvents.event_list])
-
   }
 
   coreSave() {
@@ -80,7 +73,6 @@ export class EventosManageComponent implements OnInit {
     this.eventoService.create(this.dtoRegister).subscribe(
       (response) => {
         this.messageService.add({ severity: 'success', summary: 'Agregado Correctamente', detail: '', life: 3000 });
-        this.coreExit();
       },
       (err) => {
         this.messageService.add({ severity: 'error', summary: 'Error al Agregar', detail: '', life: 3000 });
@@ -94,7 +86,6 @@ export class EventosManageComponent implements OnInit {
     this.eventoService.update(this.dtoRegister).subscribe(
       (response) => {
         this.messageService.add({ severity: 'success', summary: 'Actualizado Correctamente', detail: '', life: 3000 });
-        this.coreExit();
       },
       (err) => {
         this.messageService.add({ severity: 'error', summary: 'Error al Agregar', detail: '', life: 3000 });
@@ -113,7 +104,6 @@ export class EventosManageComponent implements OnInit {
       }
       case ('ProveedorSelector'): {
         this.ProveedorSelectorViewComponent.coreInitSelector(new MessageController(this, nameSelector));
-
         break;
       }
       case ('LugarSelectorPhoto'): {
@@ -128,11 +118,7 @@ export class EventosManageComponent implements OnInit {
     console.log("MESSANJE", message);
 
     switch (message.nameSelector) {
-      case ('LugarSelector'): {
-        this.dtoRegister.lugarDesc = message.selected.nombre;
-        this.dtoRegister.lugarId = message.selected.id
-        break;
-      }
+
       case ('ProveedorSelector'): {
         this.dtoRegister.foto.proveedorId = message.selected.id
         this.dtoRegister.foto.proveedorDesc = message.selected.nombre
@@ -149,14 +135,14 @@ export class EventosManageComponent implements OnInit {
 
   getAllInfo() {
 
-    this.eventoService.getEventoByID(this.dtoSelected.id).subscribe(
+    this.subEventoService.getEventoByID(this.dtoSelected.id).subscribe(
       data => {
         console.log("INFORMACION OBTENIDA");
         this.dtoRegister = data;
 
-        this.dtoRegister.fechaInicio = new Date(`${this.dtoRegister.fechaInicio}T05:00:00.000Z`)
-
-        this.dtoRegister.fechaFin = new Date(`${this.dtoRegister.fechaFin}T05:00:00.000Z`)
+        /*   this.dtoRegister.fechaInicio = new Date(`${this.dtoRegister.fechaInicio}T05:00:00.000Z`)
+  
+          this.dtoRegister.fechaFin = new Date(`${this.dtoRegister.fechaFin}T05:00:00.000Z`) */
       }, err => {
         console.log("error");
 
@@ -179,10 +165,5 @@ export class EventosManageComponent implements OnInit {
   }
 
 
-
-
-  create_nameRoute(item: any) {
-    const nameRouteWithoutSpaces = item.replace(/\s/g, '-').toLowerCase();
-    this.dtoRegister.name_route = nameRouteWithoutSpaces;
-  }
 }
+

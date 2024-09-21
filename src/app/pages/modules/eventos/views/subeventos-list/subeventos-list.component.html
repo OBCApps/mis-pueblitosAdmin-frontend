@@ -4,68 +4,42 @@
         <div class="grid grid-cols-6 gap-2">
 
 
+
+
+
+
+            <div class="col-span-2">
+                <label for="ubicacionExacta" class="block text-sm font-medium text-gray-900 dark:text-white">
+                    Evento
+                </label>
+
+                <input type="text" class="w-full" pInputText [(ngModel)]="filter.eventoId" />
+
+            </div>
+
             <div class="col-span-2">
                 <label for="Nombre" class="block text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
-          
+
                 <input type="text" class="w-full" pInputText [(ngModel)]="filter.nombre" />
             </div>
 
             <div class="col-span-1">
-                <label for="descripcion" class="block text-sm font-medium text-gray-900 dark:text-white">
-                    Descripción
-                </label>
-              
-                <input type="text" class="w-full" pInputText [(ngModel)]="filter.descripcion" />
-            </div>
-
-            <div class="col-span-1">
-                <label for="ubicacionExacta" class="block text-sm font-medium text-gray-900 dark:text-white">
-                    Ubicación
-                </label>
-               
-                <input type="text" class="w-full" pInputText [(ngModel)]="filter.ubicacionExacta" />
-
-            </div>
-
-            <div class="col-span-1">
                 <label for="fechaInicio" class="block text-sm font-medium text-gray-900 dark:text-white">
-                    Fecha Inicio
+                    Dia
                 </label>
-               
-                <p-calendar class="w-full" [(ngModel)]="filter.fechaInicio" [iconDisplay]="'input'" [showIcon]="true"
+
+                <p-calendar class="w-full" [(ngModel)]="filter.dia" [iconDisplay]="'input'" [showIcon]="true"
                     inputId="icondisplay" />
             </div>
 
-            <div class="col-span-1">
-                <label for="fechaFin" class="block text-sm font-medium text-gray-900 dark:text-white">
-                    Fecha Fin
-                </label>
-              
-                <p-calendar class="w-full" [(ngModel)]="filter.fechaFin" [iconDisplay]="'input'" [showIcon]="true"
-                    inputId="icondisplay" />
-            </div>
+
 
             <div class="col-span-1">
-                <label for="type" class="block text-sm font-medium text-gray-900 dark:text-white">
-                    Tipo
-                </label>
-
-               
-                <input type="text" class="w-full" pInputText [(ngModel)]="filter.type" />
-            </div>
-
-            <div class="col-span-1">
-                <label for="name_route" class="block text-sm font-medium text-gray-900 dark:text-white">
-                    Ruta
-                </label>
-              
-                <input type="text" class="w-full" pInputText [(ngModel)]="filter.name_route" />
-            </div>
-
-            <div class="col-span-2">
 
             </div>
+            <div class="col-span-4">
 
+            </div>
 
             <div class="col-span-2 global-center-end mt-3">
                 <p-button severity="success" label="Nuevo" icon="pi pi-plus" class="ml-2 text-sm p-1"
@@ -101,15 +75,13 @@
                     Name <p-sortIcon field="nombre" />
                 </th>
 
-                <th class="tableColumnDescription-xs " pSortableColumn="ubicacionExacta">
-                    Ubicación <p-sortIcon field="ubicacionExacta" />
+                <th class="tableColumnDescription-xs " pSortableColumn="descripcion">
+                    Evento Relacionado <p-sortIcon field="descripcion" />
                 </th>
                 <th class="tableColumnDate" pSortableColumn="fechaInicio">
-                    Fecha Inicio <p-sortIcon field="fechaInicio" />
+                    Dia <p-sortIcon field="fechaInicio" />
                 </th>
-                <th class="tableColumnDate" pSortableColumn="fechaFin">
-                    Fecha Fin <p-sortIcon field="fechaFin" />
-                </th>
+
 
                 <th></th>
             </tr>
@@ -121,20 +93,17 @@
                     {{ row.nombre }}
                 </td>
 
-                <!-- <td class="tableColumnDescription-xs ">
-                    
-                      xd
-                </td> -->
+                <td class="tableColumnName">
+                    {{ row.eventoId }}
+                </td>
 
-                <td class="tableColumnDescription-xs ">
-                    {{ row.ubicacionExacta }}
-                </td>
+                <!-- <td class="tableColumnDescription-xs ">
+                    {{ row.descripcion }}
+                </td> -->
                 <td class="tableColumnDate">
-                    {{ row.fechaInicio }}
+                    {{ row.dia }}
                 </td>
-                <td class="tableColumnDate">
-                    {{ row.fechaFin }}
-                </td>
+
                 <td>
                     <div class="card flex items-center justify-center">
                         <p-menu #menu [model]="items" [popup]="true" appendTo="body" />
@@ -152,7 +121,7 @@
         </ng-template>
     </p-table>
 
-    
+
 
     <p-confirmDialog [style]="{ width: '450px' }" />
 </div>

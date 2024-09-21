@@ -27,9 +27,9 @@ export class NavbarViewComponent implements OnInit {
       icon: 'pi pi-book'
     },
     {
-      name: 'Matrícula',
-      route: '/home/matricula',
-      icon: 'pi pi-pen-to-square'
+      name: 'SubEventos',
+      route: '/admin/subeventos/list',
+      icon: 'pi pi-book'
     },
     {
       name: 'Material Didáctico',

@@ -4,6 +4,8 @@ import { LoginComponent } from './pages/shared/navigations/auths/login/views/log
 import { NavbarViewComponent } from './pages/shared/navigations/navbar/views/navbar-view/navbar-view.component';
 import { EventosListComponent } from './pages/modules/eventos/views/eventos-list/eventos-list.component';
 import { EventosManageComponent } from './pages/modules/eventos/views/eventos-manage/eventos-manage.component';
+import { SubeventosListComponent } from './pages/modules/eventos/views/subeventos-list/subeventos-list.component';
+import { SubeventosManageComponent } from './pages/modules/eventos/views/subeventos-manage/subeventos-manage.component';
 
 const routes: Routes = [
   {
@@ -24,6 +26,13 @@ const routes: Routes = [
         children: [
           { path: 'list', component: EventosListComponent },
           { path: 'manage', component: EventosManageComponent, }
+        ],
+      },
+      {
+        path: 'subeventos',
+        children: [
+          { path: 'list', component: SubeventosListComponent },
+          { path: 'manage', component: SubeventosManageComponent, },
         ],
       },
       /* {

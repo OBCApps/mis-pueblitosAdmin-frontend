@@ -15,6 +15,8 @@ import { EventosListComponent } from './pages/modules/eventos/views/eventos-list
 import { EventosManageComponent } from './pages/modules/eventos/views/eventos-manage/eventos-manage.component';
 import { LugarSelectorViewComponent } from './pages/shared/global-components/selectors/lugar-selector/views/lugar-selector-view/lugar-selector-view.component';
 import { ProveedorSelectorViewComponent } from './pages/shared/global-components/selectors/proveedor-selector/views/proveedor-selector-view/proveedor-selector-view.component';
+import { SubeventosListComponent } from './pages/modules/eventos/views/subeventos-list/subeventos-list.component';
+import { SubeventosManageComponent } from './pages/modules/eventos/views/subeventos-manage/subeventos-manage.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,8 @@ import { ProveedorSelectorViewComponent } from './pages/shared/global-components
     LoginComponent,
     NavbarViewComponent,
     EventosListComponent,
+    SubeventosListComponent,
+    SubeventosManageComponent,
     EventosManageComponent,
     LugarSelectorViewComponent,
     ProveedorSelectorViewComponent

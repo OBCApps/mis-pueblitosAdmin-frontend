@@ -1,7 +1,11 @@
+
+import { DtoFoto } from "./DtoPhoto"
+import { DtoSubEvento } from "./DtoSubEvento"
+
 export class DtoEvento {
   nombre: string
   descripcion: string
-  foto: DtoFotoEvento = new DtoFotoEvento()
+  foto: DtoFoto = new DtoFoto()
   ubicacionExacta: string
   fechaInicio: Date
   fechaFin: Date
@@ -14,30 +18,3 @@ export class DtoEvento {
 }
 
 
-export class DtoFotoEvento {
-  url: string
-  lugar: string
-  titulo: string
-  proveedorId: string
-  proveedorDesc: string
-}
-
-export class DtoSubEvento {
-  nombre: string
-  descripcion: string
-  foto: DtoFotoEvento = new DtoFotoEvento()
-  dia: string
-  horaInicio: string
-  horaFin: string
-  eventoId: string
-  subEventoDetalles: DtoSubEventoDetalle[] = []
-}
-export class DtoSubEventoDetalle {
-  detalle: string
-  organizador: string
-  foto: DtoFotoEvento = new DtoFotoEvento()
-  recomendaciones: string
-  horaInicio: string
-  horaFin: string
-  subEventoId: null
-}
