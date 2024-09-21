@@ -49,7 +49,11 @@
                     <td [pEditableColumn]="item.horaInicio" pEditableColumnField="horaInicio">
                         <p-cellEditor>
                             <ng-template pTemplate="input">
-                                <input pInputText [(ngModel)]="item.horaInicio" />
+
+                                <!--  <p-calendar class="w-full" [(ngModel)]="dtoRegister.horaInicio" [timeOnly]="true"
+                                    [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" /> -->
+                                <input class="w-full" type="time" [(ngModel)]="dtoRegister.horaInicio" inputId="horaInicio" />
+
                             </ng-template>
                             <ng-template pTemplate="output">
                                 {{ item.horaInicio }}
@@ -59,7 +63,12 @@
                     <td [pEditableColumn]="item.horaFin" pEditableColumnField="horaFin">
                         <p-cellEditor>
                             <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="item.horaFin" />
+                                <!-- <p-calendar class="w-full" [(ngModel)]="dtoRegister.horaFin" [timeOnly]="true"
+                                    [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"
+                                    dateFormat="dd/mm/yy" /> -->
+                                <input class="w-full" type="time" [(ngModel)]="dtoRegister.horaFin" inputId="horaFin" />
+
+
                             </ng-template>
                             <ng-template pTemplate="output">
                                 {{ item.horaFin | currency: 'USD' }}

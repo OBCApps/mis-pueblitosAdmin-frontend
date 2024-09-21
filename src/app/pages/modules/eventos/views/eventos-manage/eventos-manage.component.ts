@@ -30,7 +30,7 @@ export class EventosManageComponent implements OnInit {
 
   items: MenuItem[] | undefined; // Acciones Ver, Editar
 
-  
+
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private eventoService: EventoService,
@@ -71,15 +71,15 @@ export class EventosManageComponent implements OnInit {
           label: 'Eliminar',
           icon: 'pi pi-trash',
           command: () => {
-            //this.coreDelete()
+            this.coreDelete()
           },
         }
 
       ];
 
       this.list_types = [
-        {name: 'Festividad',code: 'Festividad'},
-        {name: 'Evento',code: 'Evento'},
+        { name: 'Festividad', code: 'Festividad' },
+        { name: 'Evento', code: 'Evento' },
       ]
     }
   }
@@ -108,7 +108,7 @@ export class EventosManageComponent implements OnInit {
 
   coreNew() {
     console.log("NEW", this.dtoRegister);
-    /* this.eventoService.create(this.dtoRegister).subscribe(
+    this.eventoService.create(this.dtoRegister).subscribe(
       (response) => {
         this.messageService.add({ severity: 'success', summary: 'Agregado Correctamente', detail: '', life: 3000 });
         this.coreExit();
@@ -116,13 +116,14 @@ export class EventosManageComponent implements OnInit {
       (err) => {
         this.messageService.add({ severity: 'error', summary: 'Error al Agregar', detail: '', life: 3000 });
       }
-    ); */
+    );
   }
 
   coreEdit() {
 
     console.log("UPDATE", this.dtoRegister);
-    /* this.eventoService.update(this.dtoRegister).subscribe(
+
+    this.eventoService.update(this.dtoRegister).subscribe(
       (response) => {
         this.messageService.add({ severity: 'success', summary: 'Actualizado Correctamente', detail: '', life: 3000 });
         this.coreExit();
@@ -130,9 +131,15 @@ export class EventosManageComponent implements OnInit {
       (err) => {
         this.messageService.add({ severity: 'error', summary: 'Error al Agregar', detail: '', life: 3000 });
       }
-    ); */
+    );
   }
+  coreDelete() {
+    console.log("delete", this.dtoSelected);
+    console.log("dtoRegister", this.dtoRegister);
 
+    this.dtoRegister.subeventos = this.dtoRegister.subeventos.filter(subevento => subevento.id !== this.subEventoSelected.id);
+
+  }
 
   @ViewChild(LugarSelectorViewComponent, { static: false }) LugarSelectorViewComponent: LugarSelectorViewComponent;
   @ViewChild(ProveedorSelectorViewComponent, { static: false }) ProveedorSelectorViewComponent: ProveedorSelectorViewComponent;
@@ -176,13 +183,13 @@ export class EventosManageComponent implements OnInit {
 
       case ('SubEventoManage'): {
         if (message.method == 'NEW') {
-          this.dtoRegister.subEventos.push(message.selected)
+          this.dtoRegister.subeventos.push(message.selected)
         }
         break;
       }
       case ('SubEventoDetalleManage'): {
         if (message.method == 'NEW') {
-          this.dtoRegister.subEventos.push(message.selected)
+          this.dtoRegister.subeventos.push(message.selected)
         }
         break;
       }

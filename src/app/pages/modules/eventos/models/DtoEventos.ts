@@ -14,7 +14,7 @@ export class DtoEvento {
   lugarId: string
   lugarDesc: string
   name_route: string
-  subEventos: DtoSubEvento[] = []
+  subeventos: DtoSubEvento[] = []
 }
 
 
