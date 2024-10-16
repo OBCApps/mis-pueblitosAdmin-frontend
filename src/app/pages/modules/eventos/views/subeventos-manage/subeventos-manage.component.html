@@ -4,66 +4,67 @@
         <div class="col-span-3 md:col-span-1 gap-2">
 
             <div class="field">
-                <label for="name">Nombre</label>
-                <input type="text" pInputText id="name" [(ngModel)]="dtoRegister.nombre" required autofocus />
-                <!--  <small class="p-error" *ngIf="submitted && !product.name">
-                        Name is required.
-                    </small> -->
+                <label for="name" class="label-filter">Nombre</label>
+                <input type="text" class="input-filter" pInputText id="name" [(ngModel)]="dtoRegister.nombre" required
+                    autofocus />
+
             </div>
             <div class="field">
-                <label for="description">Descripción</label>
+                <label for="description" class="label-filter">Descripción</label>
                 <textarea id="description" pInputTextarea [(ngModel)]="dtoRegister.descripcion" required rows="3"
                     cols="20">
                             </textarea>
             </div>
             <div class="field">
-                <label for="dia">
+                <label for="dia" class="label-filter">
                     DIA
                 </label>
-                <p-calendar class="w-full" [(ngModel)]="dtoRegister.dia" [iconDisplay]="'input'" [showIcon]="true"
-                    inputId="icondisplay" dateFormat="dd/mm/yy" />
+                <p-calendar class="input-filter-date" [(ngModel)]="dtoRegister.dia" [iconDisplay]="'input'"
+                    [showIcon]="true" inputId="icondisplay" dateFormat="dd/mm/yy" />
             </div>
             <div class="grid grid-cols-2">
                 <div class="field col">
-                    <label for="horaInicio">horaInicio</label>
-                    <p-calendar class="w-full" [(ngModel)]="dtoRegister.horaInicio" [timeOnly]="true"
-                        [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"  />
-                      
+                    <label for="horaInicio" class="label-filter">horaInicio</label>
+                    <p-calendar class="input-filter-date" [(ngModel)]="dtoRegister.horaInicio" [timeOnly]="true"
+                        [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" />
+
                 </div>
                 <div class="field col">
-                    <label for="horaFin">horaFin</label>
-                    <p-calendar class="w-full" [(ngModel)]="dtoRegister.horaFin" [timeOnly]="true"
+                    <label for="horaFin" class="label-filter">horaFin</label>
+                    <p-calendar class="input-filter-date" [(ngModel)]="dtoRegister.horaFin" [timeOnly]="true"
                         [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" dateFormat="dd/mm/yy" />
 
                 </div>
             </div>
             <p-divider></p-divider>
             <div class="field">
-                <label for="description">Enlace Foto</label>
-                <input type="text" pInputText id="description" [(ngModel)]="dtoRegister.foto.url" required autofocus />
+                <label for="description" class="label-filter">Enlace Foto</label>
+                <input type="text" class="input-filter" pInputText id="description" [(ngModel)]="dtoRegister.foto.url"
+                    required autofocus />
 
             </div>
             <div class="col-span-2">
-                <label for="name_route" class="block text-sm font-medium text-gray-900 dark:text-white">
+                <label for="name_route" class="label-filter">
                     LUGAR
                 </label>
                 <p-inputGroup>
-                    <input type="text" class="w-full" pInputText [(ngModel)]="dtoRegister.foto.lugar" />
+                    <input type="text" class="input-filter" pInputText [(ngModel)]="dtoRegister.foto.lugar" />
                     <button type="button" (click)="coreShowSelectors('LugarSelectorPhoto')" pButton
                         icon="pi pi-search"></button>
                 </p-inputGroup>
             </div>
             <div class="field">
-                <label for="Titulo">Titulo</label>
-                <textarea id="Titulo" pInputTextarea [(ngModel)]="dtoRegister.foto.titulo" required rows="3" cols="20">
-                            </textarea>
+                <label for="Titulo" class="label-filter">Titulo</label>
+
+                <input type="text" class="input-filter" pInputText id="description"
+                    [(ngModel)]="dtoRegister.foto.titulo" required autofocus />
             </div>
             <div class="col-span-2">
-                <label for="name_route" class="block text-sm font-medium text-gray-900 dark:text-white">
+                <label for="name_route" class="label-filter">
                     PROVEEDOR ID
                 </label>
                 <p-inputGroup>
-                    <input type="text" class="w-full" pInputText [(ngModel)]="dtoRegister.foto.proveedorDesc" />
+                    <input type="text" class="input-filter" pInputText [(ngModel)]="dtoRegister.foto.proveedorDesc" />
                     <button type="button" (click)="coreShowSelectors('ProveedorSelector')" pButton
                         icon="pi pi-search"></button>
                 </p-inputGroup>
@@ -98,23 +99,30 @@
                         <td [pEditableColumn]="item.organizador" pEditableColumnField="organizador">
                             <p-cellEditor>
                                 <ng-template pTemplate="input">
-                                    <input pInputText type="text" [(ngModel)]="item.organizador" />
+                                    <input pInputText type="text" class="input-filter" [(ngModel)]="item.organizador"
+                                        placeholder="Título" />
                                 </ng-template>
                                 <ng-template pTemplate="output">
-                                    {{ item.organizador }}
+                                    
+                                    <p class="cursor-text {item.organizador ? 'text-black' : 'text-gray-100'}">
+                                        {{ item.organizador ? item.organizador : '...........' }}
+                                    </p>
                                 </ng-template>
                             </p-cellEditor>
                         </td>
                         <td [pEditableColumn]="item.detalle" pEditableColumnField="detalle">
                             <p-cellEditor>
                                 <ng-template pTemplate="input">
-                                                                    
 
-                                    <textarea pInputTextarea [(ngModel)]="item.detalle" required
-                                        rows="8" cols="20"></textarea>
+                                    <textarea pInputTextarea class="input-filter h-full" [(ngModel)]="item.detalle"
+                                        placeholder="Detalle" required rows="6" cols="20"></textarea>
                                 </ng-template>
                                 <ng-template pTemplate="output">
-                                    {{ item.detalle }}
+
+                                    <p class="cursor-text {item.detalle ? 'text-black' : 'text-gray-100'}">
+                                        {{ item.detalle ? item.detalle : '...........' }}
+                                    </p>
+
                                 </ng-template>
                             </p-cellEditor>
                         </td>
@@ -122,22 +130,30 @@
                             <p-cellEditor>
                                 <ng-template pTemplate="input">
 
-                                    
-                                    <input pInputText type="text" [(ngModel)]="item.horaInicio" />
+
+                                    <input pInputText type="text" class="input-filter w-36"
+                                        [(ngModel)]="item.horaInicio" placeholder="ejm. 11:00" />
                                 </ng-template>
                                 <ng-template pTemplate="output">
-                                    {{ item.horaInicio }}
+                                    <p class="cursor-text {item.horaInicio ? 'text-black' : 'text-gray-100'}">
+                                        {{ item.horaInicio ? item.horaInicio : '...........' }}
+                                    </p>
+                                   
                                 </ng-template>
                             </p-cellEditor>
                         </td>
                         <td [pEditableColumn]="item.horaFin" pEditableColumnField="horaFin">
                             <p-cellEditor>
                                 <ng-template pTemplate="input">
-                                   
-                                    <input pInputText type="text" [(ngModel)]="item.horaFin" />
+
+                                    <input pInputText type="text" class="input-filter w-36" [(ngModel)]="item.horaFin"
+                                        placeholder="ejem. 24:00" />
                                 </ng-template>
                                 <ng-template pTemplate="output">
-                                    {{ item.horaFin }}
+                                    <p class="cursor-text {item.horaFin ? 'text-black' : 'text-gray-100'}">
+                                        {{ item.horaFin ? item.horaFin : '...........' }}
+                                    </p>
+                                    
                                 </ng-template>
                             </p-cellEditor>
                         </td>
@@ -149,7 +165,7 @@
 
 
     <ng-template pTemplate="footer">
-        <p-button label="Cancel" icon="pi pi-times" [text]="true" (onClick)="hideDialog()" />
+        <p-button label="Cancel" icon="pi pi-times" [text]="true" (onClick)="coreCloseSelector()" />
         <p-button label="Save" icon="pi pi-check" [text]="true" (onClick)="saveItem()" />
     </ng-template>
 </p-dialog>

@@ -10,63 +10,61 @@
                     <div class="grid grid-cols-4 gap-2 w-full">
 
                         <div class="col-span-2">
-                            <label for="Nombre"
-                                class="block text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
-                            <input type="text" class="w-full" (input)="create_nameRoute(dtoRegister.nombre)" pInputText
+                            <label for="Nombre" class="label-filter">Nombre</label>
+                            <input type="text" class="input-filter" (input)="create_nameRoute(dtoRegister.nombre)" pInputText
                                 [(ngModel)]="dtoRegister.nombre" />
                         </div>
 
                         <div class="col-span-2">
-                            <label for="descripcion" class="block text-sm font-medium text-gray-900 dark:text-white">
+                            <label for="descripcion" class="label-filter">
                                 Descripción
                             </label>
 
-                            <input type="text" class="w-full" pInputText [(ngModel)]="dtoRegister.descripcion" />
+                            <input type="text" class="input-filter" pInputText [(ngModel)]="dtoRegister.descripcion" />
                         </div>
 
                         <div class="col-span-2">
-                            <label for="ubicacionExacta"
-                                class="block text-sm font-medium text-gray-900 dark:text-white">
+                            <label for="ubicacionExacta" class="label-filter">
                                 Ubicación Exacta
                             </label>
-                            <input type="text" class="w-full" pInputText [(ngModel)]="dtoRegister.ubicacionExacta" />
+                            <input type="text" class="input-filter" pInputText [(ngModel)]="dtoRegister.ubicacionExacta" />
 
                         </div>
 
                         <div class="col-span-1">
-                            <label for="fechaInicio" class="block text-sm font-medium text-gray-900 dark:text-white">
+                            <label for="fechaInicio" class="label-filter">
                                 Fecha Inicio
                             </label>
 
-                            <p-calendar class="w-full" [(ngModel)]="dtoRegister.fechaInicio" [iconDisplay]="'input'"
+                            <p-calendar class="input-filter-date" [(ngModel)]="dtoRegister.fechaInicio" [iconDisplay]="'input'"
                                 [showIcon]="true" inputId="icondisplay" dateFormat="dd/mm/yy" />
                         </div>
 
                         <div class="col-span-1">
-                            <label for="fechaFin" class="block text-sm font-medium text-gray-900 dark:text-white">
+                            <label for="fechaFin" class="label-filter">
                                 Fecha Fin
                             </label>
 
-                            <p-calendar class="w-full" [(ngModel)]="dtoRegister.fechaFin" [iconDisplay]="'input'"
+                            <p-calendar class="input-filter-date" [(ngModel)]="dtoRegister.fechaFin" [iconDisplay]="'input'"
                                 [showIcon]="true" inputId="icondisplay" />
                         </div>
 
                         <div class="col-span-2">
-                            <label for="type" class="block text-sm font-medium text-gray-900 dark:text-white">
+                            <label for="type" class="label-filter">
                                 Tipo
                             </label>
-                            <p-dropdown [options]="list_types" class="w-full" [(ngModel)]="dtoRegister.type"
+                            <p-dropdown [options]="list_types" class="input-filter-dropdown" [(ngModel)]="dtoRegister.type"
                                 optionLabel="name" optionValue="code" placeholder="Selecciona el tipo de evento" />
 
 
                         </div>
 
                         <div class="col-span-2">
-                            <label for="type" class="block text-sm font-medium text-gray-900 dark:text-white">
+                            <label for="type" class="label-filter">
                                 Lugar
                             </label>
                             <p-inputGroup>
-                                <input type="text" class="w-full" pInputText [(ngModel)]="dtoRegister.lugarDesc" />
+                                <input type="text" class="input-filter" pInputText [(ngModel)]="dtoRegister.lugarDesc" />
 
                                 <button type="button" (click)="coreShowSelectors('LugarSelector')" pButton
                                     icon="pi pi-search"></button>
@@ -76,10 +74,10 @@
 
 
                         <div class="col-span-2">
-                            <label for="name_route" class="block text-sm font-medium text-gray-900 dark:text-white">
+                            <label for="name_route" class="label-filter">
                                 Nombre Ruta
                             </label>
-                            <input type="text" class="w-full" pInputText [(ngModel)]="dtoRegister.name_route" />
+                            <input type="text" class="input-filter" pInputText [(ngModel)]="dtoRegister.name_route" />
                         </div>
                     </div>
                 </p-toolbar>
@@ -89,18 +87,18 @@
                     <p-divider />
                     <div class="grid grid-cols-4 gap-2 w-full">
                         <div class="col-span-2">
-                            <label for="name_route" class="block text-sm font-medium text-gray-900 dark:text-white">
+                            <label for="name_route" class="label-filter">
                                 ENLACE
                             </label>
-                            <input type="text" class="w-full" pInputText [(ngModel)]="dtoRegister.foto.url" />
+                            <input type="text" class="input-filter" pInputText [(ngModel)]="dtoRegister.foto.url" />
                         </div>
 
                         <div class="col-span-2">
-                            <label for="name_route" class="block text-sm font-medium text-gray-900 dark:text-white">
+                            <label for="name_route" class="label-filter">
                                 LUGAR
                             </label>
                             <p-inputGroup>
-                                <input type="text" class="w-full" pInputText [(ngModel)]="dtoRegister.foto.lugar" />
+                                <input type="text" class="input-filter" pInputText [(ngModel)]="dtoRegister.foto.lugar" />
                                 <button type="button" (click)="coreShowSelectors('LugarSelectorPhoto')" pButton
                                     icon="pi pi-search"></button>
                             </p-inputGroup>
@@ -109,18 +107,18 @@
                         </div>
 
                         <div class="col-span-2">
-                            <label for="name_route" class="block text-sm font-medium text-gray-900 dark:text-white">
+                            <label for="name_route" class="label-filter">
                                 TITULO
                             </label>
-                            <input type="text" class="w-full" pInputText [(ngModel)]="dtoRegister.foto.titulo" />
+                            <input type="text" class="input-filter" pInputText [(ngModel)]="dtoRegister.foto.titulo" />
                         </div>
 
                         <div class="col-span-2">
-                            <label for="name_route" class="block text-sm font-medium text-gray-900 dark:text-white">
+                            <label for="name_route" class="label-filter">
                                 PROVEEDOR ID
                             </label>
                             <p-inputGroup>
-                                <input type="text" class="w-full" pInputText
+                                <input type="text" class="input-filter" pInputText
                                     [(ngModel)]="dtoRegister.foto.proveedorDesc" />
                                 <button type="button" (click)="coreShowSelectors('ProveedorSelector')" pButton
                                     icon="pi pi-search"></button>
@@ -191,7 +189,7 @@
                         </td>
 
                         <td>
-                            <div class="card flex items-center justify-center">
+                            <div class="dropdown-button card flex items-center justify-center">
                                 <p-menu #menu [model]="items" [popup]="true" appendTo="body" />
                                 <p-button (onClick)="menu.toggle($event)" (onClick)="subEventoSelected = row"
                                     icon="pi pi-ellipsis-v" />

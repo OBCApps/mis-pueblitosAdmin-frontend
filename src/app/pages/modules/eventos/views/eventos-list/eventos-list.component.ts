@@ -7,7 +7,7 @@ import { FilterEvento, listFilterEvento } from '../../models/FilterEvento';
 import { MenuItem } from 'primeng/api';
 import { Router } from '@angular/router';
 import { ConstantEvents } from '../../eventos.constant';
-import { BaseComponents } from '../../../../shared/global-components/BaseComponents';
+import { AuthorizationService } from '../../../../shared/global-components/authorization/auth.service';
 
 
 @Component({
@@ -27,63 +27,66 @@ export class EventosListComponent implements OnInit {
 
   filter: FilterEvento = new FilterEvento(); // Filtros de busqueda
 
-  items: MenuItem[] | undefined; // Acciones Ver, Editar
+  items: MenuItem[] = [
+    {
+      label: 'Ver',
+      icon: 'pi pi-eye',
+      command: () => {
+        this.coreView()
+      },
+    },
+    {
+      label: 'Editar',
+      icon: 'pi pi-pencil',
+      command: () => {
+        this.coreEdit()
+      },
+    },
+    {
+      label: 'Eliminar',
+      icon: 'pi pi-trash',
+      command: () => {
+        this.coreDelete()
+      },
+    }
+
+  ]; // Acciones Ver, Editar
 
   constructor(
     private eventoService: EventoService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private router: Router,
+    private authorizationService: AuthorizationService
   ) { }
 
   ngOnInit() {
     this.coreSearch()
 
 
-    this.items = [
-      {
-        label: 'Ver',
-        icon: 'pi pi-eye',
-        command: () => {
-          this.coreView()
-        },
-      },
-      {
-        label: 'Editar',
-        icon: 'pi pi-pencil',
-        command: () => {
-          this.coreEdit()
-        },
-      },
-      {
-        label: 'Eliminar',
-        icon: 'pi pi-trash',
-        command: () => {
-          this.coreDelete()
-        },
-      }
 
-    ];
   }
-  coreSearch() {
-    console.log("FIlter", this.filter);
 
+  coreSearch() {
     this.listFilter = [];
     this.eventoService.search(this.filter).subscribe((data) => (this.listFilter = data));
   }
+
   coreNew() {
-    BaseComponents.saveLocalStorageToManage('NEW', this.itemSelected)
+    const dataSave = { action: 'NEW', data: this.itemSelected };
+    this.authorizationService.setLocalData(dataSave);
     this.router.navigate([ConstantEvents.event_manage])
   }
 
   coreView() {
-    BaseComponents.saveLocalStorageToManage('VIEW', this.itemSelected)
+    const dataSave = { action: 'VIEW', data: this.itemSelected };
+    this.authorizationService.setLocalData(dataSave);
     this.router.navigate([ConstantEvents.event_manage])
-
   }
 
   coreEdit() {
-    BaseComponents.saveLocalStorageToManage('EDIT', this.itemSelected)
+    const dataSave = { action: 'EDIT', data: this.itemSelected };
+    this.authorizationService.setLocalData(dataSave);
     this.router.navigate([ConstantEvents.event_manage])
   }
 
@@ -93,7 +96,7 @@ export class EventosListComponent implements OnInit {
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        
+
         this.eventoService.delete(this.itemSelected).subscribe(
           (response) => {
             this.messageService.add({ severity: 'success', summary: 'Agregado Correctamente', detail: '', life: 3000 });
@@ -103,7 +106,7 @@ export class EventosListComponent implements OnInit {
             this.messageService.add({ severity: 'error', summary: 'Error al Agregar', detail: '', life: 3000 });
           }
         );
-       
+
       }
     });
   }

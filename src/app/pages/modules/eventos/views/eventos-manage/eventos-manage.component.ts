@@ -14,6 +14,7 @@ import { ConstantEvents } from '../../eventos.constant';
 import { SubeventosManageComponent } from '../subeventos-manage/subeventos-manage.component';
 import { SubeventosdetalleManageComponent } from '../subeventosdetalle-manage/subeventosdetalle-manage.component';
 import { DtoSubEvento } from '../../models/DtoSubEvento';
+import { AuthorizationService } from '../../../../shared/global-components/authorization/auth.service';
 
 @Component({
   selector: 'app-eventos-manage',
@@ -26,9 +27,35 @@ export class EventosManageComponent implements OnInit {
   dtoSelected: DtoEvento = new DtoEvento();
   subEventoSelected: DtoSubEvento = new DtoSubEvento();
 
-  list_types: any[] | undefined;
+  list_types: any[] = [
+    { name: 'Festividad', code: 'Festividad' },
+    { name: 'Evento', code: 'Evento' },
+  ];
 
-  items: MenuItem[] | undefined; // Acciones Ver, Editar
+  items: MenuItem[] = [
+    {
+      label: 'Ver Detalles',
+      icon: 'pi pi-eye',
+      command: () => {
+        this.coreShowDependences('SubEventoManage', 'VIEW', this.subEventoSelected);
+      },
+    },
+    {
+      label: 'Editar',
+      icon: 'pi pi-pencil',
+      command: () => {
+        this.coreShowDependences('SubEventoManage', 'EDIT', this.subEventoSelected)
+      },
+    },
+    {
+      label: 'Eliminar',
+      icon: 'pi pi-trash',
+      command: () => {
+        this.coreDelete()
+      },
+    }
+
+  ];; // Acciones Ver, Editar
 
 
   constructor(
@@ -36,51 +63,21 @@ export class EventosManageComponent implements OnInit {
     private eventoService: EventoService,
     private messageService: MessageService,
     private router: Router,
+    private authorizationService: AuthorizationService
+
   ) {
 
   }
   ngOnInit(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      this.action = this.getInfoDtoSelected()[0];
-      this.dtoSelected = this.getInfoDtoSelected()[1];
+    const tempData = this.authorizationService.getLocalData()
+    this.action = tempData.action;
+    this.dtoSelected = tempData.data;
 
+    if (this.action == 'NEW') {
+      this.dtoRegister = new DtoEvento()
+    } else {
+      this.getAllInfo();
 
-
-      if (this.action == 'NEW') {
-        this.dtoRegister = new DtoEvento()
-      } else {
-        this.getAllInfo();
-
-      }
-      this.items = [
-        {
-          label: 'Ver Detalles',
-          icon: 'pi pi-eye',
-          command: () => {
-            this.coreShowDependences('SubEventoDetalleManage', 'NEW', this.subEventoSelected);
-          },
-        },
-        {
-          label: 'Editar',
-          icon: 'pi pi-pencil',
-          command: () => {
-            this.coreShowDependences('SubEventoManage', 'EDIT', this.subEventoSelected)
-          },
-        },
-        {
-          label: 'Eliminar',
-          icon: 'pi pi-trash',
-          command: () => {
-            this.coreDelete()
-          },
-        }
-
-      ];
-
-      this.list_types = [
-        { name: 'Festividad', code: 'Festividad' },
-        { name: 'Evento', code: 'Evento' },
-      ]
     }
   }
 
@@ -202,7 +199,7 @@ export class EventosManageComponent implements OnInit {
 
     this.eventoService.getEventoByID(this.dtoSelected.id).subscribe(
       data => {
-        console.log("INFORMACION OBTENIDA");
+
         this.dtoRegister = data;
 
         this.dtoRegister.fechaInicio = new Date(`${this.dtoRegister.fechaInicio}T05:00:00.000Z`)
@@ -220,7 +217,7 @@ export class EventosManageComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    BaseComponents.removeLocalStorageToManage('dtoSelected');
+    this.authorizationService.deleteLocalData()
   }
 
   @ViewChild('dt') dt: Table | undefined;
@@ -230,7 +227,15 @@ export class EventosManageComponent implements OnInit {
   }
 
   create_nameRoute(item: any) {
-    const nameRouteWithoutSpaces = item.replace(/\s/g, '-').toLowerCase();
+    // Eliminar tildes y caracteres diacríticos
+    let nameRouteNormalized = item.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+    // Reemplazar la 'ñ' por 'gn'
+    nameRouteNormalized = nameRouteNormalized.replace(/ñ/g, 'gn').replace(/Ñ/g, 'gn');
+
+    // Reemplazar espacios por guiones y convertir a minúsculas
+    const nameRouteWithoutSpaces = nameRouteNormalized.replace(/\s+/g, '-').toLowerCase();
+
     this.dtoRegister.name_route = nameRouteWithoutSpaces;
   }
 
@@ -244,11 +249,11 @@ export class EventosManageComponent implements OnInit {
         this.SubeventosManageComponent.coreInitSelector(new MessageController(this, nameTable, method, selected));
         break;
       }
-      case ('SubEventoDetalleManage'): {
+      /* case ('SubEventoDetalleManage'): {
         this.SubeventosdetalleManageComponent.coreInitSelector(new MessageController(this, nameTable, method, selected));
 
         break;
-      }
+      } */
 
     }
   }

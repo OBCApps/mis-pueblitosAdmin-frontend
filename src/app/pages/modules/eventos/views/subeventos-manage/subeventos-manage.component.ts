@@ -1,11 +1,5 @@
-import { isPlatformBrowser } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
-import { MessageService } from 'primeng/api';
-import { EventoService } from '../../services/eventosService';
-import { SubEventoService } from '../../services/subeventoService';
 import { MessageController } from '../../../../shared/global-components/MessageController';
-import { BaseComponents } from '../../../../shared/global-components/BaseComponents';
-import { Table } from 'primeng/table';
 import { LugarSelectorViewComponent } from '../../../../shared/global-components/selectors/lugar-selector/views/lugar-selector-view/lugar-selector-view.component';
 import { ProveedorSelectorViewComponent } from '../../../../shared/global-components/selectors/proveedor-selector/views/proveedor-selector-view/proveedor-selector-view.component';
 import { DtoSubEvento, DtoSubEventoDetalle } from '../../models/DtoSubEvento';
@@ -26,24 +20,19 @@ export class SubeventosManageComponent extends BaseVariables {
       this.dtoRegister = new DtoSubEvento();
     }
 
-    if (message.method == 'EDIT') {
-      this.dtoRegister = message.selected;
+    if (message.method == 'EDIT' || message.method == 'VIEW') {
+      this.dtoRegister = Object.assign({}, message.selected);
       this.dtoRegister.horaInicio = this.convertToDate(this.dtoRegister.dia, this.dtoRegister.horaInicio);
       this.dtoRegister.horaFin = this.convertToDate(this.dtoRegister.dia, this.dtoRegister.horaFin);
       this.dtoRegister.dia = this.convertDayToDate(this.dtoRegister.dia);
-
     }
 
-    console.log("MESSAGE", message);
     this.messageController = message;
     this.visible = true;
 
   }
 
-  hideDialog() {
-
-  }
-
+  
   saveItem() {
 
     this.dtoRegister.horaInicio = this.formatTimeToBackend(this.dtoRegister.horaInicio);

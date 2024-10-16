@@ -1,4 +1,4 @@
-
+// ----------- ORITECACIONES 
 .global-center {
     display: flex;
     align-items: center;
@@ -142,4 +142,101 @@
         transform: translateX(0);
         /* Desplazamiento final (sin desplazamiento) */
     }
+}
+
+
+
+// -------------------------- FILTER TABLES
+
+.label-filter {
+    display: block;
+    font-size: 0.75rem; // Equivalente a text-xs
+    font-weight: 500; // Equivalente a font-medium
+    color: #1e3a8a; // Equivalente a text-blue-900
+}
+
+.input-filter {
+    background-color: #ffffff; // bg-white
+    border: 1px solid #d1d5db; // border-gray-300
+    width: 100%; // w-full
+    height: 2.25rem; // h-9
+    outline: none; // outline-none
+    color: #1e3a8a; // text-blue-900
+    font-size: 0.875rem; // text-sm
+    border-radius: 0.25rem; // rounded
+    display: block; // block
+
+    &:focus {
+        border-color: #1d4ed8; // focus:border-blue-700
+        box-shadow: 0 0 0 2px #1e40af; // focus:ring-blue-800
+    }
+
+    &:disabled {
+        background-color: #bfdbfe; // disabled:bg-blue-100
+        border-color: #bfdbfe; // border-blue-100
+    }
+}
+
+.input-filter-date {
+    .p-inputtext {
+        width: 100%; // Asegura que el campo de entrada ocupe el 100% del contenedor
+        height: 2.25rem; // Ajusta la altura del campo de entrada
+        font-size: 0.875rem; // Ajusta el tamaño del texto
+    }
+
+    .p-datepicker-trigger {
+        height: 2.25rem;
+        ; // Ajusta la altura del icono de calendario
+    }
+
+    .p-calendar {
+        width: 100%; // Ajusta el ancho del calendario (si es necesario)
+    }
+}
+
+.input-filter-dropdown {
+    width: 200px; // Ajusta el ancho del dropdown
+  
+    .p-dropdown {
+      width: 100%; // Asegura que el dropdown ocupe el ancho completo del contenedor
+    }
+  
+    .p-dropdown-label {
+      font-size: 0.875rem; // Ajusta el tamaño del texto
+      height: 2.25rem; // Ajusta la altura del dropdown
+      line-height: 2.25rem; // Alinea verticalmente el texto
+      display: flex; // Utiliza flexbox para centrar el texto verticalmente
+      align-items: center; // Centra el texto verticalmente
+    }
+  
+    .p-dropdown-trigger {
+      height: 2.25rem; // Ajusta la altura del botón de flecha
+      display: flex; // Utiliza flexbox para centrar el icono de la flecha
+      align-items: center; // Centra verticalmente el icono de la flecha
+    }
+  
+    .p-dropdown-panel {
+      font-size: 0.875rem; // Ajusta el tamaño del texto de las opciones del dropdown
+    }
+  }
+  
+
+.dropdown-button {
+    .p-button.p-button-icon-only {
+        width: 1em;
+        padding: 0.75rem 0;
+    }
+
+    .p-button {
+
+        color: black;
+        background: transparent;
+        border: none;
+
+        font-size: 1rem;
+        transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+        border-radius: 6px;
+        outline-color: transparent;
+    }
+
 }

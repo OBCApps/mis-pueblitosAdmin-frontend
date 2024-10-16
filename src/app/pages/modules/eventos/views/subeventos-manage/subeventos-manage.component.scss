@@ -1,0 +1,8 @@
+p-inputGroup button.p-button {
+    height: 2.25rem; // Asegura que el botón tenga la misma altura que el input
+    font-size: 0.875rem; // Ajusta el tamaño del texto o ícono en el botón (opcional)
+    display: flex; // Flexbox para centrar el ícono en el botón
+    align-items: center; // Centra el ícono verticalmente
+    padding: 0 0.75rem; // Ajusta el padding interno del botón (opcional)
+  }
+  

@@ -1,65 +1,65 @@
 <div class="card">
     <p-toast />
-    <p-toolbar styleClass="mb-4 gap-2">
+    <p-toolbar styleClass="mb-4 gap-2 bg-white">
         <div class="grid grid-cols-6 gap-2">
 
 
             <div class="col-span-2">
-                <label for="Nombre" class="block text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
-          
-                <input type="text" class="w-full" pInputText [(ngModel)]="filter.nombre" />
+                <label for="Nombre" class="label-filter">Nombre</label>
+
+                <input type="text" class="input-filter" pInputText [(ngModel)]="filter.nombre" />
             </div>
 
             <div class="col-span-1">
-                <label for="descripcion" class="block text-sm font-medium text-gray-900 dark:text-white">
+                <label for="descripcion" class="label-filter">
                     Descripción
                 </label>
-              
-                <input type="text" class="w-full" pInputText [(ngModel)]="filter.descripcion" />
+
+                <input type="text" class="input-filter" pInputText [(ngModel)]="filter.descripcion" />
             </div>
 
             <div class="col-span-1">
-                <label for="ubicacionExacta" class="block text-sm font-medium text-gray-900 dark:text-white">
+                <label for="ubicacionExacta" class="label-filter">
                     Ubicación
                 </label>
-               
-                <input type="text" class="w-full" pInputText [(ngModel)]="filter.ubicacionExacta" />
+
+                <input type="text" class="input-filter" pInputText [(ngModel)]="filter.ubicacionExacta" />
 
             </div>
 
             <div class="col-span-1">
-                <label for="fechaInicio" class="block text-sm font-medium text-gray-900 dark:text-white">
+                <label for="fechaInicio" class="label-filter">
                     Fecha Inicio
                 </label>
-               
-                <p-calendar class="w-full" [(ngModel)]="filter.fechaInicio" [iconDisplay]="'input'" [showIcon]="true"
-                    inputId="icondisplay" />
+
+                <p-calendar class="input-filter-date" [(ngModel)]="filter.fechaInicio" [iconDisplay]="'input'"
+                    [showIcon]="true" inputId="icondisplay" />
             </div>
 
             <div class="col-span-1">
-                <label for="fechaFin" class="block text-sm font-medium text-gray-900 dark:text-white">
+                <label for="fechaFin" class="label-filter">
                     Fecha Fin
                 </label>
-              
-                <p-calendar class="w-full" [(ngModel)]="filter.fechaFin" [iconDisplay]="'input'" [showIcon]="true"
+
+                <p-calendar class="input-filter-date" [(ngModel)]="filter.fechaFin" [iconDisplay]="'input'" [showIcon]="true"
                     inputId="icondisplay" />
             </div>
 
             <div class="col-span-1">
-                <label for="type" class="block text-sm font-medium text-gray-900 dark:text-white">
+                <label for="type" class="label-filter">
                     Tipo
                 </label>
 
-               
-                <input type="text" class="w-full" pInputText [(ngModel)]="filter.type" />
+
+                <input type="text" class="input-filter" pInputText [(ngModel)]="filter.type" />
             </div>
 
             <div class="col-span-1">
-                <label for="name_route" class="block text-sm font-medium text-gray-900 dark:text-white">
+                <label for="name_route" class="label-filter">
                     Ruta
                 </label>
-              
-                <input type="text" class="w-full" pInputText [(ngModel)]="filter.name_route" />
+
+                <input type="text" class="input-filter" pInputText [(ngModel)]="filter.name_route" />
             </div>
 
             <div class="col-span-2">
@@ -84,7 +84,7 @@
     <p-table #dt [value]="listFilter" [rows]="10" [paginator]="true"
         [globalFilterFields]="['nombre', 'ubicacionExacta', 'fechaInicio', 'fechaFin']" [(selection)]="itemSelected"
         [rowHover]="true" dataKey="id" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-        [showCurrentPageReport]="true">
+        [showCurrentPageReport]="true" styleClass="p-datatable-sm">
         <!-- <ng-template pTemplate="caption">
             <div class="global-center-between">
                 <h5 class="m-0">Administrar Eventos</h5>
@@ -136,7 +136,7 @@
                     {{ row.fechaFin }}
                 </td>
                 <td>
-                    <div class="card flex items-center justify-center">
+                    <div class="dropdown-button card flex items-center justify-center">
                         <p-menu #menu [model]="items" [popup]="true" appendTo="body" />
                         <p-button (onClick)="menu.toggle($event)" (onClick)="itemSelected = row"
                             icon="pi pi-ellipsis-v" />
@@ -152,7 +152,7 @@
         </ng-template>
     </p-table>
 
-    
+
 
     <p-confirmDialog [style]="{ width: '450px' }" />
 </div>
