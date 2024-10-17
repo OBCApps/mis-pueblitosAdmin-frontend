@@ -15,6 +15,8 @@ import { SubeventosManageComponent } from '../subeventos-manage/subeventos-manag
 import { SubeventosdetalleManageComponent } from '../subeventosdetalle-manage/subeventosdetalle-manage.component';
 import { DtoSubEvento } from '../../models/DtoSubEvento';
 import { AuthorizationService } from '../../../../shared/global-components/authorization/auth.service';
+import { LoadingService } from '../../../../shared/global-components/loadings/loading-service.service';
+import { ToastService } from '../../../../shared/global-components/toast/toast.service';
 
 @Component({
   selector: 'app-eventos-manage',
@@ -63,7 +65,9 @@ export class EventosManageComponent implements OnInit {
     private eventoService: EventoService,
     private messageService: MessageService,
     private router: Router,
-    private authorizationService: AuthorizationService
+    private authorizationService: AuthorizationService,
+    private loading: LoadingService,
+    private toast: ToastService
 
   ) {
 
@@ -105,28 +109,48 @@ export class EventosManageComponent implements OnInit {
 
   coreNew() {
     console.log("NEW", this.dtoRegister);
-    this.eventoService.create(this.dtoRegister).subscribe(
+    /*this.loading.show();
+     this.eventoService.create(this.dtoRegister).subscribe(
       (response) => {
-        this.messageService.add({ severity: 'success', summary: 'Agregado Correctamente', detail: '', life: 3000 });
+        this.loading.hide();
+        this.toast.addToast({
+          type: 'success',
+          message: 'Agregado Correctamente'
+        });
         this.coreExit();
       },
       (err) => {
-        this.messageService.add({ severity: 'error', summary: 'Error al Agregar', detail: '', life: 3000 });
+        this.loading.hide();
+        this.toast.addToast({
+          type: 'danger',
+          message: 'Error al Agregar'
+        });
+
       }
-    );
+    ); */
   }
 
   coreEdit() {
-
+    this.loading.show();
     console.log("UPDATE", this.dtoRegister);
 
     this.eventoService.update(this.dtoRegister).subscribe(
       (response) => {
-        this.messageService.add({ severity: 'success', summary: 'Actualizado Correctamente', detail: '', life: 3000 });
+        this.loading.hide();
+        this.toast.addToast({
+          type: 'success',
+          message: 'Actualizado Correctamente'
+        });
+
         this.coreExit();
       },
       (err) => {
-        this.messageService.add({ severity: 'error', summary: 'Error al Agregar', detail: '', life: 3000 });
+        this.loading.hide();
+        this.toast.addToast({
+          type: 'danger',
+          message: 'Error al Actualizar'
+        });
+
       }
     );
   }
@@ -200,15 +224,20 @@ export class EventosManageComponent implements OnInit {
 
 
   getAllInfo() {
-
+    this.loading.show();
     this.eventoService.getEventoByID(this.dtoSelected?.id).subscribe(
       data => {
-
+        this.loading.hide();
         this.dtoRegister = data;
 
         this.dtoRegister.fechaInicio = new Date(`${this.dtoRegister.fechaInicio}T05:00:00.000Z`)
 
         this.dtoRegister.fechaFin = new Date(`${this.dtoRegister.fechaFin}T05:00:00.000Z`)
+
+        /* if (this.action == 'DUPLICATE') {
+          const dataSave = { action: 'NEW', data: this.itemSelected };
+          this.authorizationService.setLocalData(dataSave);
+        } */
       }, err => {
         console.log("error");
 
@@ -261,4 +290,17 @@ export class EventosManageComponent implements OnInit {
 
     }
   }
+  onFileChange(event: any,) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.dtoRegister.foto.titulo = file.name;
+      //this.dtoRegister.foto.url = e.target.result;
+      this.dtoRegister.foto.base64 = e.target.result;
+    };
+    reader.readAsDataURL(file);
+
+
+  }
+
 }

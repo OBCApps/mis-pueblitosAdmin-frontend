@@ -8,6 +8,7 @@ import { MenuItem } from 'primeng/api';
 import { Router } from '@angular/router';
 import { ConstantEvents } from '../../eventos.constant';
 import { AuthorizationService } from '../../../../shared/global-components/authorization/auth.service';
+import { LoadingService } from '../../../../shared/global-components/loadings/loading-service.service';
 
 
 @Component({
@@ -42,6 +43,13 @@ export class EventosListComponent implements OnInit {
         this.coreEdit()
       },
     },
+   /*  {
+      label: 'Duplicar',
+      icon: 'pi pi-trash',
+      command: () => {
+        this.coreDuplicate()
+      },
+    }, */
     {
       label: 'Eliminar',
       icon: 'pi pi-trash',
@@ -57,7 +65,8 @@ export class EventosListComponent implements OnInit {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private router: Router,
-    private authorizationService: AuthorizationService
+    private authorizationService: AuthorizationService,
+    private loading: LoadingService
   ) { }
 
   ngOnInit() {
@@ -68,8 +77,14 @@ export class EventosListComponent implements OnInit {
   }
 
   coreSearch() {
+    this.loading.show();
     this.listFilter = [];
-    this.eventoService.search(this.filter).subscribe((data) => (this.listFilter = data));
+
+    this.eventoService.search(this.filter).subscribe(
+      (data) => {
+        this.loading.hide();
+        this.listFilter = data;
+      });
   }
 
   coreNew() {
@@ -90,6 +105,11 @@ export class EventosListComponent implements OnInit {
     this.router.navigate([ConstantEvents.event_manage])
   }
 
+  coreDuplicate() {
+    const dataSave = { action: 'DUPLICATE', data: this.itemSelected };
+    this.authorizationService.setLocalData(dataSave);
+    this.router.navigate([ConstantEvents.event_manage])
+  }
   coreDelete() {
     this.confirmationService.confirm({
       message: 'Está seguro de borrar?',

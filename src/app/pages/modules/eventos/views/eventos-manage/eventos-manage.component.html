@@ -47,7 +47,7 @@
                             </label>
 
                             <p-calendar class="input-filter-date" [(ngModel)]="dtoRegister.fechaFin"
-                                [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" />
+                                [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" dateFormat="dd/mm/yy" />
                         </div>
 
                         <div class="col-span-2">
@@ -89,46 +89,82 @@
                     <h1>Foto Principal del Evento</h1>
                     <p-divider />
                     <div class="grid grid-cols-4 gap-2 w-full">
-                        <div class="col-span-2">
-                            <label for="name_route" class="label-filter">
-                                ENLACE
-                            </label>
-                            <input type="text" class="input-filter" pInputText [(ngModel)]="dtoRegister.foto.url" />
+                        <div class="col-span-1 grid gap-2">
+                            <div>
+                                <!-- <label for="name_route" class="label-filter">
+                                    ENLACE
+                                </label>
+                                <input type="text" class="input-filter" pInputText [(ngModel)]="dtoRegister.foto.url" /> -->
+
+                                <div *ngIf="!dtoRegister.foto.base64" class="flex items-center justify-center w-full">
+                                    <label for="dropzone-file"
+                                        class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 ">
+                                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                            <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+                                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                viewBox="0 0 20 16">
+                                                <path stroke="currentColor" stroke-linecap="round"
+                                                    stroke-linejoin="round" stroke-width="2"
+                                                    d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                                            </svg>
+                                            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span
+                                                    class="font-semibold">Cargar Imagen</span> </p>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400"> PNG, JPG </p>
+                                        </div>
+                                        <input id="dropzone-file" type="file" class="hidden" accept="image/png, image/jpeg" (change)="onFileChange($event)" />
+                                    </label>
+                                </div>
+                                <div *ngIf="dtoRegister.foto.base64">
+                                    <label for="dropzone-file">
+                                        <img  [src]="dtoRegister.foto.base64" class="h-72 cursor-pointer ">
+                                        <input id="dropzone-file" type="file" class="hidden" accept="image/png, image/jpeg" (change)="onFileChange($event)" />
+                                    </label>
+                                </div>
+
+                            </div>
+
+
                         </div>
 
-                        <div class="col-span-2">
-                            <label for="name_route" class="label-filter">
-                                LUGAR
-                            </label>
-                            <p-inputGroup>
+                        <div class="col-span-3 grid gap-2">
+                            <div>
+                                <label for="name_route" class="label-filter">
+                                    TITULO
+                                </label>
                                 <input type="text" class="input-filter" pInputText
-                                    [(ngModel)]="dtoRegister.foto.lugar" />
-                                <button type="button" (click)="coreShowSelectors('LugarSelectorPhoto')" pButton
-                                    icon="pi pi-search"></button>
-                            </p-inputGroup>
+                                    [(ngModel)]="dtoRegister.foto.titulo" />
+                            </div>
+                            <div>
 
+                                <label for="name_route" class="label-filter">
+                                    LUGAR
+                                </label>
+                                <p-inputGroup>
+                                    <input type="text" class="input-filter" pInputText
+                                        [(ngModel)]="dtoRegister.foto.lugar" />
+                                    <button type="button" (click)="coreShowSelectors('LugarSelectorPhoto')" pButton
+                                        icon="pi pi-search"></button>
+                                </p-inputGroup>
 
+                            </div>
+
+                            <div>
+                                <label for="name_route" class="label-filter">
+                                    PROVEEDOR ID
+                                </label>
+                                <p-inputGroup>
+                                    <input type="text" class="input-filter" pInputText
+                                        [(ngModel)]="dtoRegister.foto.proveedorDesc" />
+                                    <button type="button" (click)="coreShowSelectors('ProveedorSelector')" pButton
+                                        icon="pi pi-search"></button>
+                                </p-inputGroup>
+
+                            </div>
                         </div>
 
-                        <div class="col-span-2">
-                            <label for="name_route" class="label-filter">
-                                TITULO
-                            </label>
-                            <input type="text" class="input-filter" pInputText [(ngModel)]="dtoRegister.foto.titulo" />
-                        </div>
 
-                        <div class="col-span-2">
-                            <label for="name_route" class="label-filter">
-                                PROVEEDOR ID
-                            </label>
-                            <p-inputGroup>
-                                <input type="text" class="input-filter" pInputText
-                                    [(ngModel)]="dtoRegister.foto.proveedorDesc" />
-                                <button type="button" (click)="coreShowSelectors('ProveedorSelector')" pButton
-                                    icon="pi pi-search"></button>
-                            </p-inputGroup>
 
-                        </div>
+
                     </div>
                 </p-toolbar>
 

@@ -18,6 +18,8 @@ import { ProveedorSelectorViewComponent } from './pages/shared/global-components
 import { SubeventosListComponent } from './pages/modules/eventos/views/subeventos-list/subeventos-list.component';
 import { SubeventosManageComponent } from './pages/modules/eventos/views/subeventos-manage/subeventos-manage.component';
 import { SubeventosdetalleManageComponent } from './pages/modules/eventos/views/subeventosdetalle-manage/subeventosdetalle-manage.component';
+import { LoadingsComponent } from './pages/shared/global-components/loadings/loadings.component';
+import { AlertsToastComponent } from './pages/shared/global-components/toast/alerts-toast/alerts-toast.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,8 @@ import { SubeventosdetalleManageComponent } from './pages/modules/eventos/views/
     ReactiveFormsModule,
     CommonModule,
     AppRoutingModule,
-
+    LoadingsComponent,
+    AlertsToastComponent
     // ----- MODULES IMPLEMENTATION ------ \\
     //EventosModule
   ],
