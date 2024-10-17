@@ -70,8 +70,8 @@ export class EventosManageComponent implements OnInit {
   }
   ngOnInit(): void {
     const tempData = this.authorizationService.getLocalData()
-    this.action = tempData.action;
-    this.dtoSelected = tempData.data;
+    this.action = tempData?.action;
+    this.dtoSelected = tempData?.data;
 
     if (this.action == 'NEW') {
       this.dtoRegister = new DtoEvento()
@@ -182,6 +182,10 @@ export class EventosManageComponent implements OnInit {
         if (message.method == 'NEW') {
           this.dtoRegister.subeventos.push(message.selected)
         }
+        /* if (message.method == 'EDIT') {
+          this.dtoRegister.subeventos.find(item => item == message.selected)
+          // Reemplazarlo
+        } */
         break;
       }
       case ('SubEventoDetalleManage'): {
@@ -197,7 +201,7 @@ export class EventosManageComponent implements OnInit {
 
   getAllInfo() {
 
-    this.eventoService.getEventoByID(this.dtoSelected.id).subscribe(
+    this.eventoService.getEventoByID(this.dtoSelected?.id).subscribe(
       data => {
 
         this.dtoRegister = data;

@@ -21,10 +21,13 @@ export class SubeventosManageComponent extends BaseVariables {
     }
 
     if (message.method == 'EDIT' || message.method == 'VIEW') {
+
+
       this.dtoRegister = Object.assign({}, message.selected);
       this.dtoRegister.horaInicio = this.convertToDate(this.dtoRegister.dia, this.dtoRegister.horaInicio);
       this.dtoRegister.horaFin = this.convertToDate(this.dtoRegister.dia, this.dtoRegister.horaFin);
       this.dtoRegister.dia = this.convertDayToDate(this.dtoRegister.dia);
+      console.log("this.dtoRegistert", this.dtoRegister);
     }
 
     this.messageController = message;
@@ -32,12 +35,16 @@ export class SubeventosManageComponent extends BaseVariables {
 
   }
 
-  
+
   saveItem() {
+    console.log("FECHA", this.dtoRegister.horaInicio);
 
     this.dtoRegister.horaInicio = this.formatTimeToBackend(this.dtoRegister.horaInicio);
     this.dtoRegister.horaFin = this.formatTimeToBackend(this.dtoRegister.horaFin);
+    this.dtoRegister.dia = this.convertDateToBackend(this.dtoRegister.dia);
+
     this.messageController.selected = this.dtoRegister;
+    console.log("TO SAVE", this.dtoRegister);
     this.messageController.currentComponent.coreMessage(this.messageController);
     this.coreCloseSelector();
   }
@@ -130,6 +137,14 @@ export class SubeventosManageComponent extends BaseVariables {
   // Función para convertir el día de formato "yyyy-mm-dd" a un objeto Date
   convertDayToDate(day: any): Date {
     return new Date(day); // Crear el objeto Date directamente
+  }
+  convertDateToBackend(day: any): any {
+    const date = new Date(day); // Crear el objeto Date
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2); // Obtener el mes, sumando 1 y asegurando que tenga 2 dígitos
+    const dayOfMonth = ('0' + date.getDate()).slice(-2); // Obtener el día asegurando que tenga 2 dígitos
+
+    return `${year}-${month}-${dayOfMonth}`; // Formatear como año-mes-día
   }
 }
 
