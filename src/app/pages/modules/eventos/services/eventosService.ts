@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { API_SERVICE_ADMIN } from '../../../../../environments/environment.prod';
 
-import { FilterEvento, listFilterEvento } from '../models/FilterEvento';
+import { FilterEvento } from '../models/FilterEvento';
 import { DtoEvento } from '../models/DtoEventos';
 
 
@@ -11,7 +11,7 @@ import { DtoEvento } from '../models/DtoEventos';
   providedIn: 'root',
 })
 export class EventoService {
-  private API_SERVER_EVENTO = API_SERVICE_ADMIN + 'evento';
+  private API_SERVER_EVENTO = API_SERVICE_ADMIN + 'evento/';
 
   constructor(private http: HttpClient) { }
 
@@ -24,8 +24,8 @@ export class EventoService {
     );
   }
 
-  search(data: FilterEvento): Observable<listFilterEvento[]> {
-    return this.http.post<listFilterEvento[]>(this.API_SERVER_EVENTO + '/filter-list', data).pipe(
+  search(data: FilterEvento): Observable<any> {
+    return this.http.post<any>(this.API_SERVER_EVENTO + 'filter_pagination', data).pipe(
       map((response) => {
         return response;
       })

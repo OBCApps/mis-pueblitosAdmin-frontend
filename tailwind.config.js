@@ -14,7 +14,13 @@ module.exports = {
         secondary: '#33425B', // Rojo
         terceary: '#29252C', // Negro
         cuaternary: '#F6F8F6',
-        verdeBritanico: '#64EE9B'
+        verdeBritanico: '#64EE9B',
+
+
+
+
+
+        success: '#31c48d'
       },
 
       borderWidth: {

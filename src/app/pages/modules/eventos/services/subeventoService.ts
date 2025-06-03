@@ -3,8 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { API_SERVICE_ADMIN } from '../../../../../environments/environment.prod';
 
-import { FilterEvento, listFilterEvento } from '../models/FilterEvento';
-import { DtoEvento } from '../models/DtoEventos';
+import { FilterEvento } from '../models/FilterEvento';
 import { FilterSubEvento, listFilterSubEvento } from '../models/FilterSubEvento';
 import { DtoSubEvento } from '../models/DtoSubEvento';
 

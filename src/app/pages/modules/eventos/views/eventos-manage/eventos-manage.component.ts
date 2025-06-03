@@ -34,30 +34,6 @@ export class EventosManageComponent implements OnInit {
     { name: 'Evento', code: 'Evento' },
   ];
 
-  items: MenuItem[] = [
-    {
-      label: 'Ver Detalles',
-      icon: 'pi pi-eye',
-      command: () => {
-        this.coreShowDependences('SubEventoManage', 'VIEW', this.subEventoSelected);
-      },
-    },
-    {
-      label: 'Editar',
-      icon: 'pi pi-pencil',
-      command: () => {
-        this.coreShowDependences('SubEventoManage', 'EDIT', this.subEventoSelected)
-      },
-    },
-    {
-      label: 'Eliminar',
-      icon: 'pi pi-trash',
-      command: () => {
-        this.coreDelete()
-      },
-    }
-
-  ];; // Acciones Ver, Editar
 
 
   constructor(
@@ -234,30 +210,18 @@ export class EventosManageComponent implements OnInit {
 
         this.dtoRegister.fechaFin = new Date(`${this.dtoRegister.fechaFin}T05:00:00.000Z`)
 
-        /* if (this.action == 'DUPLICATE') {
-          const dataSave = { action: 'NEW', data: this.itemSelected };
-          this.authorizationService.setLocalData(dataSave);
-        } */
       }, err => {
         console.log("error");
 
       })
 
   }
-  convertToDate(dateString: string): any {
-    const [year, month, day] = dateString.split('-').map(num => parseInt(num, 10));
-    return new Date(year, month - 1, day);
-  }
 
   ngOnDestroy(): void {
     this.authorizationService.deleteLocalData()
   }
 
-  @ViewChild('dt') dt: Table | undefined;
-  onFilterGlobal(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    this.dt.filterGlobal(inputElement.value, 'contains');
-  }
+
 
   create_nameRoute(item: any) {
     // Eliminar tildes y caracteres diacríticos
@@ -273,23 +237,7 @@ export class EventosManageComponent implements OnInit {
   }
 
 
-  @ViewChild(SubeventosManageComponent, { static: false }) SubeventosManageComponent: SubeventosManageComponent;
-  @ViewChild(SubeventosdetalleManageComponent, { static: false }) SubeventosdetalleManageComponent: SubeventosdetalleManageComponent;
 
-  coreShowDependences(nameTable: string, method: string, selected: any = null) {
-    switch (nameTable) {
-      case ('SubEventoManage'): {
-        this.SubeventosManageComponent.coreInitSelector(new MessageController(this, nameTable, method, selected));
-        break;
-      }
-      /* case ('SubEventoDetalleManage'): {
-        this.SubeventosdetalleManageComponent.coreInitSelector(new MessageController(this, nameTable, method, selected));
-
-        break;
-      } */
-
-    }
-  }
   onFileChange(event: any,) {
     const file = event.target.files[0];
     const reader = new FileReader();

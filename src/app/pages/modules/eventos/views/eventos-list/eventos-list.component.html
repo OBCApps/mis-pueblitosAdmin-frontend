@@ -1,158 +1,200 @@
-<div class="card">
-    <p-toast />
-    <p-toolbar styleClass="mb-4 gap-2 bg-white">
-        <div class="grid grid-cols-6 gap-2">
+<div class="max-w-7xl mx-auto">
 
 
-            <div class="col-span-2">
-                <label for="Nombre" class="label-filter">Nombre</label>
+    <nav class="flex" aria-label="Breadcrumb">
+        <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse py-2">
+            <li class="inline-flex items-center">
+                <a
+                    class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                    <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                            d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
+                    </svg>
+                    Eventos
+                </a>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 9 4-4-4-4" />
+                    </svg>
+                    <a
+                        class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">Listado</a>
+                </div>
+            </li>
 
-                <input type="text" class="input-filter" pInputText [(ngModel)]="filter.nombre" />
-            </div>
+        </ol>
+    </nav>
 
-            <div class="col-span-1">
-                <label for="descripcion" class="label-filter">
-                    Descripción
-                </label>
+    <div>
+        <div class="grid grid-cols-9 gap-2 bg-white rounded-lg p-4 shadow-md mb-[3%]">
+            <div class="col-span-9 md:col-span-8">
+                <div class="grid grid-cols-8 gap-4 ">
+                    <div class="col-span-4 md:col-span-2 lg:col-span-2">
+                        <label for="nombre" [class]="'block  text-xs font-medium text-blue-900'">
+                            Nombre
+                        </label>
 
-                <input type="text" class="input-filter" pInputText [(ngModel)]="filter.descripcion" />
-            </div>
-
-            <div class="col-span-1">
-                <label for="ubicacionExacta" class="label-filter">
-                    Ubicación
-                </label>
-
-                <input type="text" class="input-filter" pInputText [(ngModel)]="filter.ubicacionExacta" />
-
-            </div>
-
-            <div class="col-span-1">
-                <label for="fechaInicio" class="label-filter">
-                    Fecha Inicio
-                </label>
-
-                <p-calendar class="input-filter-date" [(ngModel)]="filter.fechaInicio" [iconDisplay]="'input'"
-                    [showIcon]="true" inputId="icondisplay" />
-            </div>
-
-            <div class="col-span-1">
-                <label for="fechaFin" class="label-filter">
-                    Fecha Fin
-                </label>
-
-                <p-calendar class="input-filter-date" [(ngModel)]="filter.fechaFin" [iconDisplay]="'input'" [showIcon]="true"
-                    inputId="icondisplay" />
-            </div>
-
-            <div class="col-span-1">
-                <label for="type" class="label-filter">
-                    Tipo
-                </label>
-
-
-                <input type="text" class="input-filter" pInputText [(ngModel)]="filter.type" />
-            </div>
-
-            <div class="col-span-1">
-                <label for="name_route" class="label-filter">
-                    Ruta
-                </label>
-
-                <input type="text" class="input-filter" pInputText [(ngModel)]="filter.name_route" />
-            </div>
-
-            <div class="col-span-2">
-
-            </div>
-
-
-            <div class="col-span-2 global-center-end mt-3">
-                <p-button severity="success" label="Nuevo" icon="pi pi-plus" class="ml-2 text-sm p-1"
-                    (onClick)="coreNew()" />
-                <p-button severity="warning" label="Buscar" icon="pi pi-search" class="ml-2 text-sm p-1"
-                    (onClick)="coreSearch()" />
-                <p-button severity="danger" label="Limpiar" icon="pi pi-trash" class="ml-2 text-sm p-1"
-                    (onClick)="clearFilter()" />
-            </div>
-
-
-        </div>
-    </p-toolbar>
-
-
-    <p-table #dt [value]="listFilter" [rows]="10" [paginator]="true"
-        [globalFilterFields]="['nombre', 'ubicacionExacta', 'fechaInicio', 'fechaFin']" [(selection)]="itemSelected"
-        [rowHover]="true" dataKey="id" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-        [showCurrentPageReport]="true" styleClass="p-datatable-sm">
-        <!-- <ng-template pTemplate="caption">
-            <div class="global-center-between">
-                <h5 class="m-0">Administrar Eventos</h5>
-                <span class="p-input-icon-left">
-                    <i class="pi pi-search"></i>
-                    <input pInputText type="text" (input)="onFilterGlobal($event)" placeholder="Search..." />
-                </span>
-            </div>
-        </ng-template> -->
-        <ng-template pTemplate="header">
-            <tr class="text-sm">
-
-                <th class="tableColumnName" pSortableColumn="nombre">
-                    Name <p-sortIcon field="nombre" />
-                </th>
-
-                <th class="tableColumnDescription-xs " pSortableColumn="ubicacionExacta">
-                    Ubicación <p-sortIcon field="ubicacionExacta" />
-                </th>
-                <th class="tableColumnDate" pSortableColumn="fechaInicio">
-                    Fecha Inicio <p-sortIcon field="fechaInicio" />
-                </th>
-                <th class="tableColumnDate" pSortableColumn="fechaFin">
-                    Fecha Fin <p-sortIcon field="fechaFin" />
-                </th>
-
-                <th></th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-row>
-            <tr class="text-xs">
-
-                <td class="tableColumnName">
-                    {{ row.nombre }}
-                </td>
-
-                <!-- <td class="tableColumnDescription-xs ">
-                    
-                      xd
-                </td> -->
-
-                <td class="tableColumnDescription-xs ">
-                    {{ row.ubicacionExacta }}
-                </td>
-                <td class="tableColumnDate">
-                    {{ row.fechaInicio }}
-                </td>
-                <td class="tableColumnDate">
-                    {{ row.fechaFin }}
-                </td>
-                <td>
-                    <div class="dropdown-button card flex items-center justify-center">
-                        <p-menu #menu [model]="items" [popup]="true" appendTo="body" />
-                        <p-button (onClick)="menu.toggle($event)" (onClick)="itemSelected = row"
-                            icon="pi pi-ellipsis-v" />
+                        <input type="text" id="nombre" [(ngModel)]="filter.nombre" autocomplete="off"
+                            class="bg-white border border-gray-300 w-full h-9 outline-none text-blue-900 text-sm  rounded focus:ring-blue-800 focus:border-blue-700 block  disabled:bg-blue-100  ">
                     </div>
 
-                </td>
+                    <div class="col-span-4 md:col-span-2 lg:col-span-2">
+                        <label for="ubicacionExacta" [class]="'block  text-xs font-medium text-blue-900'">
+                            Ubicación Exacta
+                        </label>
+
+                        <input type="text" id="ubicacionExacta" [(ngModel)]="filter.ubicacionExacta" autocomplete="off"
+                            class="bg-white border border-gray-300 w-full h-9 outline-none text-blue-900 text-sm  rounded focus:ring-blue-800 focus:border-blue-700 block  disabled:bg-blue-100  ">
+                    </div>
+
+                    <div class="col-span-4 md:col-span-2 lg:col-span-2">
+                        <label for="idperiodoacademico" [class]="'block  text-xs font-medium text-blue-900'">
+                            Fecha Inicio
+                        </label>
+
+                        <input type="date" id="fechaInicio" [(ngModel)]="filter.fechaInicio" autocomplete="off"
+                            class="bg-white border border-gray-300 w-full h-9 outline-none text-blue-900 text-sm  rounded focus:ring-blue-800 focus:border-blue-700 block  disabled:bg-blue-100  ">
+                    </div>
+
+                    <div class="col-span-4 md:col-span-2 lg:col-span-2">
+                        <label for="idperiodoacademico" [class]="'block  text-xs font-medium text-blue-900'">
+                            Fecha Fin
+                        </label>
+
+                        <input type="date" id="fechaFin" [(ngModel)]="filter.fechaFin" autocomplete="off"
+                            class="bg-white border border-gray-300 w-full h-9 outline-none text-blue-900 text-sm  rounded focus:ring-blue-800 focus:border-blue-700 block  disabled:bg-blue-100  ">
+                    </div>
+
+                    <div class="col-span-4 md:col-span-2 lg:col-span-2">
+                        <label for="idperiodoacademico" [class]="'block  text-xs font-medium text-blue-900'">
+                            Lugar ID
+                        </label>
+
+                        <input type="text" id="lugarId" [(ngModel)]="filter.lugarId" autocomplete="off"
+                            class="bg-white border border-gray-300 w-full h-9 outline-none text-blue-900 text-sm  rounded focus:ring-blue-800 focus:border-blue-700 block  disabled:bg-blue-100  ">
+                    </div>
+                    <div class="col-span-4 md:col-span-2 lg:col-span-2">
+                        <label for="idcurso" [class]="'block  text-xs font-medium text-blue-900'">
+                            Type
+                        </label>
+                        <select id="idcurso" [(ngModel)]="filter.type"
+                            class="bg-white border border-gray-300 w-full h-9 outline-none text-blue-900 text-sm  rounded focus:ring-blue-800 focus:border-blue-700 block  disabled:bg-blue-100  ">
+                            <option *ngFor="let item of list_types" [value]="item.value">{{item.name}}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="col-span-4 md:col-span-2 lg:col-span-2">
+                        <label for="idsede" [class]="'block  text-xs font-medium text-blue-900'">
+                            Nombre Ruta
+                        </label>
+                        <input type="text" id="numerodocumento" [(ngModel)]="filter.name_route" autocomplete="off"
+                            class="bg-white border border-gray-300 w-full h-9 outline-none text-blue-900 text-sm  rounded focus:ring-blue-800 focus:border-blue-700 block  disabled:bg-blue-100  ">
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-span-9 md:col-span-1 flex flex-col justify-end gap-4">
+
+                <button type="button" (click)="clearFilter()"
+                    class="lg:mb-2 text-white bg-secondary hover:bg-gray-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm w-full py-2.5  dark:bg-blue-600 dark:hover:bg-cuaternary focus:outline-none dark:focus:ring-blue-800">
+                    LIMPIAR
+                </button>
+                <button type="button" (click)="coreSearch()"
+                    class="text-white bg-primary hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm w-full py-2.5  dark:bg-blue-600 dark:hover:bg-primary focus:outline-none dark:focus:ring-blue-800">
+                    BUSCAR
+                </button>
+
+            </div>
+        </div>
+
+    </div>
+    <div class="grid grid-cols-9 gap-2">
+        <div class="col-span-9 md:col-span-8">
+
+        </div>
+        <div class="col-span-9 md:col-span-1">
+            <button type="button" (click)="coreNew()"
+                class="text-white bg-green-400 hover:bg-green-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm w-full py-2.5  dark:bg-blue-600 dark:hover:bg-primary focus:outline-none dark:focus:ring-blue-800">
+                NUEVO
+            </button>
+        </div>
+    </div>
+
+    <p-table #dt [value]="filter.paginationresult.result" [paginator]="true" [responsive]="true"
+        styleClass="table-ryl" [style]="{ width: '100%'}" [rows]="filter.paginationresult.size"
+        dataKey="idestudiante" [lazy]="true" (onLazyLoad)="onPageChange($event)"
+        [totalRecords]="filter.paginationresult.totalRegistros" [showCurrentPageReport]="true"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros">
+        <ng-template pTemplate="header">
+            <tr class="text-xs">
+                <th class="bg-secondary border-l border-t border-b border-secbg-secondary text-white  text-center">
+                    ID
+                </th>
+
+                <th class="bg-secondary border-r border-t border-b border-secbg-secondary text-white  text-center">
+                    NOMBRE
+                </th>
+                <th class="bg-secondary border-r border-t border-b border-secbg-secondary text-white  text-center">
+                    UBICACIÓN EXACTA
+                </th>
+                <th class=" bg-white border border-secbg-secondary text-secbg-secondary text-center">
+                    TIPO
+                </th>
+                <th class=" bg-white border border-secbg-secondary text-secbg-secondary text-center">
+                    ESTADO
+                </th>
+
+                <th class=" bg-white border border-secbg-secondary text-secbg-secondary text-center">
+                    ACCIÓN
+                </th>
+
+
             </tr>
         </ng-template>
-        <ng-template pTemplate="summary">
-            <div class="global-center-between text-sm">
-                Existen {{ listFilter ? listFilter.length : 0 }} elementos.
-            </div>
+
+        <ng-template pTemplate="caption">
+
         </ng-template>
+        <ng-template pTemplate="body" let-item let-editing="editing" let-index="rowIndex">
+            <tr class="text-xs text-center p-2">
+                <td class="text-center">
+                    <span class="p-column-title">ID</span>
+                    {{ item.id}}
+                </td>
+
+                <td class="text-center">
+                    <span class="p-column-title">NOMBRE</span>
+                    {{ item.nombre }}
+                </td>
+                <td class="text-center">
+                    <span class="p-column-title">UBICACIÓN EXACTA</span>
+                    {{ item.ubicacionExacta }}
+                </td>
+                <td class="text-center">
+                    <span class="p-column-title">TIPO</span>
+                    {{ item.type }}
+                </td>
+                <td class="text-center">
+                    <span class="p-column-title">ESTADO</span>
+                    {{ item.estado }}
+                </td>
+
+                <td class="text-center">
+                    <span class="p-column-title">ACCIÓN</span>
+                    <div class="noBgPbutton flex items-center justify-center ">
+                        <p-menu #menu [model]="items" [popup]="true" appendTo="body"></p-menu>
+                        <p-button (onClick)="itemSelected = item" (onClick)="modifyItems();menu.toggle($event);"
+                            icon="pi pi-ellipsis-v" styleClass="noBgPbutton"></p-button>
+                    </div>
+                </td>
+
+            </tr>
+        </ng-template>
+
     </p-table>
-
-
-
-    <p-confirmDialog [style]="{ width: '450px' }" />
 </div>

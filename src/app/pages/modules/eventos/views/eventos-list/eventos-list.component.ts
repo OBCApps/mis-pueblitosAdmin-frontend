@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { Table } from 'primeng/table';
+import { Table, TableLazyLoadEvent } from 'primeng/table';
 import { EventoService } from '../../services/eventosService';
 
-import { FilterEvento, listFilterEvento } from '../../models/FilterEvento';
+import { FilterEvento } from '../../models/FilterEvento';
 import { MenuItem } from 'primeng/api';
 import { Router } from '@angular/router';
 import { ConstantEvents } from '../../eventos.constant';
@@ -18,12 +18,15 @@ import { LoadingService } from '../../../../shared/global-components/loadings/lo
 })
 export class EventosListComponent implements OnInit {
   productDialog: boolean = false;
-
-  listFilter!: listFilterEvento[];
-
+  bool_loadingtable: boolean = false;
 
 
-  itemSelected!: listFilterEvento | null; // 
+  list_types: any[] = [{ name: 'Festividad', value: 'Festividad' }, { name: 'Evento', value: 'Evento' }]
+  listFilter: any[];
+
+
+
+  itemSelected: FilterEvento; // 
 
 
   filter: FilterEvento = new FilterEvento(); // Filtros de busqueda
@@ -43,13 +46,13 @@ export class EventosListComponent implements OnInit {
         this.coreEdit()
       },
     },
-   /*  {
-      label: 'Duplicar',
-      icon: 'pi pi-trash',
-      command: () => {
-        this.coreDuplicate()
-      },
-    }, */
+    /*  {
+       label: 'Duplicar',
+       icon: 'pi pi-trash',
+       command: () => {
+         this.coreDuplicate()
+       },
+     }, */
     {
       label: 'Eliminar',
       icon: 'pi pi-trash',
@@ -58,7 +61,7 @@ export class EventosListComponent implements OnInit {
       },
     }
 
-  ]; // Acciones Ver, Editar
+  ];
 
   constructor(
     private eventoService: EventoService,
@@ -72,8 +75,6 @@ export class EventosListComponent implements OnInit {
   ngOnInit() {
     this.coreSearch()
 
-
-
   }
 
   coreSearch() {
@@ -81,9 +82,11 @@ export class EventosListComponent implements OnInit {
     this.listFilter = [];
 
     this.eventoService.search(this.filter).subscribe(
-      (data) => {
+      (response) => {
         this.loading.hide();
-        this.listFilter = data;
+        this.filter = response;
+        this.formularioOninit = false;
+        this.listFilter = response.paginationresult.result;
       });
   }
 
@@ -110,6 +113,7 @@ export class EventosListComponent implements OnInit {
     this.authorizationService.setLocalData(dataSave);
     this.router.navigate([ConstantEvents.event_manage])
   }
+
   coreDelete() {
     this.confirmationService.confirm({
       message: 'Está seguro de borrar?',
@@ -135,68 +139,30 @@ export class EventosListComponent implements OnInit {
     this.filter = new FilterEvento();
     this.coreSearch()
   }
-  editProduct(product: any) {
 
-    this.productDialog = true;
+  formularioOninit: boolean = true;
+  // ------------ PAGINATION -------------------\\
+  onPageChange(event: TableLazyLoadEvent) {
+    // Actualiza la página y tamaño
+    if (this.formularioOninit == true) return;
+    this.filter.paginationresult.paginacioninicio = event.first;
+    this.filter.paginationresult.result = []
+    this.coreSearch();
   }
-
-  deleteProduct(product: any) {
-    this.confirmationService.confirm({
-      message: 'Are you sure you want to delete ' + product.nombre + '?',
-      header: 'Confirm',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.listFilter = this.listFilter.filter((val) => val.id !== product.id);
-
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
-      }
-    });
-  }
-
-  hideDialog() {
-    this.productDialog = false;
+  modifyItems() {
+    /* if (this.itemSelected.flagDisponible == true) {
+      
+    } else {
+      this.items = [
+        {
+          label: 'Editar',
+          icon: 'pi pi-eye',
+          command: () => {
+            this.coreEdit()
+          },
+        },
+      ];
+    } */
 
   }
-
-
-
-  findIndexById(id: string): number {
-    let index = -1;
-    for (let i = 0; i < this.listFilter.length; i++) {
-      if (this.listFilter[i].id === id) {
-        index = i;
-        break;
-      }
-    }
-
-    return index;
-  }
-
-  createId(): string {
-    let id = '';
-    var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (var i = 0; i < 5; i++) {
-      id += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return id;
-  }
-
-  getSeverity(status: string) {
-    switch (status) {
-      case 'INSTOCK':
-        return 'success';
-      case 'LOWSTOCK':
-        return 'warning';
-      case 'OUTOFSTOCK':
-        return 'danger';
-      default: return 'danger'
-    }
-  }
-  @ViewChild('dt') dt: Table | undefined;
-  onFilterGlobal(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    this.dt.filterGlobal(inputElement.value, 'contains');
-  }
-
-
 }
