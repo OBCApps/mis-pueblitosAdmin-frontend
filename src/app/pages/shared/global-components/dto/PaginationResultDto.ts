@@ -3,5 +3,6 @@ export class PaginationResultDto {
     page: number;
     size: number;
     totalRegistros: number;
-    paginacioninicio: number
+    paginacioninicio: number;
+    formularioOninit: boolean = false;
 }

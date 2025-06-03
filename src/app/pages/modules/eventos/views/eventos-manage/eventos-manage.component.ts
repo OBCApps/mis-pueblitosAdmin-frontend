@@ -1,22 +1,15 @@
 import { Component, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { DtoEvento } from '../../models/DtoEventos';
-import { BaseComponents } from '../../../../shared/global-components/BaseComponents';
-import { EventoService } from '../../services/eventosService';
-import { response } from 'express';
-import { isPlatformBrowser } from '@angular/common';
-import { Table } from 'primeng/table';
 import { LugarSelectorViewComponent } from '../../../../shared/global-components/selectors/lugar-selector/views/lugar-selector-view/lugar-selector-view.component';
 import { MessageController } from '../../../../shared/global-components/MessageController';
 import { ProveedorSelectorViewComponent } from '../../../../shared/global-components/selectors/proveedor-selector/views/proveedor-selector-view/proveedor-selector-view.component';
-import { MenuItem, MessageService } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 import { ConstantEvents } from '../../eventos.constant';
-import { SubeventosManageComponent } from '../subeventos-manage/subeventos-manage.component';
-import { SubeventosdetalleManageComponent } from '../subeventosdetalle-manage/subeventosdetalle-manage.component';
 import { DtoSubEvento } from '../../models/DtoSubEvento';
 import { AuthorizationService } from '../../../../shared/global-components/authorization/auth.service';
-import { LoadingService } from '../../../../shared/global-components/loadings/loading-service.service';
-import { ToastService } from '../../../../shared/global-components/toast/toast.service';
+import { BaseServices } from '../../../../shared/global-components/BaseServices';
+import { EventoService } from '../../services/eventosService';
 
 @Component({
   selector: 'app-eventos-manage',
@@ -34,6 +27,8 @@ export class EventosManageComponent implements OnInit {
     { name: 'Evento', code: 'Evento' },
   ];
 
+  list_estados: any[] = this.baseServices.getListStatus();
+
 
 
   constructor(
@@ -42,18 +37,24 @@ export class EventosManageComponent implements OnInit {
     private messageService: MessageService,
     private router: Router,
     private authorizationService: AuthorizationService,
-    private loading: LoadingService,
-    private toast: ToastService
+    private baseServices: BaseServices
 
   ) {
 
   }
+
+  opDisable: boolean = false;
   ngOnInit(): void {
     const tempData = this.authorizationService.getLocalData()
     this.action = tempData?.action;
     this.dtoSelected = tempData?.data;
+    this.opDisable =
+      this.action == 'CREATE' ? false :
+        this.action == 'UPDATE' ? false :
+          this.action == 'VIEW' ? true : true;
 
-    if (this.action == 'NEW') {
+
+    if (this.action == 'CREATE') {
       this.dtoRegister = new DtoEvento()
     } else {
       this.getAllInfo();
@@ -75,57 +76,48 @@ export class EventosManageComponent implements OnInit {
   }
 
   coreSave() {
-    if (this.action == 'NEW') {
+    if (this.action == 'CREATE') {
       this.coreNew()
     }
-    if (this.action == 'EDIT') {
+    if (this.action == 'UPDATE') {
       this.coreEdit()
     }
   }
 
   coreNew() {
-    console.log("NEW", this.dtoRegister);
-    /*this.loading.show();
-     this.eventoService.create(this.dtoRegister).subscribe(
+    console.log("CREATE", this.dtoRegister);
+    this.baseServices.showLoading();
+    this.eventoService.create(this.dtoRegister).subscribe(
       (response) => {
-        this.loading.hide();
-        this.toast.addToast({
-          type: 'success',
-          message: 'Agregado Correctamente'
-        });
+        this.baseServices.hideLoading();
+
+        this.baseServices.showMessageSucces('Agregado Correctamente');
+
         this.coreExit();
       },
       (err) => {
-        this.loading.hide();
-        this.toast.addToast({
-          type: 'danger',
-          message: 'Error al Agregar'
-        });
+        this.baseServices.hideLoading();
+        this.baseServices.showMessageError('Error al agregar');
+
 
       }
-    ); */
+    );
   }
 
   coreEdit() {
-    this.loading.show();
+    this.baseServices.showLoading();
     console.log("UPDATE", this.dtoRegister);
-
+    
     this.eventoService.update(this.dtoRegister).subscribe(
       (response) => {
-        this.loading.hide();
-        this.toast.addToast({
-          type: 'success',
-          message: 'Actualizado Correctamente'
-        });
+        this.baseServices.hideLoading();
 
+        this.baseServices.showMessageSucces('Actualizado Correctamente');
         this.coreExit();
       },
       (err) => {
-        this.loading.hide();
-        this.toast.addToast({
-          type: 'danger',
-          message: 'Error al Actualizar'
-        });
+        this.baseServices.hideLoading();
+        this.baseServices.showMessageError('Error al actualizar');
 
       }
     );
@@ -179,17 +171,17 @@ export class EventosManageComponent implements OnInit {
       }
 
       case ('SubEventoManage'): {
-        if (message.method == 'NEW') {
+        if (message.method == 'CREATE') {
           this.dtoRegister.subeventos.push(message.selected)
         }
-        /* if (message.method == 'EDIT') {
+        /* if (message.method == 'UPDATE') {
           this.dtoRegister.subeventos.find(item => item == message.selected)
           // Reemplazarlo
         } */
         break;
       }
       case ('SubEventoDetalleManage'): {
-        if (message.method == 'NEW') {
+        if (message.method == 'CREATE') {
           this.dtoRegister.subeventos.push(message.selected)
         }
         break;
@@ -200,15 +192,18 @@ export class EventosManageComponent implements OnInit {
 
 
   getAllInfo() {
-    this.loading.show();
+    this.baseServices.showLoading();
+    if (!this.dtoSelected?.id) {
+      this.baseServices.showMessageError('El registro no tiene ID')
+    }
     this.eventoService.getEventoByID(this.dtoSelected?.id).subscribe(
       data => {
-        this.loading.hide();
+        this.baseServices.hideLoading();
         this.dtoRegister = data;
 
-        this.dtoRegister.fechaInicio = new Date(`${this.dtoRegister.fechaInicio}T05:00:00.000Z`)
+        /* this.dtoRegister.fechaInicio = new Date(`${this.dtoRegister.fechaInicio}T05:00:00.000Z`)
 
-        this.dtoRegister.fechaFin = new Date(`${this.dtoRegister.fechaFin}T05:00:00.000Z`)
+        this.dtoRegister.fechaFin = new Date(`${this.dtoRegister.fechaFin}T05:00:00.000Z`) */
 
       }, err => {
         console.log("error");

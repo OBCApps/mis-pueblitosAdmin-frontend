@@ -1,3 +1,5 @@
+<p-toast />
+<p-confirmDialog></p-confirmDialog>
 <div class="max-w-7xl mx-auto">
 
 
@@ -113,34 +115,30 @@
         </div>
 
     </div>
-    <div class="grid grid-cols-9 gap-2">
-        <div class="col-span-9 md:col-span-8">
 
-        </div>
-        <div class="col-span-9 md:col-span-1">
-            <button type="button" (click)="coreNew()"
-                class="text-white bg-green-400 hover:bg-green-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm w-full py-2.5  dark:bg-blue-600 dark:hover:bg-primary focus:outline-none dark:focus:ring-blue-800">
-                NUEVO
-            </button>
-        </div>
-    </div>
 
-    <p-table #dt [value]="filter.paginationresult.result" [paginator]="true" [responsive]="true"
-        styleClass="table-ryl" [style]="{ width: '100%'}" [rows]="filter.paginationresult.size"
-        dataKey="idestudiante" [lazy]="true" (onLazyLoad)="onPageChange($event)"
-        [totalRecords]="filter.paginationresult.totalRegistros" [showCurrentPageReport]="true"
+    <p-table #dt [value]="filter.paginationresult.result" [paginator]="true" styleClass="table-ryl"
+        [style]="{ width: '100%' }" [rows]="filter.paginationresult.size" dataKey="idestudiante" [lazy]="true"
+        (onLazyLoad)="onPageChange($event)" [totalRecords]="filter.paginationresult.totalRegistros"
+        [showCurrentPageReport]="true"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros">
         <ng-template pTemplate="header">
             <tr class="text-xs">
-                <th class="bg-secondary border-l border-t border-b border-secbg-secondary text-white  text-center">
+                <!--  <th class="bg-secondary border-l border-t border-b border-secbg-secondary text-white  text-center">
                     ID
-                </th>
+                </th> -->
 
                 <th class="bg-secondary border-r border-t border-b border-secbg-secondary text-white  text-center">
                     NOMBRE
                 </th>
                 <th class="bg-secondary border-r border-t border-b border-secbg-secondary text-white  text-center">
                     UBICACIÓN EXACTA
+                </th>
+                <th class="bg-secondary border-r border-t border-b border-secbg-secondary text-white  text-center">
+                    FECHA INICIO
+                </th>
+                <th class="bg-secondary border-r border-t border-b border-secbg-secondary text-white  text-center">
+                    FECHA FIN
                 </th>
                 <th class=" bg-white border border-secbg-secondary text-secbg-secondary text-center">
                     TIPO
@@ -158,14 +156,24 @@
         </ng-template>
 
         <ng-template pTemplate="caption">
+            <div class="grid grid-cols-9 gap-2">
+                <div class="col-span-9 md:col-span-8">
 
+                </div>
+                <div class="col-span-9 md:col-span-1">
+                    <button type="button" (click)="coreNew()"
+                        class="text-white bg-green-400 hover:bg-green-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm w-full py-2.5  dark:bg-blue-600 dark:hover:bg-primary focus:outline-none dark:focus:ring-blue-800">
+                        NUEVO
+                    </button>
+                </div>
+            </div>
         </ng-template>
         <ng-template pTemplate="body" let-item let-editing="editing" let-index="rowIndex">
             <tr class="text-xs text-center p-2">
-                <td class="text-center">
+                <!-- <td class="text-center">
                     <span class="p-column-title">ID</span>
                     {{ item.id}}
-                </td>
+                </td> -->
 
                 <td class="text-center">
                     <span class="p-column-title">NOMBRE</span>
@@ -176,12 +184,21 @@
                     {{ item.ubicacionExacta }}
                 </td>
                 <td class="text-center">
+                    <span class="p-column-title">FECHA INICIO</span>
+                    {{ item.fechaInicio | date:'dd MMM YYYY' }}
+                </td>
+                <td class="text-center">
+                    <span class="p-column-title">FECHA INICIO</span>
+                    {{ item.fechaFin | date:'dd MMM YYYY' }}
+                </td>
+                <td class="text-center">
                     <span class="p-column-title">TIPO</span>
                     {{ item.type }}
                 </td>
                 <td class="text-center">
                     <span class="p-column-title">ESTADO</span>
-                    {{ item.estado }}
+                    {{ item.estado == 'AC' ? 'Activo' :
+                    item.estado == 'IN' ? 'Inactivo' : 'No reconocido'}}
                 </td>
 
                 <td class="text-center">

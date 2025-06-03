@@ -34,14 +34,14 @@ export class EventoService {
 
   // -------- CRUD ENTIDADES ---------- \\
   getEventoByID(id: any): Observable<DtoEvento> {
-    return this.http.get<DtoEvento>(this.API_SERVER_EVENTO + '/getByID/' + id).pipe(
+    return this.http.get<DtoEvento>(this.API_SERVER_EVENTO + `findDto_byId/${id}`).pipe(
       map((response) => {
         return response;
       })
     );
   }
   create(data: any): Observable<DtoEvento> {
-    return this.http.post<DtoEvento>(this.API_SERVER_EVENTO + '/register', data).pipe(
+    return this.http.post<DtoEvento>(this.API_SERVER_EVENTO + 'create', data).pipe(
       map((response) => {
         return response;
       })
@@ -50,7 +50,7 @@ export class EventoService {
 
   update(data: any): Observable<DtoEvento> {
     return this.http
-      .patch<DtoEvento>(this.API_SERVER_EVENTO + '/update/' + data.id, data)
+      .patch<DtoEvento>(this.API_SERVER_EVENTO + `update/${data.id}`, data)
       .pipe(
         map((response) => {
           return response;
@@ -59,7 +59,7 @@ export class EventoService {
   }
 
   delete(data: any): Observable<any> {
-    return this.http.delete<any>(this.API_SERVER_EVENTO + '/delete/' + data.id).pipe(
+    return this.http.delete<any>(this.API_SERVER_EVENTO + `delete/${data.id}`).pipe(
       map((response) => {
         return response;
       })

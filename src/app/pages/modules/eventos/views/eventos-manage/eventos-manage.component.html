@@ -58,7 +58,7 @@
                         <label class="block text-sm font-medium text-gray-700 mb-2">
                             Nombre del Evento
                         </label>
-                        <input type="text"
+                        <input type="text" [disabled]="opDisable"
                             class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             [(ngModel)]="dtoRegister.nombre" (input)="create_nameRoute(dtoRegister.nombre)"
                             placeholder="Ingresa el nombre del evento" />
@@ -69,7 +69,7 @@
                         <label class="block text-sm font-medium text-gray-700 mb-2">
                             Descripción
                         </label>
-                        <input type="text"
+                        <input type="text" [disabled]="opDisable"
                             class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             [(ngModel)]="dtoRegister.descripcion" placeholder="Describe brevemente el evento" />
                     </div>
@@ -79,7 +79,7 @@
                         <label class="block text-sm font-medium text-gray-700 mb-2">
                             Ubicación Exacta
                         </label>
-                        <input type="text"
+                        <input type="text" [disabled]="opDisable"
                             class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             [(ngModel)]="dtoRegister.ubicacionExacta" placeholder="Dirección completa del evento" />
                     </div>
@@ -91,7 +91,7 @@
                         </label>
                         <input type="date"
                             class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            [(ngModel)]="dtoRegister.fechaInicio" />
+                            [(ngModel)]="dtoRegister.fechaInicio" [disabled]="opDisable" />
                     </div>
 
                     <!-- Fecha Fin -->
@@ -101,7 +101,7 @@
                         </label>
                         <input type="date"
                             class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            [(ngModel)]="dtoRegister.fechaFin" />
+                            [(ngModel)]="dtoRegister.fechaFin" [disabled]="opDisable" />
                     </div>
 
                     <!-- Tipo -->
@@ -111,7 +111,7 @@
                         </label>
                         <select
                             class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            [(ngModel)]="dtoRegister.type">
+                            [(ngModel)]="dtoRegister.type" [disabled]="opDisable">
                             <option value="">Selecciona el tipo de evento</option>
                             <option *ngFor="let type of list_types" [value]="type.code">
                                 {{ type.name }}
@@ -127,8 +127,8 @@
                         <div class="flex">
                             <input type="text"
                                 class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                [(ngModel)]="dtoRegister.lugarDesc" placeholder="Selecciona o escribe el lugar" />
-                            <button type="button"
+                                [(ngModel)]="dtoRegister.lugarDesc" [disabled]="true" />
+                            <button type="button" [disabled]="opDisable"
                                 class="px-3 py-2 bg-gray-100 border border-l-0 border-gray-300 rounded-r-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
                                 (click)="coreShowSelectors('LugarSelector')">
                                 <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor"
@@ -145,9 +145,23 @@
                         <label class="block text-sm font-medium text-gray-700 mb-2">
                             Nombre de Ruta
                         </label>
-                        <input type="text"
+                        <input type="text" [disabled]="opDisable"
                             class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             [(ngModel)]="dtoRegister.name_route" placeholder="URL amigable del evento" />
+                    </div>
+
+                    <div class="lg:col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Estado
+                        </label>
+                        <select [disabled]="opDisable"
+                            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            [(ngModel)]="dtoRegister.estado">
+                            <option value="">Selecciona el Estado</option>
+                            <option *ngFor="let type of list_estados" [value]="type.code">
+                                {{ type.name }}
+                            </option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -168,7 +182,7 @@
                                 <label class="block text-sm font-medium text-gray-700 mb-2">
                                     Enlace de Imagen
                                 </label>
-                                <input type="text"
+                                <input type="text" [disabled]="opDisable"
                                     class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                     [(ngModel)]="dtoRegister.foto.url" placeholder="https://ejemplo.com/imagen.jpg" />
                             </div>
@@ -190,7 +204,7 @@
                                                 <p class="text-xs text-gray-500 mt-1">PNG, JPG hasta 10MB</p>
                                             </div>
                                         </div>
-                                        <input id="dropzone-file" type="file" class="hidden"
+                                        <input id="dropzone-file" type="file" class="hidden" [disabled]="opDisable"
                                             accept="image/png, image/jpeg" (change)="onFileChange($event)" />
                                     </label>
                                 </div>
@@ -205,7 +219,7 @@
                                                 class="text-white opacity-0 group-hover:opacity-100 text-sm font-medium">Cambiar
                                                 imagen</span>
                                         </div>
-                                        <input id="dropzone-file" type="file" class="hidden"
+                                        <input id="dropzone-file" type="file" class="hidden" [disabled]="opDisable"
                                             accept="image/png, image/jpeg" (change)="onFileChange($event)" />
                                     </label>
                                 </div>
@@ -219,7 +233,7 @@
                             <label class="block text-sm font-medium text-gray-700 mb-2">
                                 Título de la Imagen
                             </label>
-                            <input type="text"
+                            <input type="text" [disabled]="opDisable"
                                 class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                 [(ngModel)]="dtoRegister.foto.titulo" placeholder="Título descriptivo de la imagen" />
                         </div>
@@ -229,10 +243,10 @@
                                 Lugar de la Foto
                             </label>
                             <div class="flex">
-                                <input type="text"
+                                <input type="text" [disabled]="true"
                                     class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                     [(ngModel)]="dtoRegister.foto.lugar" placeholder="Lugar donde se tomó la foto" />
-                                <button type="button"
+                                <button type="button" [disabled]="opDisable"
                                     class="px-3 py-2 bg-gray-100 border border-l-0 border-gray-300 rounded-r-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
                                     (click)="coreShowSelectors('LugarSelectorPhoto')">
                                     <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor"
@@ -249,11 +263,11 @@
                                 Proveedor
                             </label>
                             <div class="flex">
-                                <input type="text"
+                                <input type="text" [disabled]="true"
                                     class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                     [(ngModel)]="dtoRegister.foto.proveedorDesc"
                                     placeholder="Selecciona el proveedor" />
-                                <button type="button"
+                                <button type="button" [disabled]="opDisable"
                                     class="px-3 py-2 bg-gray-100 border border-l-0 border-gray-300 rounded-r-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
                                     (click)="coreShowSelectors('ProveedorSelector')">
                                     <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor"
@@ -274,12 +288,12 @@
 
 
     <div class="mt-8 flex justify-center">
-        <button type="button"
-            class="inline-flex items-center px-6 py-3 text-base font-medium text-white bg-primary border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
+        <button *ngIf="action == 'CREATE' || action == 'UPDATE' " type="button" [disabled]="opDisable"
+            class="inline-flex items-center px-6 py-3 text-base font-medium text-white bg-primary border border-transparent rounded-md hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
             (click)="coreSave()">
-            {{ action == 'NEW' ? 'Guardar Evento' :
+            {{ action == 'CREATE' ? 'Guardar Evento' :
             action == 'UPDATE' ?'Actualizar Evento' :
-            '' }}
+            'Guardar Evento' }}
         </button>
     </div>
 

@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
 import { ConstantEvents } from '../../eventos.constant';
 import { AuthorizationService } from '../../../../shared/global-components/authorization/auth.service';
 import { LoadingService } from '../../../../shared/global-components/loadings/loading-service.service';
+import { PaginationResultDto } from '../../../../shared/global-components/dto/PaginationResultDto';
+import { BaseServices } from '../../../../shared/global-components/BaseServices';
 
 
 @Component({
@@ -65,6 +67,7 @@ export class EventosListComponent implements OnInit {
 
   constructor(
     private eventoService: EventoService,
+    private baseServices: BaseServices,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private router: Router,
@@ -85,13 +88,13 @@ export class EventosListComponent implements OnInit {
       (response) => {
         this.loading.hide();
         this.filter = response;
-        this.formularioOninit = false;
+        this.filter.paginationresult.formularioOninit = true; // YA fue iniciado
         this.listFilter = response.paginationresult.result;
       });
   }
 
   coreNew() {
-    const dataSave = { action: 'NEW', data: this.itemSelected };
+    const dataSave = { action: 'CREATE', data: this.itemSelected };
     this.authorizationService.setLocalData(dataSave);
     this.router.navigate([ConstantEvents.event_manage])
   }
@@ -103,7 +106,7 @@ export class EventosListComponent implements OnInit {
   }
 
   coreEdit() {
-    const dataSave = { action: 'EDIT', data: this.itemSelected };
+    const dataSave = { action: 'UPDATE', data: this.itemSelected };
     this.authorizationService.setLocalData(dataSave);
     this.router.navigate([ConstantEvents.event_manage])
   }
@@ -123,10 +126,11 @@ export class EventosListComponent implements OnInit {
 
         this.eventoService.delete(this.itemSelected).subscribe(
           (response) => {
-            this.messageService.add({ severity: 'success', summary: 'Agregado Correctamente', detail: '', life: 3000 });
+            this.baseServices.showMessageSucces('Agregado Correctamente');
             this.coreSearch()
           },
           (err) => {
+            this.baseServices.showMessageError('Error al agregar');
             this.messageService.add({ severity: 'error', summary: 'Error al Agregar', detail: '', life: 3000 });
           }
         );
@@ -140,15 +144,18 @@ export class EventosListComponent implements OnInit {
     this.coreSearch()
   }
 
-  formularioOninit: boolean = true;
+
   // ------------ PAGINATION -------------------\\
   onPageChange(event: TableLazyLoadEvent) {
-    // Actualiza la página y tamaño
-    if (this.formularioOninit == true) return;
-    this.filter.paginationresult.paginacioninicio = event.first;
-    this.filter.paginationresult.result = []
+    if (this.filter.paginationresult.formularioOninit == false) return;
+    this.filter.paginationresult = new PaginationResultDto();
+    this.filter.paginationresult.page = event.first && event.rows ? Math.floor(event.first / event.rows) + 1 : 1;;
+    this.filter.paginationresult.size = event.rows ?? 10;
+    this.filter.paginationresult.result = [];
+
     this.coreSearch();
   }
+
   modifyItems() {
     /* if (this.itemSelected.flagDisponible == true) {
       
