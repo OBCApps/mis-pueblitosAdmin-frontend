@@ -9,6 +9,7 @@ export class DtoSubEvento {
     horaInicio: Date
     horaFin: Date
     eventoId: string
+    estado: string;
     subEventoDetalles: DtoSubEventoDetalle[] = []
 }
 export class DtoSubEventoDetalle {
@@ -19,4 +20,5 @@ export class DtoSubEventoDetalle {
     horaInicio: Date
     horaFin: Date
     subEventoId: null
+    editing: boolean = false;
 }

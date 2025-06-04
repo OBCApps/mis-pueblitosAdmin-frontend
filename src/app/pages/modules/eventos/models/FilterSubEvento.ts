@@ -1,16 +1,20 @@
+import { PaginationResultDto } from "../../../shared/global-components/dto/PaginationResultDto";
+
 export class FilterSubEvento {
 
-    eventoId: string;
-    nombre: string;
-    descripcion: string;
-    dia: Date;
-
-}
-
-export class listFilterSubEvento {
-    eventoId: string;
-    nombre: string;
-    descripcion: string;
-    dia: Date;
     id: string;
+
+    nombre: string;
+
+    dia: string;
+
+    horaInicio: string;
+
+    horaFin: string;
+
+    eventoId: string;
+
+    paginationresult: PaginationResultDto = new PaginationResultDto()
+
 }
+

@@ -4,12 +4,13 @@ import { DtoEvento } from '../../models/DtoEventos';
 import { LugarSelectorViewComponent } from '../../../../shared/global-components/selectors/lugar-selector/views/lugar-selector-view/lugar-selector-view.component';
 import { MessageController } from '../../../../shared/global-components/MessageController';
 import { ProveedorSelectorViewComponent } from '../../../../shared/global-components/selectors/proveedor-selector/views/proveedor-selector-view/proveedor-selector-view.component';
-import { MessageService } from 'primeng/api';
+import { MenuItem } from 'primeng/api';
 import { ConstantEvents } from '../../eventos.constant';
 import { DtoSubEvento } from '../../models/DtoSubEvento';
 import { AuthorizationService } from '../../../../shared/global-components/authorization/auth.service';
 import { BaseServices } from '../../../../shared/global-components/BaseServices';
 import { EventoService } from '../../services/eventosService';
+import { SubeventosManageComponent } from '../subeventos-manage/subeventos-manage.component';
 
 @Component({
   selector: 'app-eventos-manage',
@@ -17,24 +18,22 @@ import { EventoService } from '../../services/eventosService';
   styleUrl: './eventos-manage.component.scss'
 })
 export class EventosManageComponent implements OnInit {
+  activeTab: string = 'INFO'
   action: string;
-
+  opDisable: boolean = false;
   dtoSelected: DtoEvento = new DtoEvento();
+
+
+  dtoRegister: DtoEvento = new DtoEvento();
   subEventoSelected: DtoSubEvento = new DtoSubEvento();
 
-  list_types: any[] = [
-    { name: 'Festividad', code: 'Festividad' },
-    { name: 'Evento', code: 'Evento' },
-  ];
-
+  list_types: any[] = [{ name: 'Festividad', code: 'Festividad' }, { name: 'Evento', code: 'Evento' },];
   list_estados: any[] = this.baseServices.getListStatus();
-
 
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private eventoService: EventoService,
-    private messageService: MessageService,
     private router: Router,
     private authorizationService: AuthorizationService,
     private baseServices: BaseServices
@@ -43,11 +42,12 @@ export class EventosManageComponent implements OnInit {
 
   }
 
-  opDisable: boolean = false;
+
   ngOnInit(): void {
     const tempData = this.authorizationService.getLocalData()
     this.action = tempData?.action;
     this.dtoSelected = tempData?.data;
+
     this.opDisable =
       this.action == 'CREATE' ? false :
         this.action == 'UPDATE' ? false :
@@ -63,12 +63,7 @@ export class EventosManageComponent implements OnInit {
   }
 
 
-  dtoRegister: DtoEvento = new DtoEvento();
 
-  getInfoDtoSelected(): [string, any] {
-    const localData = JSON.parse(localStorage.getItem('dtoSelected'));
-    return [localData.action, localData.data]
-  }
 
   coreExit() {
     this.router.navigate([ConstantEvents.event_list])
@@ -107,7 +102,7 @@ export class EventosManageComponent implements OnInit {
   coreEdit() {
     this.baseServices.showLoading();
     console.log("UPDATE", this.dtoRegister);
-    
+
     this.eventoService.update(this.dtoRegister).subscribe(
       (response) => {
         this.baseServices.hideLoading();
@@ -126,12 +121,13 @@ export class EventosManageComponent implements OnInit {
     console.log("delete", this.dtoSelected);
     console.log("dtoRegister", this.dtoRegister);
 
-    this.dtoRegister.subeventos = this.dtoRegister.subeventos.filter(subevento => subevento.id !== this.subEventoSelected.id);
+    this.dtoRegister.subEventos = this.dtoRegister.subEventos.filter(subevento => subevento.id !== this.subEventoSelected.id);
 
   }
 
   @ViewChild(LugarSelectorViewComponent, { static: false }) LugarSelectorViewComponent: LugarSelectorViewComponent;
   @ViewChild(ProveedorSelectorViewComponent, { static: false }) ProveedorSelectorViewComponent: ProveedorSelectorViewComponent;
+  @ViewChild(SubeventosManageComponent, { static: false }) SubeventosManageComponent: SubeventosManageComponent;
   coreShowSelectors(nameSelector: string) {
     switch (nameSelector) {
       case ('LugarSelector'): {
@@ -147,6 +143,7 @@ export class EventosManageComponent implements OnInit {
         this.LugarSelectorViewComponent.coreInitSelector(new MessageController(this, nameSelector));
         break;
       }
+
     }
 
   }
@@ -172,17 +169,17 @@ export class EventosManageComponent implements OnInit {
 
       case ('SubEventoManage'): {
         if (message.method == 'CREATE') {
-          this.dtoRegister.subeventos.push(message.selected)
+          this.dtoRegister.subEventos.push(message.selected)
         }
         /* if (message.method == 'UPDATE') {
-          this.dtoRegister.subeventos.find(item => item == message.selected)
+          this.dtoRegister.subEventos.find(item => item == message.selected)
           // Reemplazarlo
         } */
         break;
       }
       case ('SubEventoDetalleManage'): {
         if (message.method == 'CREATE') {
-          this.dtoRegister.subeventos.push(message.selected)
+          this.dtoRegister.subEventos.push(message.selected)
         }
         break;
       }
@@ -201,13 +198,10 @@ export class EventosManageComponent implements OnInit {
         this.baseServices.hideLoading();
         this.dtoRegister = data;
 
-        /* this.dtoRegister.fechaInicio = new Date(`${this.dtoRegister.fechaInicio}T05:00:00.000Z`)
-
-        this.dtoRegister.fechaFin = new Date(`${this.dtoRegister.fechaFin}T05:00:00.000Z`) */
-
       }, err => {
         console.log("error");
-
+        this.baseServices.hideLoading();
+        this.baseServices.showMessageError('Error en el servidor')
       })
 
   }
@@ -246,4 +240,58 @@ export class EventosManageComponent implements OnInit {
 
   }
 
+
+
+  // ------------------GESTIÓN SUBEVENTOS
+  itemSelected: any;
+  coreNewSubEvento() {
+    this.SubeventosManageComponent.coreInitSelector(new MessageController(this, 'SubEventoManage', 'CREATE'));
+
+  }
+  items: MenuItem[] = [
+    {
+      label: 'Ver',
+      icon: 'pi pi-eye',
+      command: () => {
+        if (!this.itemSelected) {
+          this.baseServices.showMessageError('No hay una entidad para mostrar');
+          return;
+        }
+        this.SubeventosManageComponent.coreInitSelector(new MessageController(this, 'SubEventoManage', 'VIEW', this.itemSelected));
+
+        //this.coreView()
+      },
+    },
+    {
+      label: 'Editar',
+      icon: 'pi pi-pencil',
+      command: () => {
+        if (!this.itemSelected) {
+          this.baseServices.showMessageError('No hay una entidad para editar');
+          return;
+        }
+        this.SubeventosManageComponent.coreInitSelector(new MessageController(this, 'SubEventoManage', 'UPDATE', this.itemSelected));
+
+        //this.coreEdit()
+      },
+    },
+    {
+      label: 'Gestionar Actividades',
+      icon: 'pi pi-pencil',
+      command: () => {
+        //this.coreEdit()
+      },
+    },
+    {
+      label: 'Eliminar',
+      icon: 'pi pi-trash',
+      command: () => {
+        //this.coreDelete()
+      },
+    }
+  ];
+
+  modifyItems() {
+
+  }
 }

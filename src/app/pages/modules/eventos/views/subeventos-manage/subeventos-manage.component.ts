@@ -12,15 +12,16 @@ import { BaseVariables } from '../../../../shared/global-components/BaseVariable
 })
 export class SubeventosManageComponent extends BaseVariables {
   visible: boolean = false;
-
+  activeTab: string = 'info';
+  opDisable: boolean = false;
   dtoRegister: DtoSubEvento = new DtoSubEvento();
   dtoSubEventoDetalle: DtoSubEventoDetalle = new DtoSubEventoDetalle();
   coreInitSelector(message: MessageController) {
-    if (message.method == 'NEW') {
+    if (message.method == 'CREATE') {
       this.dtoRegister = new DtoSubEvento();
     }
 
-    if (message.method == 'EDIT' || message.method == 'VIEW') {
+    if (message.method == 'UPDATE' || message.method == 'VIEW') {
 
 
       this.dtoRegister = Object.assign({}, message.selected);
@@ -145,6 +146,39 @@ export class SubeventosManageComponent extends BaseVariables {
     const dayOfMonth = ('0' + date.getDate()).slice(-2); // Obtener el día asegurando que tenga 2 dígitos
 
     return `${year}-${month}-${dayOfMonth}`; // Formatear como año-mes-día
+  }
+
+
+
+
+  // ------ SUBEVENTOS
+  addSubEventoDetalle() {
+    /* const newDetail = {
+      id: Date.now(), // Simple ID generation
+      organizador: "",
+      detalle: "",
+      horaInicio: "",
+      horaFin: "",
+      editing: false,
+    }
+    this.dtoRegister.subEventoDetalles.push(newDetail) */
+  }
+  selectedFileName: string = '';
+  previewImageUrl: string | ArrayBuffer | null = null;
+  selectedFile: File | null = null;
+
+  // Método para manejar la selección de archivos
+  onFileChange(event: any,) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.dtoRegister.foto.titulo = file.name;
+      //this.dtoRegister.foto.url = e.target.result;
+      this.dtoRegister.foto.base64 = e.target.result;
+    };
+    reader.readAsDataURL(file);
+
+
   }
 }
 

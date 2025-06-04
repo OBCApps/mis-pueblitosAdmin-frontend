@@ -4,7 +4,7 @@ import { Observable, map } from 'rxjs';
 import { API_SERVICE_ADMIN } from '../../../../../environments/environment.prod';
 
 import { FilterEvento } from '../models/FilterEvento';
-import { FilterSubEvento, listFilterSubEvento } from '../models/FilterSubEvento';
+import { FilterSubEvento } from '../models/FilterSubEvento';
 import { DtoSubEvento } from '../models/DtoSubEvento';
 
 
@@ -26,8 +26,8 @@ export class SubEventoService {
     );
   }
 
-  search(data: FilterSubEvento): Observable<listFilterSubEvento[]> {
-    return this.http.post<listFilterSubEvento[]>(this.API_SERVER_EVENTO + '/filter-list', data).pipe(
+  search(data: FilterSubEvento): Observable<any> {
+    return this.http.post<any>(this.API_SERVER_EVENTO + '/filter_pagination', data).pipe(
       map((response) => {
         return response;
       })

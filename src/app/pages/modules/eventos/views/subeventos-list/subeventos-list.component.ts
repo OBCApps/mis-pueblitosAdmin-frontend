@@ -2,11 +2,14 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { SubEventoService } from '../../services/subeventoService';
 import { Router } from '@angular/router';
-import { FilterSubEvento, listFilterSubEvento } from '../../models/FilterSubEvento';
+import { FilterSubEvento, } from '../../models/FilterSubEvento';
 import { BaseComponents } from '../../../../shared/global-components/BaseComponents';
 import { ConstantEvents } from '../../eventos.constant';
-import { Table } from 'primeng/table';
+import { Table, TableLazyLoadEvent } from 'primeng/table';
 import { DtoSubEvento } from '../../models/DtoSubEvento';
+import { PaginationResultDto } from '../../../../shared/global-components/dto/PaginationResultDto';
+import { BaseServices } from '../../../../shared/global-components/BaseServices';
+import { AuthorizationService } from '../../../../shared/global-components/authorization/auth.service';
 
 @Component({
   selector: 'app-subeventos-list',
@@ -15,74 +18,101 @@ import { DtoSubEvento } from '../../models/DtoSubEvento';
 })
 export class SubeventosListComponent implements OnInit {
   productDialog: boolean = false;
-
-  listFilter!: listFilterSubEvento[];
-
+  bool_loadingtable: boolean = false;
 
 
-  itemSelected!: listFilterSubEvento | null; // 
+  list_types: any[] = [{ name: 'Festividad', value: 'Festividad' }, { name: 'Evento', value: 'Evento' }]
+  listFilter: any[];
+
+
+
+  itemSelected: FilterSubEvento; // 
 
 
   filter: FilterSubEvento = new FilterSubEvento(); // Filtros de busqueda
 
-  items: MenuItem[] | undefined; // Acciones Ver, Editar
+  items: MenuItem[] = [
+    {
+      label: 'Ver',
+      icon: 'pi pi-eye',
+      command: () => {
+        this.coreView()
+      },
+    },
+    {
+      label: 'Editar',
+      icon: 'pi pi-pencil',
+      command: () => {
+        this.coreEdit()
+      },
+    },
+    /*  {
+       label: 'Duplicar',
+       icon: 'pi pi-trash',
+       command: () => {
+         this.coreDuplicate()
+       },
+     }, */
+    {
+      label: 'Eliminar',
+      icon: 'pi pi-trash',
+      command: () => {
+        this.coreDelete()
+      },
+    }
+
+  ];
 
   constructor(
-    private subEventoService: SubEventoService,
+    private SubEventoService: SubEventoService,
+    private baseServices: BaseServices,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private router: Router,
+    private authorizationService: AuthorizationService,
   ) { }
 
   ngOnInit() {
     this.coreSearch()
 
-
-    this.items = [
-      {
-        label: 'Ver',
-        icon: 'pi pi-eye',
-        command: () => {
-          this.coreView()
-        },
-      },
-      {
-        label: 'Editar',
-        icon: 'pi pi-pencil',
-        command: () => {
-          this.coreEdit()
-        },
-      },
-      {
-        label: 'Eliminar',
-        icon: 'pi pi-trash',
-        command: () => {
-          this.coreDelete()
-        },
-      }
-
-    ];
   }
+
   coreSearch() {
-    console.log("FIlter", this.filter);
 
+    this.baseServices.showLoading();
     this.listFilter = [];
-    this.subEventoService.search(this.filter).subscribe((data) => (this.listFilter = data));
+
+    this.SubEventoService.search(this.filter).subscribe(
+      (response) => {
+        this.baseServices.hideLoading();
+        this.filter = response;
+        this.filter.paginationresult.formularioOninit = true; // YA fue iniciado
+        this.listFilter = response.paginationresult.result;
+      });
   }
+
   coreNew() {
-    BaseComponents.saveLocalStorageToManage('NEW', this.itemSelected)
-    this.router.navigate([ConstantEvents.subevent_manage])
+    const dataSave = { action: 'CREATE', data: this.itemSelected };
+    this.authorizationService.setLocalData(dataSave);
+    this.router.navigate([ConstantEvents.event_manage])
   }
 
   coreView() {
-    BaseComponents.saveLocalStorageToManage('VIEW', this.itemSelected)
-    this.router.navigate([ConstantEvents.subevent_manage])
-
+    const dataSave = { action: 'VIEW', data: this.itemSelected };
+    this.authorizationService.setLocalData(dataSave);
+    this.router.navigate([ConstantEvents.event_manage])
   }
 
   coreEdit() {
-    BaseComponents.saveLocalStorageToManage('EDIT', this.itemSelected)
-    this.router.navigate([ConstantEvents.subevent_manage])
+    const dataSave = { action: 'UPDATE', data: this.itemSelected };
+    this.authorizationService.setLocalData(dataSave);
+    this.router.navigate([ConstantEvents.event_manage])
+  }
+
+  coreDuplicate() {
+    const dataSave = { action: 'DUPLICATE', data: this.itemSelected };
+    this.authorizationService.setLocalData(dataSave);
+    this.router.navigate([ConstantEvents.event_manage])
   }
 
   coreDelete() {
@@ -92,12 +122,13 @@ export class SubeventosListComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
 
-        this.subEventoService.delete(this.itemSelected).subscribe(
+        this.SubEventoService.delete(this.itemSelected).subscribe(
           (response) => {
-            this.messageService.add({ severity: 'success', summary: 'Agregado Correctamente', detail: '', life: 3000 });
+            this.baseServices.showMessageSucces('Agregado Correctamente');
             this.coreSearch()
           },
           (err) => {
+            this.baseServices.showMessageError('Error al agregar');
             this.messageService.add({ severity: 'error', summary: 'Error al Agregar', detail: '', life: 3000 });
           }
         );
@@ -110,68 +141,33 @@ export class SubeventosListComponent implements OnInit {
     this.filter = new FilterSubEvento();
     this.coreSearch()
   }
-  editProduct(product: any) {
 
-    this.productDialog = true;
+
+  // ------------ PAGINATION -------------------\\
+  onPageChange(event: TableLazyLoadEvent) {
+    if (this.filter.paginationresult.formularioOninit == false) return;
+    this.filter.paginationresult = new PaginationResultDto();
+    this.filter.paginationresult.page = event.first && event.rows ? Math.floor(event.first / event.rows) + 1 : 1;;
+    this.filter.paginationresult.size = event.rows ?? 10;
+    this.filter.paginationresult.result = [];
+
+    this.coreSearch();
   }
 
-  deleteProduct(product: any) {
-    this.confirmationService.confirm({
-      message: 'Are you sure you want to delete ' + product.nombre + '?',
-      header: 'Confirm',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.listFilter = this.listFilter.filter((val) => val.id !== product.id);
+  modifyItems() {
+    /* if (this.itemSelected.flagDisponible == true) {
+      
+    } else {
+      this.items = [
+        {
+          label: 'Editar',
+          icon: 'pi pi-eye',
+          command: () => {
+            this.coreEdit()
+          },
+        },
+      ];
+    } */
 
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
-      }
-    });
   }
-
-  hideDialog() {
-    this.productDialog = false;
-
-  }
-
-
-
-  findIndexById(id: string): number {
-    let index = -1;
-    for (let i = 0; i < this.listFilter.length; i++) {
-      if (this.listFilter[i].id === id) {
-        index = i;
-        break;
-      }
-    }
-
-    return index;
-  }
-
-  createId(): string {
-    let id = '';
-    var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (var i = 0; i < 5; i++) {
-      id += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return id;
-  }
-
-  getSeverity(status: string) {
-    switch (status) {
-      case 'INSTOCK':
-        return 'success';
-      case 'LOWSTOCK':
-        return 'warning';
-      case 'OUTOFSTOCK':
-        return 'danger';
-      default: return 'danger'
-    }
-  }
-  @ViewChild('dt') dt: Table | undefined;
-  onFilterGlobal(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    this.dt.filterGlobal(inputElement.value, 'contains');
-  }
-
-
 }

@@ -1,4 +1,5 @@
 <div class="max-w-7xl mx-auto ">
+
     <nav class="flex" aria-label="Breadcrumb">
         <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse py-2">
             <li class="inline-flex items-center">
@@ -42,213 +43,116 @@
         </ol>
     </nav>
 
-    <div class=" space-y-4">
+
+    <div class="border-b border-gray-200 mb-6">
+        <nav class="-mb-px flex space-x-8">
+            <button (click)="activeTab = 'INFO'"
+                [class]="activeTab === 'INFO' 
+          ? 'border-blue-500 text-blue-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm'
+          : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm'">
+                Información del Evento
+            </button>
+            <button (click)="activeTab = 'SUBEVENTOS'"
+                [class]="activeTab === 'SUBEVENTOS' 
+          ? 'border-blue-500 text-blue-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm'
+          : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm'">
+                Listado de Sub-Eventos
+            </button>
+        </nav>
+    </div>
+    <div class="">
+
+        <!-- Información del Evento Tab -->
+        <div *ngIf="activeTab === 'INFO'" class="space-y-6">
 
 
-        <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
-            <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-900">Datos del Evento</h2>
-            </div>
 
-            <div class="p-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-
-                    <!-- Nombre -->
-                    <div class="lg:col-span-2">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                            Nombre del Evento
-                        </label>
-                        <input type="text" [disabled]="opDisable"
-                            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            [(ngModel)]="dtoRegister.nombre" (input)="create_nameRoute(dtoRegister.nombre)"
-                            placeholder="Ingresa el nombre del evento" />
-                    </div>
-
-                    <!-- Descripción -->
-                    <div class="lg:col-span-2">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                            Descripción
-                        </label>
-                        <input type="text" [disabled]="opDisable"
-                            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            [(ngModel)]="dtoRegister.descripcion" placeholder="Describe brevemente el evento" />
-                    </div>
-
-                    <!-- Ubicación Exacta -->
-                    <div class="lg:col-span-2">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                            Ubicación Exacta
-                        </label>
-                        <input type="text" [disabled]="opDisable"
-                            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            [(ngModel)]="dtoRegister.ubicacionExacta" placeholder="Dirección completa del evento" />
-                    </div>
-
-                    <!-- Fecha Inicio -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                            Fecha Inicio
-                        </label>
-                        <input type="date"
-                            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            [(ngModel)]="dtoRegister.fechaInicio" [disabled]="opDisable" />
-                    </div>
-
-                    <!-- Fecha Fin -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                            Fecha Fin
-                        </label>
-                        <input type="date"
-                            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            [(ngModel)]="dtoRegister.fechaFin" [disabled]="opDisable" />
-                    </div>
-
-                    <!-- Tipo -->
-                    <div class="lg:col-span-2">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                            Tipo de Evento
-                        </label>
-                        <select
-                            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            [(ngModel)]="dtoRegister.type" [disabled]="opDisable">
-                            <option value="">Selecciona el tipo de evento</option>
-                            <option *ngFor="let type of list_types" [value]="type.code">
-                                {{ type.name }}
-                            </option>
-                        </select>
-                    </div>
-
-                    <!-- Lugar -->
-                    <div class="lg:col-span-2">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                            Lugar
-                        </label>
-                        <div class="flex">
-                            <input type="text"
-                                class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                [(ngModel)]="dtoRegister.lugarDesc" [disabled]="true" />
-                            <button type="button" [disabled]="opDisable"
-                                class="px-3 py-2 bg-gray-100 border border-l-0 border-gray-300 rounded-r-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
-                                (click)="coreShowSelectors('LugarSelector')">
-                                <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Nombre Ruta -->
-                    <div class="lg:col-span-2">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                            Nombre de Ruta
-                        </label>
-                        <input type="text" [disabled]="opDisable"
-                            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            [(ngModel)]="dtoRegister.name_route" placeholder="URL amigable del evento" />
-                    </div>
-
-                    <div class="lg:col-span-2">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                            Estado
-                        </label>
-                        <select [disabled]="opDisable"
-                            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            [(ngModel)]="dtoRegister.estado">
-                            <option value="">Selecciona el Estado</option>
-                            <option *ngFor="let type of list_estados" [value]="type.code">
-                                {{ type.name }}
-                            </option>
-                        </select>
-                    </div>
+            <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-900">Datos del Evento</h2>
                 </div>
-            </div>
-        </div>
 
-        <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
-            <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-900">Foto Principal del Evento</h2>
-            </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
 
-            <div class="p-6">
-                <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-
-                    <!-- Upload Section -->
-                    <div class="lg:col-span-1">
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">
-                                    Enlace de Imagen
-                                </label>
-                                <input type="text" [disabled]="opDisable"
-                                    class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                    [(ngModel)]="dtoRegister.foto.url" placeholder="https://ejemplo.com/imagen.jpg" />
-                            </div>
-
-                            <!-- File Upload Area -->
-                            <div class="relative">
-                                <div *ngIf="!dtoRegister.foto.base64"
-                                    class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors cursor-pointer">
-                                    <label for="dropzone-file" class="cursor-pointer">
-                                        <div class="space-y-2">
-                                            <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor"
-                                                fill="none" viewBox="0 0 48 48">
-                                                <path
-                                                    d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                            <div class="text-sm text-gray-600">
-                                                <span class="font-medium text-blue-600">Cargar imagen</span>
-                                                <p class="text-xs text-gray-500 mt-1">PNG, JPG hasta 10MB</p>
-                                            </div>
-                                        </div>
-                                        <input id="dropzone-file" type="file" class="hidden" [disabled]="opDisable"
-                                            accept="image/png, image/jpeg" (change)="onFileChange($event)" />
-                                    </label>
-                                </div>
-
-                                <div *ngIf="dtoRegister.foto.base64" class="relative group">
-                                    <label for="dropzone-file" class="cursor-pointer block">
-                                        <img [src]="dtoRegister.foto.base64"
-                                            class="w-full h-48 object-cover rounded-lg border border-gray-200">
-                                        <div
-                                            class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-200 rounded-lg flex items-center justify-center">
-                                            <span
-                                                class="text-white opacity-0 group-hover:opacity-100 text-sm font-medium">Cambiar
-                                                imagen</span>
-                                        </div>
-                                        <input id="dropzone-file" type="file" class="hidden" [disabled]="opDisable"
-                                            accept="image/png, image/jpeg" (change)="onFileChange($event)" />
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Form Fields -->
-                    <div class="lg:col-span-3 space-y-4">
-                        <div>
+                        <!-- Nombre -->
+                        <div class="lg:col-span-2">
                             <label class="block text-sm font-medium text-gray-700 mb-2">
-                                Título de la Imagen
+                                Nombre del Evento
                             </label>
                             <input type="text" [disabled]="opDisable"
                                 class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                [(ngModel)]="dtoRegister.foto.titulo" placeholder="Título descriptivo de la imagen" />
+                                [(ngModel)]="dtoRegister.nombre" (input)="create_nameRoute(dtoRegister.nombre)"
+                                placeholder="Ingresa el nombre del evento" />
                         </div>
 
+                        <!-- Descripción -->
+                        <div class="lg:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Descripción
+                            </label>
+                            <input type="text" [disabled]="opDisable"
+                                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                [(ngModel)]="dtoRegister.descripcion" placeholder="Describe brevemente el evento" />
+                        </div>
+
+                        <!-- Ubicación Exacta -->
+                        <div class="lg:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Ubicación Exacta
+                            </label>
+                            <input type="text" [disabled]="opDisable"
+                                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                [(ngModel)]="dtoRegister.ubicacionExacta" placeholder="Dirección completa del evento" />
+                        </div>
+
+                        <!-- Fecha Inicio -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">
-                                Lugar de la Foto
+                                Fecha Inicio
+                            </label>
+                            <input type="date"
+                                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                [(ngModel)]="dtoRegister.fechaInicio" [disabled]="opDisable" />
+                        </div>
+
+                        <!-- Fecha Fin -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Fecha Fin
+                            </label>
+                            <input type="date"
+                                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                [(ngModel)]="dtoRegister.fechaFin" [disabled]="opDisable" />
+                        </div>
+
+                        <!-- Tipo -->
+                        <div class="lg:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Tipo de Evento
+                            </label>
+                            <select
+                                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                [(ngModel)]="dtoRegister.type" [disabled]="opDisable">
+                                <option value="">Selecciona el tipo de evento</option>
+                                <option *ngFor="let type of list_types" [value]="type.code">
+                                    {{ type.name }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <!-- Lugar -->
+                        <div class="lg:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Lugar
                             </label>
                             <div class="flex">
-                                <input type="text" [disabled]="true"
+                                <input type="text"
                                     class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                    [(ngModel)]="dtoRegister.foto.lugar" placeholder="Lugar donde se tomó la foto" />
+                                    [(ngModel)]="dtoRegister.lugarDesc" [disabled]="true" />
                                 <button type="button" [disabled]="opDisable"
                                     class="px-3 py-2 bg-gray-100 border border-l-0 border-gray-300 rounded-r-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
-                                    (click)="coreShowSelectors('LugarSelectorPhoto')">
+                                    (click)="coreShowSelectors('LugarSelector')">
                                     <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -258,46 +162,294 @@
                             </div>
                         </div>
 
-                        <div>
+                        <!-- Nombre Ruta -->
+                        <div class="lg:col-span-2">
                             <label class="block text-sm font-medium text-gray-700 mb-2">
-                                Proveedor
+                                Nombre de Ruta
                             </label>
-                            <div class="flex">
-                                <input type="text" [disabled]="true"
-                                    class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                    [(ngModel)]="dtoRegister.foto.proveedorDesc"
-                                    placeholder="Selecciona el proveedor" />
-                                <button type="button" [disabled]="opDisable"
-                                    class="px-3 py-2 bg-gray-100 border border-l-0 border-gray-300 rounded-r-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
-                                    (click)="coreShowSelectors('ProveedorSelector')">
-                                    <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                                    </svg>
-                                </button>
+                            <input type="text" [disabled]="opDisable"
+                                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                [(ngModel)]="dtoRegister.name_route" placeholder="URL amigable del evento" />
+                        </div>
+
+                        <div class="lg:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Estado
+                            </label>
+                            <select [disabled]="opDisable"
+                                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                [(ngModel)]="dtoRegister.estado">
+                                <option value="">Selecciona el Estado</option>
+                                <option *ngFor="let type of list_estados" [value]="type.code">
+                                    {{ type.name }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-900">Foto Principal del Evento</h2>
+                </div>
+
+                <div class="p-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+
+                        <!-- Upload Section -->
+                        <div class="lg:col-span-1">
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        Enlace de Imagen
+                                    </label>
+                                    <input type="text" [disabled]="opDisable"
+                                        class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                        [(ngModel)]="dtoRegister.foto.url"
+                                        placeholder="https://ejemplo.com/imagen.jpg" />
+                                </div>
+
+                                <!-- File Upload Area -->
+                                <div class="relative">
+                                    <div *ngIf="!dtoRegister.foto.base64"
+                                        class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors cursor-pointer">
+                                        <label for="dropzone-file" class="cursor-pointer">
+                                            <div class="space-y-2">
+                                                <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor"
+                                                    fill="none" viewBox="0 0 48 48">
+                                                    <path
+                                                        d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                                                        stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round" />
+                                                </svg>
+                                                <div class="text-sm text-gray-600">
+                                                    <span class="font-medium text-blue-600">Cargar imagen</span>
+                                                    <p class="text-xs text-gray-500 mt-1">PNG, JPG hasta 10MB</p>
+                                                </div>
+                                            </div>
+                                            <input id="dropzone-file" type="file" class="hidden" [disabled]="opDisable"
+                                                accept="image/png, image/jpeg" (change)="onFileChange($event)" />
+                                        </label>
+                                    </div>
+
+                                    <div *ngIf="dtoRegister.foto.base64" class="relative group">
+                                        <label for="dropzone-file" class="cursor-pointer block">
+                                            <img [src]="dtoRegister.foto.base64"
+                                                class="w-full h-48 object-cover rounded-lg border border-gray-200">
+                                            <div
+                                                class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-200 rounded-lg flex items-center justify-center">
+                                                <span
+                                                    class="text-white opacity-0 group-hover:opacity-100 text-sm font-medium">Cambiar
+                                                    imagen</span>
+                                            </div>
+                                            <input id="dropzone-file" type="file" class="hidden" [disabled]="opDisable"
+                                                accept="image/png, image/jpeg" (change)="onFileChange($event)" />
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form Fields -->
+                        <div class="lg:col-span-3 space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    Título de la Imagen
+                                </label>
+                                <input type="text" [disabled]="opDisable"
+                                    class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    [(ngModel)]="dtoRegister.foto.titulo"
+                                    placeholder="Título descriptivo de la imagen" />
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    Lugar de la Foto
+                                </label>
+                                <div class="flex">
+                                    <input type="text" [disabled]="true"
+                                        class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                        [(ngModel)]="dtoRegister.foto.lugar"
+                                        placeholder="Lugar donde se tomó la foto" />
+                                    <button type="button" [disabled]="opDisable"
+                                        class="px-3 py-2 bg-gray-100 border border-l-0 border-gray-300 rounded-r-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+                                        (click)="coreShowSelectors('LugarSelectorPhoto')">
+                                        <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    Proveedor
+                                </label>
+                                <div class="flex">
+                                    <input type="text" [disabled]="true"
+                                        class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                        [(ngModel)]="dtoRegister.foto.proveedorDesc"
+                                        placeholder="Selecciona el proveedor" />
+                                    <button type="button" [disabled]="opDisable"
+                                        class="px-3 py-2 bg-gray-100 border border-l-0 border-gray-300 rounded-r-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+                                        (click)="coreShowSelectors('ProveedorSelector')">
+                                        <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div *ngIf="activeTab === 'SUBEVENTOS'" class="space-y-6">
+            <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                        <h2 class="text-lg font-semibold text-gray-900">Administrar Sub-Eventos</h2>
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <button type="button" (click)="coreNewSubEvento()" [disabled]="opDisable"
+                                class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                                Nuevo Sub-Evento
+                            </button>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                    </svg>
+                                </div>
+                                <input type="text"
+                                    class="block w-full pl-10 pr-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    placeholder="Buscar sub-eventos..." />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th
+                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
+                                    <div class="flex items-center space-x-1">
+                                        <span>NOMBRE</span>
+
+                                    </div>
+                                </th>
+
+                                <th
+                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
+                                    <div class="flex items-center space-x-1">
+                                        <span>DÍA</span>
+
+                                    </div>
+                                </th>
+                                <th
+                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
+                                    <div class="flex items-center space-x-1">
+                                        <span>HORA INICIO</span>
+
+                                    </div>
+                                </th>
+                                <th
+                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
+                                    <div class="flex items-center space-x-1">
+                                        <span>HORA FIN</span>
+
+                                    </div>
+                                </th>
+                                <th
+                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
+                                    <div class="flex items-center space-x-1">
+                                        <span>ESTADO</span>
+
+                                    </div>
+                                </th>
+                                <th
+                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    ACCIÓN
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr *ngFor="let row of dtoRegister.subEventos; let i = index" class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    {{ row.nombre }}
+                                </td>
+
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {{ row.dia }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {{ row.horaInicio }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {{ row.horaInicio }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {{ row.estado == 'AC' ? 'Activo' :
+                                    row.estado == 'IN' ? 'Inactivo' : 'No reconocido'}}
+                                </td>
+                                <td class="text-center">
+                                    <div class="noBgPbutton flex items-center justify-center ">
+                                        <p-menu #menu [model]="items" [popup]="true" appendTo="body"></p-menu>
+                                        <p-button (onClick)="itemSelected = row" [disabled]="opDisable"
+                                            (onClick)="modifyItems();menu.toggle($event);" icon="pi pi-ellipsis-v"
+                                            styleClass="noBgPbutton"></p-button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="bg-white px-4 py-3 border-t border-gray-200 sm:px-6">
+                    <div class="flex items-center justify-between">
+
+                        <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                            <div>
+                                <p class="text-sm text-gray-700">
+                                    Cantidad de registros:
+                                    <span class="font-medium">{{dtoRegister.subEventos.length}}</span>
+
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="mt-8 flex justify-center">
+            <button *ngIf="action == 'CREATE' || action == 'UPDATE' " type="button" [disabled]="opDisable"
+                class="inline-flex items-center px-6 py-3 text-base font-medium text-white bg-primary border border-transparent rounded-md hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
+                (click)="coreSave()">
+                {{ action == 'CREATE' ? 'Guardar Evento' :
+                action == 'UPDATE' ?'Actualizar Evento' :
+                'Guardar Evento' }}
+            </button>
+        </div>
+
     </div>
-
-
-
-
-    <div class="mt-8 flex justify-center">
-        <button *ngIf="action == 'CREATE' || action == 'UPDATE' " type="button" [disabled]="opDisable"
-            class="inline-flex items-center px-6 py-3 text-base font-medium text-white bg-primary border border-transparent rounded-md hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
-            (click)="coreSave()">
-            {{ action == 'CREATE' ? 'Guardar Evento' :
-            action == 'UPDATE' ?'Actualizar Evento' :
-            'Guardar Evento' }}
-        </button>
-    </div>
-
-
 </div>
 
 

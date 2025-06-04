@@ -1,173 +1,388 @@
-<p-dialog [(visible)]="visible" [style]="{ width: '650px' }" header="Sub Evento Información" [modal]="true"
+<p-dialog [(visible)]="visible" [style]="{ width: '98%', heigth:'98%' }" header="Gestión de Sub Evento" [modal]="true"
     [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true" styleClass="p-fluid">
-    <div class="grid grid-cols-3 gap-2">
-        <div class="col-span-3 md:col-span-1 gap-2">
 
-            <div class="field">
-                <label for="name" class="label-filter">Nombre</label>
-                <input type="text" class="input-filter" pInputText id="name" [(ngModel)]="dtoRegister.nombre" required
-                    autofocus />
-
-            </div>
-            <div class="field">
-                <label for="description" class="label-filter">Descripción</label>
-                <textarea id="description" pInputTextarea [(ngModel)]="dtoRegister.descripcion" required rows="3"
-                    cols="20">
-                            </textarea>
-            </div>
-            <div class="field">
-                <label for="dia" class="label-filter">
-                    DIA
-                </label>
-                <p-calendar class="input-filter-date" [(ngModel)]="dtoRegister.dia" [iconDisplay]="'input'"
-                    [showIcon]="true" inputId="icondisplay" dateFormat="dd/mm/yy" />
-            </div>
-            <div class="grid grid-cols-2">
-                <div class="field col">
-                    <label for="horaInicio" class="label-filter">horaInicio</label>
-                    <p-calendar class="input-filter-date" [(ngModel)]="dtoRegister.horaInicio" [timeOnly]="true"
-                        [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" />
-
-                </div>
-                <div class="field col">
-                    <label for="horaFin" class="label-filter">horaFin</label>
-                    <p-calendar class="input-filter-date" [(ngModel)]="dtoRegister.horaFin" [timeOnly]="true"
-                        [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" dateFormat="dd/mm/yy" />
-
-                </div>
-            </div>
-            <p-divider></p-divider>
-            <div class="field">
-                <label for="description" class="label-filter">Enlace Foto</label>
-                <input type="text" class="input-filter" pInputText id="description" [(ngModel)]="dtoRegister.foto.url"
-                    required autofocus />
-
-            </div>
-            <div class="col-span-2">
-                <label for="name_route" class="label-filter">
-                    LUGAR
-                </label>
-                <p-inputGroup>
-                    <input type="text" class="input-filter" pInputText [(ngModel)]="dtoRegister.foto.lugar" />
-                    <button type="button" (click)="coreShowSelectors('LugarSelectorPhoto')" pButton
-                        icon="pi pi-search"></button>
-                </p-inputGroup>
-            </div>
-            <div class="field">
-                <label for="Titulo" class="label-filter">Titulo</label>
-
-                <input type="text" class="input-filter" pInputText id="description"
-                    [(ngModel)]="dtoRegister.foto.titulo" required autofocus />
-            </div>
-            <div class="col-span-2">
-                <label for="name_route" class="label-filter">
-                    PROVEEDOR ID
-                </label>
-                <p-inputGroup>
-                    <input type="text" class="input-filter" pInputText [(ngModel)]="dtoRegister.foto.proveedorDesc" />
-                    <button type="button" (click)="coreShowSelectors('ProveedorSelector')" pButton
-                        icon="pi pi-search"></button>
-                </p-inputGroup>
-
-            </div>
-
+    <div class=" mx-auto ">
+        <div class="border-b border-gray-200 mb-6">
+            <nav class="-mb-px flex space-x-8">
+                <button (click)="activeTab = 'info'"
+                    [class]="activeTab === 'info' 
+          ? 'border-blue-500 text-blue-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm'
+          : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm'">
+                    Información del Sub-Evento
+                </button>
+                <button (click)="activeTab = 'details'"
+                    [class]="activeTab === 'details' 
+          ? 'border-blue-500 text-blue-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm'
+          : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm'">
+                    Sub-Eventos Detalle
+                </button>
+            </nav>
         </div>
-        <div class="col-span-3 md:col-span-2 gap-2">
-            <div class="global-center-end">
-                <p-button severity="success" label="AGREGAR" icon="pi pi-plus" class="mr-2"
-                    (onClick)="addSubEvento()" />
+
+        <div class="min-h-[50vh]">
+
+            <div *ngIf="activeTab === 'info'" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Card de información principal -->
+                <div>
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-lg p-6 space-y-6 h-full">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
+                                Nombre
+                            </label>
+                            <input type="text" id="name"
+                                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                [(ngModel)]="dtoRegister.nombre" placeholder="Ingresa el nombre del sub-evento"
+                                required />
+                        </div>
+
+                        <div>
+                            <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
+                                Descripción
+                            </label>
+                            <textarea id="description"
+                                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
+                                [(ngModel)]="dtoRegister.descripcion" rows="3" placeholder="Describe el sub-evento"
+                                required></textarea>
+                        </div>
+
+                        <div>
+                            <label for="dia" class="block text-sm font-medium text-gray-700 mb-2">
+                                Día
+                            </label>
+                            <input type="date" id="dia"
+                                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                [(ngModel)]="dtoRegister.dia" />
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="horaInicio" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Hora Inicio
+                                </label>
+                                <input type="time" id="horaInicio"
+                                    class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    [(ngModel)]="dtoRegister.horaInicio" />
+                            </div>
+                            <div>
+                                <label for="horaFin" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Hora Fin
+                                </label>
+                                <input type="time" id="horaFin"
+                                    class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    [(ngModel)]="dtoRegister.horaFin" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card de datos de la foto -->
+                <div>
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-lg p-6 space-y-6 h-full">
+                        <div>
+                            <div class="grid  gap-6">
+
+                                <!-- Upload Section -->
+                                <div>
+                                    <div class="space-y-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                                Enlace de Imagen
+                                            </label>
+                                            <input type="text" [disabled]="opDisable"
+                                                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                                [(ngModel)]="dtoRegister.foto.url"
+                                                placeholder="https://ejemplo.com/imagen.jpg" />
+                                        </div>
+
+                                        <!-- File Upload Area -->
+                                        <div class="relative">
+                                            <div *ngIf="!dtoRegister.foto.base64"
+                                                class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors cursor-pointer">
+                                                <label for="dropzone-file" class="cursor-pointer">
+                                                    <div class="space-y-2">
+                                                        <svg class="mx-auto h-12 w-12 text-gray-400"
+                                                            stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                                                            <path
+                                                                d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                                                                stroke-width="2" stroke-linecap="round"
+                                                                stroke-linejoin="round" />
+                                                        </svg>
+                                                        <div class="text-sm text-gray-600">
+                                                            <span class="font-medium text-blue-600">Cargar imagen</span>
+                                                            <p class="text-xs text-gray-500 mt-1">PNG, JPG hasta 10MB
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <input id="dropzone-file" type="file" class="hidden"
+                                                        [disabled]="opDisable" accept="image/png, image/jpeg"
+                                                        (change)="onFileChange($event)" />
+                                                </label>
+                                            </div>
+
+                                            <div *ngIf="dtoRegister.foto.base64" class="relative group">
+                                                <label for="dropzone-file" class="cursor-pointer block">
+                                                    <img [src]="dtoRegister.foto.base64"
+                                                        class="w-full h-48 object-cover rounded-lg border border-gray-200">
+                                                    <div
+                                                        class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-200 rounded-lg flex items-center justify-center">
+                                                        <span
+                                                            class="text-white opacity-0 group-hover:opacity-100 text-sm font-medium">Cambiar
+                                                            imagen</span>
+                                                    </div>
+                                                    <input id="dropzone-file" type="file" class="hidden"
+                                                        [disabled]="opDisable" accept="image/png, image/jpeg"
+                                                        (change)="onFileChange($event)" />
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Form Fields -->
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                                            Título de la Imagen
+                                        </label>
+                                        <input type="text" [disabled]="opDisable"
+                                            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                            [(ngModel)]="dtoRegister.foto.titulo"
+                                            placeholder="Título descriptivo de la imagen" />
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                                            Lugar de la Foto
+                                        </label>
+                                        <div class="flex">
+                                            <input type="text" [disabled]="true"
+                                                class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                                [(ngModel)]="dtoRegister.foto.lugar"
+                                                placeholder="Lugar donde se tomó la foto" />
+                                            <button type="button" [disabled]="opDisable"
+                                                class="px-3 py-2 bg-gray-100 border border-l-0 border-gray-300 rounded-r-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+                                                (click)="coreShowSelectors('LugarSelectorPhoto')">
+                                                <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                                            Proveedor
+                                        </label>
+                                        <div class="flex">
+                                            <input type="text" [disabled]="true"
+                                                class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                                [(ngModel)]="dtoRegister.foto.proveedorDesc"
+                                                placeholder="Selecciona el proveedor" />
+                                            <button type="button" [disabled]="opDisable"
+                                                class="px-3 py-2 bg-gray-100 border border-l-0 border-gray-300 rounded-r-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+                                                (click)="coreShowSelectors('ProveedorSelector')">
+                                                <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <p-table [value]="dtoRegister.subEventoDetalles" dataKey="id" [tableStyle]="{ 'min-width': '50rem' }">
-                <ng-template pTemplate="header">
-                    <tr class="text-xs text-center">
-                        <th style="width:15%">
-                            Titulo
-                        </th>
-                        <th style="width:75%">
-                            Detalle
-                        </th>
-                        <th style="width:5%">
-                            Hora Inicio
-                        </th>
-                        <th style="width:5%">
-                            Hora Fin
-                        </th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-item let-editing="editing">
-                    <tr class="text-xs text-justify">
-                        <td [pEditableColumn]="item.organizador" pEditableColumnField="organizador">
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <input pInputText type="text" class="input-filter" [(ngModel)]="item.organizador"
-                                        placeholder="Título" />
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    
-                                    <p class="cursor-text {item.organizador ? 'text-black' : 'text-gray-100'}">
-                                        {{ item.organizador ? item.organizador : '...........' }}
-                                    </p>
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        <td [pEditableColumn]="item.detalle" pEditableColumnField="detalle">
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
+            <!-- Sub-Eventos Detalle Tab -->
+            <div *ngIf="activeTab === 'details'">
+                <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                    <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+                        <div class="flex justify-end items-center">
 
-                                    <textarea pInputTextarea class="input-filter h-full" [(ngModel)]="item.detalle"
-                                        placeholder="Detalle" required rows="6" cols="20"></textarea>
-                                </ng-template>
-                                <ng-template pTemplate="output">
+                            <button type="button"
+                                class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-success border border-transparent rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors"
+                                (click)="addSubEventoDetalle()">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                                Agregar Detalle
+                            </button>
+                        </div>
+                    </div>
 
-                                    <p class="cursor-text {item.detalle ? 'text-black' : 'text-gray-100'}">
-                                        {{ item.detalle ? item.detalle : '...........' }}
-                                    </p>
+                    <!-- Editable Table -->
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        style="width:15%">
+                                        Título
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        style="width:60%">
+                                        Detalle
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        style="width:10%">
+                                        Hora Inicio
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        style="width:10%">
+                                        Hora Fin
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        style="width:5%">
+                                        Acciones
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr *ngFor="let item of dtoRegister.subEventoDetalles; let i = index"
+                                    class="hover:bg-gray-50">
 
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        <td [pEditableColumn]="item.horaInicio" pEditableColumnField="horaInicio">
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
+                                    <!-- Título -->
+                                    <td class="px-6 py-4 text-sm">
+                                        <div
+                                            class="cursor-pointer hover:bg-gray-100 p-2 rounded min-h-[2rem] flex items-center">
+                                            <span [class]="item.organizador ? 'text-gray-900' : 'text-gray-400'">
+                                                {{ item.organizador || '...........' }}
+                                            </span>
+                                        </div>
 
+                                    </td>
 
-                                    <input pInputText type="text" class="input-filter w-36"
-                                        [(ngModel)]="item.horaInicio" placeholder="ejm. 11:00" />
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    <p class="cursor-text {item.horaInicio ? 'text-black' : 'text-gray-100'}">
-                                        {{ item.horaInicio ? item.horaInicio : '...........' }}
-                                    </p>
-                                   
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        <td [pEditableColumn]="item.horaFin" pEditableColumnField="horaFin">
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
+                                    <!-- Detalle -->
+                                    <td class="px-6 py-4 text-sm">
+                                        <div *ngIf="!item.editing"
+                                            class="cursor-pointer hover:bg-gray-100 p-2 rounded min-h-[2rem] flex items-start">
+                                            <span [class]="item.detalle ? 'text-gray-900' : 'text-gray-400'"
+                                                class="whitespace-pre-wrap">
+                                                {{ item.detalle || '...........' }}
+                                            </span>
+                                        </div>
+                                        <textarea *ngIf="item.editing"
+                                            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
+                                            [(ngModel)]="item.detalle" placeholder="Detalle" rows="4"
+                                            #detailTextarea></textarea>
+                                    </td>
 
-                                    <input pInputText type="text" class="input-filter w-36" [(ngModel)]="item.horaFin"
-                                        placeholder="ejem. 24:00" />
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    <p class="cursor-text {item.horaFin ? 'text-black' : 'text-gray-100'}">
-                                        {{ item.horaFin ? item.horaFin : '...........' }}
-                                    </p>
-                                    
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                    </tr>
-                </ng-template>
-            </p-table>
+                                    <!-- Hora Inicio -->
+                                    <td class="px-6 py-4 text-sm">
+                                        <div *ngIf="!item.editing"
+                                            class="cursor-pointer hover:bg-gray-100 p-2 rounded min-h-[2rem] flex items-center">
+                                            <span [class]="item.horaInicio ? 'text-gray-900' : 'text-gray-400'">
+                                                {{ item.horaInicio || '...........' }}
+                                            </span>
+                                        </div>
+                                        <input *ngIf="item.editing" type="text"
+                                            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                            [(ngModel)]="item.horaInicio" placeholder="ejm. 11:00" />
+                                    </td>
+
+                                    <!-- Hora Fin -->
+                                    <td class="px-6 py-4 text-sm">
+                                        <div *ngIf="!item.editing"
+                                            class="cursor-pointer hover:bg-gray-100 p-2 rounded min-h-[2rem] flex items-center">
+                                            <span [class]="item.horaFin ? 'text-gray-900' : 'text-gray-400'">
+                                                {{ item.horaFin || '...........' }}
+                                            </span>
+                                        </div>
+                                        <input *ngIf="item.editing" type="text"
+                                            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                            [(ngModel)]="item.horaFin" placeholder="ejem. 24:00" />
+                                    </td>
+
+                                    <!-- Acciones -->
+                                    <td class="px-6 py-4 text-sm">
+                                        <div class="flex items-center space-x-2">
+                                            <button *ngIf="!item.editing" type="button"
+                                                class="text-blue-600 hover:text-blue-800 focus:outline-none"
+                                                title="Editar">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                                    </path>
+                                                </svg>
+                                            </button>
+                                            <button *ngIf="item.editing" type="button"
+                                                class="text-green-600 hover:text-green-800 focus:outline-none"
+                                                title="Guardar">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                </svg>
+                                            </button>
+                                            <button type="button"
+                                                class="text-red-600 hover:text-red-800 focus:outline-none"
+                                                title="Eliminar">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                                    </path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- Empty State -->
+                                <tr *ngIf="dtoRegister.subEventoDetalles.length === 0">
+                                    <td colspan="5" class="px-6 py-12 text-center text-gray-500">
+                                        <div class="flex flex-col items-center">
+                                            <svg class="w-12 h-12 text-gray-300 mb-4" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                                </path>
+                                            </svg>
+                                            <p class="text-sm">No hay detalles agregados</p>
+                                            <p class="text-xs text-gray-400 mt-1">Haz clic en "Agregar Detalle" para
+                                                comenzar</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Actions -->
+        <div class="mt-8 flex justify-end space-x-4">
+            <button type="button"
+                class="inline-flex items-center px-6 py-3 text-base font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
+                (click)="coreCloseSelector()">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+                Cancelar
+            </button>
+            <button type="button"
+                class="inline-flex items-center px-6 py-3 text-base font-medium text-white bg-primary border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                (click)="saveItem()">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                Guardar
+            </button>
         </div>
     </div>
 
-
-    <ng-template pTemplate="footer">
-        <p-button label="Cancel" icon="pi pi-times" [text]="true" (onClick)="coreCloseSelector()" />
-        <p-button label="Save" icon="pi pi-check" [text]="true" (onClick)="saveItem()" />
-    </ng-template>
 </p-dialog>
 
 <app-lugar-selector-view></app-lugar-selector-view>
