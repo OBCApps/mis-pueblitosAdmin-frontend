@@ -11,6 +11,7 @@ import { AuthorizationService } from '../../../../shared/global-components/autho
 import { BaseServices } from '../../../../shared/global-components/BaseServices';
 import { EventoService } from '../../services/eventosService';
 import { SubeventosManageComponent } from '../subeventos-manage/subeventos-manage.component';
+import { SubEventoService } from '../../services/subeventoService';
 
 @Component({
   selector: 'app-eventos-manage',
@@ -18,6 +19,7 @@ import { SubeventosManageComponent } from '../subeventos-manage/subeventos-manag
   styleUrl: './eventos-manage.component.scss'
 })
 export class EventosManageComponent implements OnInit {
+  messageController: MessageController;
   activeTab: string = 'INFO'
   action: string;
   opDisable: boolean = false;
@@ -36,8 +38,8 @@ export class EventosManageComponent implements OnInit {
     private eventoService: EventoService,
     private router: Router,
     private authorizationService: AuthorizationService,
-    private baseServices: BaseServices
-
+    private baseServices: BaseServices,
+    private subEventoService: SubEventoService
   ) {
 
   }
@@ -49,12 +51,12 @@ export class EventosManageComponent implements OnInit {
     this.dtoSelected = tempData?.data;
 
     this.opDisable =
-      this.action == 'CREATE' ? false :
-        this.action == 'UPDATE' ? false :
-          this.action == 'VIEW' ? true : true;
+      this.action == this.baseServices.ACTION_CREATE ? false :
+        this.action == this.baseServices.ACTION_UPDATE ? false :
+          this.action == this.baseServices.ACTION_VIEW ? true : true;
 
 
-    if (this.action == 'CREATE') {
+    if (this.action == this.baseServices.ACTION_CREATE) {
       this.dtoRegister = new DtoEvento()
     } else {
       this.getAllInfo();
@@ -71,23 +73,25 @@ export class EventosManageComponent implements OnInit {
   }
 
   coreSave() {
-    if (this.action == 'CREATE') {
+    if (this.action == this.baseServices.ACTION_CREATE) {
       this.coreNew()
     }
-    if (this.action == 'UPDATE') {
+    if (this.action == this.baseServices.ACTION_UPDATE) {
       this.coreEdit()
     }
   }
 
   coreNew() {
-    console.log("CREATE", this.dtoRegister);
+
     this.baseServices.showLoading();
     this.eventoService.create(this.dtoRegister).subscribe(
       (response) => {
         this.baseServices.hideLoading();
 
-        this.baseServices.showMessageSucces('Agregado Correctamente');
+        const data = { action: this.baseServices.ACTION_UPDATE, data: response }
+        this.authorizationService.setLocalData(data)
 
+        this.baseServices.showMessageSucces('Agregado Correctamente');
         this.coreExit();
       },
       (err) => {
@@ -106,6 +110,8 @@ export class EventosManageComponent implements OnInit {
     this.eventoService.update(this.dtoRegister).subscribe(
       (response) => {
         this.baseServices.hideLoading();
+        const data = { action: this.baseServices.ACTION_UPDATE, data: response }
+        this.authorizationService.setLocalData(data);
 
         this.baseServices.showMessageSucces('Actualizado Correctamente');
         this.coreExit();
@@ -168,21 +174,20 @@ export class EventosManageComponent implements OnInit {
       }
 
       case ('SubEventoManage'): {
-        if (message.method == 'CREATE') {
+        if (message.method == this.baseServices.ACTION_CREATE) {
           this.dtoRegister.subEventos.push(message.selected)
         }
-        /* if (message.method == 'UPDATE') {
-          this.dtoRegister.subEventos.find(item => item == message.selected)
-          // Reemplazarlo
-        } */
-        break;
-      }
-      case ('SubEventoDetalleManage'): {
-        if (message.method == 'CREATE') {
-          this.dtoRegister.subEventos.push(message.selected)
+        if (message.method == this.baseServices.ACTION_UPDATE) {
+
+          let index = this.dtoRegister.subEventos.findIndex((detalle: DtoSubEvento) => detalle === this.itemSelected);
+          if (index !== -1) {
+            this.dtoRegister.subEventos[index] = message.selected;
+          }
+
         }
         break;
       }
+
     }
   }
 
@@ -245,48 +250,74 @@ export class EventosManageComponent implements OnInit {
   // ------------------GESTIÓN SUBEVENTOS
   itemSelected: any;
   coreNewSubEvento() {
-    this.SubeventosManageComponent.coreInitSelector(new MessageController(this, 'SubEventoManage', 'CREATE'));
-
+    this.SubeventosManageComponent.coreInitSelector(new MessageController(this, 'SubEventoManage', this.baseServices.ACTION_CREATE, this.dtoRegister));
   }
+  coreViewSubEvento() {
+    if (!this.itemSelected) {
+      this.baseServices.showMessageError('No hay una entidad para editar');
+      return;
+    }
+    this.SubeventosManageComponent.coreInitSelector(new MessageController(this, 'SubEventoManage', this.baseServices.ACTION_VIEW, this.itemSelected));
+  }
+  coreEditSubEvento() {
+    if (!this.itemSelected) {
+      this.baseServices.showMessageError('No hay una entidad para editar');
+      return;
+    }
+    this.SubeventosManageComponent.coreInitSelector(new MessageController(this, 'SubEventoManage', this.baseServices.ACTION_UPDATE, this.itemSelected));
+  }
+
+  coreDeleteSubEvento() {
+    if (!this.itemSelected) {
+      this.baseServices.showMessageError('No hay una entidad para eliminar');
+      return;
+    }
+    if (this.itemSelected.id) {
+      this.baseServices.showLoading();
+      this.subEventoService.delete(this.itemSelected).subscribe(
+        (response) => {
+          this.baseServices.hideLoading();
+          this.baseServices.showMessageSucces('Acción realizada correctamente.');
+
+          this.dtoRegister.subEventos = this.dtoRegister.subEventos.filter((detalle: DtoSubEvento) => detalle !== this.itemSelected);
+          this.itemSelected = null;
+        },
+        (err) => {
+          this.baseServices.hideLoading();
+          this.baseServices.showMessageError('Error al realizar la acción.');
+
+        }
+      );
+    } else {
+      this.dtoRegister.subEventos = this.itemSelected.subEventos.filter((detalle: DtoSubEvento) => detalle !== this.itemSelected);
+      this.itemSelected = null;
+    }
+  }
+
   items: MenuItem[] = [
     {
       label: 'Ver',
       icon: 'pi pi-eye',
       command: () => {
-        if (!this.itemSelected) {
-          this.baseServices.showMessageError('No hay una entidad para mostrar');
-          return;
-        }
-        this.SubeventosManageComponent.coreInitSelector(new MessageController(this, 'SubEventoManage', 'VIEW', this.itemSelected));
+        this.coreViewSubEvento();
 
-        //this.coreView()
       },
     },
     {
       label: 'Editar',
       icon: 'pi pi-pencil',
       command: () => {
-        if (!this.itemSelected) {
-          this.baseServices.showMessageError('No hay una entidad para editar');
-          return;
-        }
-        this.SubeventosManageComponent.coreInitSelector(new MessageController(this, 'SubEventoManage', 'UPDATE', this.itemSelected));
 
-        //this.coreEdit()
+        this.coreEditSubEvento();
+
       },
     },
-    {
-      label: 'Gestionar Actividades',
-      icon: 'pi pi-pencil',
-      command: () => {
-        //this.coreEdit()
-      },
-    },
+
     {
       label: 'Eliminar',
       icon: 'pi pi-trash',
       command: () => {
-        //this.coreDelete()
+        this.coreDeleteSubEvento();
       },
     }
   ];

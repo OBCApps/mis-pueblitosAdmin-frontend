@@ -72,6 +72,19 @@
                                     [(ngModel)]="dtoRegister.horaFin" />
                             </div>
                         </div>
+                        <div class="lg:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Estado
+                            </label>
+                            <select [disabled]="opDisable"
+                                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                [(ngModel)]="dtoRegister.estado">
+                                <option value="">Selecciona el Estado</option>
+                                <option *ngFor="let type of list_estados" [value]="type.code">
+                                    {{ type.name }}
+                                </option>
+                            </select>
+                        </div>
                     </div>
                 </div>
 
@@ -207,7 +220,7 @@
 
                             <button type="button"
                                 class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-success border border-transparent rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors"
-                                (click)="addSubEventoDetalle()">
+                                (click)="coreNewSubEventoDetalle()">
                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
@@ -303,7 +316,8 @@
                                     <!-- Acciones -->
                                     <td class="px-6 py-4 text-sm">
                                         <div class="flex items-center space-x-2">
-                                            <button *ngIf="!item.editing" type="button"
+                                            <button type="button"
+                                                (click)="this.itemSelected=item ; coreEditSubEventoDetalle()"
                                                 class="text-blue-600 hover:text-blue-800 focus:outline-none"
                                                 title="Editar">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor"
@@ -314,16 +328,9 @@
                                                     </path>
                                                 </svg>
                                             </button>
-                                            <button *ngIf="item.editing" type="button"
-                                                class="text-green-600 hover:text-green-800 focus:outline-none"
-                                                title="Guardar">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                                </svg>
-                                            </button>
+
                                             <button type="button"
+                                                (click)="this.itemSelected=item ; coreDeleteSubEventoDetalle()"
                                                 class="text-red-600 hover:text-red-800 focus:outline-none"
                                                 title="Eliminar">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor"
@@ -374,7 +381,7 @@
             </button>
             <button type="button"
                 class="inline-flex items-center px-6 py-3 text-base font-medium text-white bg-primary border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
-                (click)="saveItem()">
+                (click)="coreSave()">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                 </svg>
@@ -387,3 +394,4 @@
 
 <app-lugar-selector-view></app-lugar-selector-view>
 <app-proveedor-selector-view></app-proveedor-selector-view>
+<app-subeventosdetalle-manage></app-subeventosdetalle-manage>

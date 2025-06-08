@@ -1,87 +1,212 @@
-<p-dialog header="SubEvento Detalle" [modal]="true" [(visible)]="visible" [style]="{ width: '50rem' }"
-    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
-    <div class="card">
-        <div class="global-center-end">
+<p-dialog [(visible)]="visible" [style]="{ width: '50%',  }" header="Gestión de Sub Evento Detalle" [modal]="true"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true" styleClass="p-fluid">
 
-            <p-button severity="success" label="AGREGAR" icon="pi pi-plus" class="mr-2"
-                (onClick)="listDtoRegister.push(dtoRegister)" />
+    <div class=" mx-auto ">
+
+
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Card de información principal -->
+            <div>
+                <div class="bg-white rounded-lg border border-gray-200 shadow-lg p-6 space-y-6 h-full">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
+                            Nombre
+                        </label>
+                        <input type="text" id="name"
+                            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            [(ngModel)]="dtoRegister.organizador" placeholder="Ingresa el nombre del sub-evento"
+                            required />
+                    </div>
+
+                    <div>
+                        <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
+                            Descripción
+                        </label>
+                        <textarea id="description"
+                            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
+                            [(ngModel)]="dtoRegister.detalle" rows="3" placeholder="Describe el sub-evento"
+                            required></textarea>
+                    </div>
+
+                    <div>
+                        <label for="dia" class="block text-sm font-medium text-gray-700 mb-2">
+                            Recomendaciones
+                        </label>
+                        <textarea id="description"
+                            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
+                            [(ngModel)]="dtoRegister.recomendaciones" rows="3" placeholder="Describe el sub-evento"
+                            required></textarea>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="horaInicio" class="block text-sm font-medium text-gray-700 mb-2">
+                                Hora Inicio
+                            </label>
+                            <input type="time" id="horaInicio"
+                                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                [(ngModel)]="dtoRegister.horaInicio" />
+                        </div>
+                        <div>
+                            <label for="horaFin" class="block text-sm font-medium text-gray-700 mb-2">
+                                Hora Fin
+                            </label>
+                            <input type="time" id="horaFin"
+                                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                [(ngModel)]="dtoRegister.horaFin" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card de datos de la foto -->
+            <div>
+                <div class="bg-white rounded-lg border border-gray-200 shadow-lg p-6 space-y-6 h-full">
+                    <div>
+                        <div class="grid  gap-6">
+
+                            <!-- Upload Section -->
+                            <div>
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                                            Enlace de Imagen
+                                        </label>
+                                        <input type="text" [disabled]="opDisable"
+                                            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                            [(ngModel)]="dtoRegister.foto.url"
+                                            placeholder="https://ejemplo.com/imagen.jpg" />
+                                    </div>
+
+                                    <!-- File Upload Area -->
+                                    <div class="relative">
+                                        <div *ngIf="!dtoRegister.foto.base64"
+                                            class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors cursor-pointer">
+                                            <label for="dropzone-file" class="cursor-pointer">
+                                                <div class="space-y-2">
+                                                    <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor"
+                                                        fill="none" viewBox="0 0 48 48">
+                                                        <path
+                                                            d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                                                            stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round" />
+                                                    </svg>
+                                                    <div class="text-sm text-gray-600">
+                                                        <span class="font-medium text-blue-600">Cargar imagen</span>
+                                                        <p class="text-xs text-gray-500 mt-1">PNG, JPG hasta 10MB
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <input id="dropzone-file" type="file" class="hidden"
+                                                    [disabled]="opDisable" accept="image/png, image/jpeg"
+                                                    (change)="onFileChange($event)" />
+                                            </label>
+                                        </div>
+
+                                        <div *ngIf="dtoRegister.foto.base64" class="relative group">
+                                            <label for="dropzone-file" class="cursor-pointer block">
+                                                <img [src]="dtoRegister.foto.base64"
+                                                    class="w-full h-48 object-cover rounded-lg border border-gray-200">
+                                                <div
+                                                    class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-200 rounded-lg flex items-center justify-center">
+                                                    <span
+                                                        class="text-white opacity-0 group-hover:opacity-100 text-sm font-medium">Cambiar
+                                                        imagen</span>
+                                                </div>
+                                                <input id="dropzone-file" type="file" class="hidden"
+                                                    [disabled]="opDisable" accept="image/png, image/jpeg"
+                                                    (change)="onFileChange($event)" />
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Form Fields -->
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        Título de la Imagen
+                                    </label>
+                                    <input type="text" [disabled]="opDisable"
+                                        class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                        [(ngModel)]="dtoRegister.foto.titulo"
+                                        placeholder="Título descriptivo de la imagen" />
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        Lugar de la Foto
+                                    </label>
+                                    <div class="flex">
+                                        <input type="text" [disabled]="true"
+                                            class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                            [(ngModel)]="dtoRegister.foto.lugar"
+                                            placeholder="Lugar donde se tomó la foto" />
+                                        <button type="button" [disabled]="opDisable"
+                                            class="px-3 py-2 bg-gray-100 border border-l-0 border-gray-300 rounded-r-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+                                            (click)="coreShowSelectors('LugarSelectorPhoto')">
+                                            <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        Proveedor
+                                    </label>
+                                    <div class="flex">
+                                        <input type="text" [disabled]="true"
+                                            class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                            [(ngModel)]="dtoRegister.foto.proveedorDesc"
+                                            placeholder="Selecciona el proveedor" />
+                                        <button type="button" [disabled]="opDisable"
+                                            class="px-3 py-2 bg-gray-100 border border-l-0 border-gray-300 rounded-r-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+                                            (click)="coreShowSelectors('ProveedorSelector')">
+                                            <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <p-table [value]="listDtoRegister" dataKey="id" [tableStyle]="{ 'min-width': '50rem' }">
-            <ng-template pTemplate="header">
-                <tr>
-                    <th style="width:25%">
-                        Titulo
-                    </th>
-                    <th style="width:25%">
-                        Detalle
-                    </th>
-                    <th style="width:25%">
-                        Hora Inicio
-                    </th>
-                    <th style="width:25%">
-                        Hora Fin
-                    </th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-item let-editing="editing">
-                <tr>
-                    <td [pEditableColumn]="item.organizador" pEditableColumnField="organizador">
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="item.organizador" />
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{ item.organizador }}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
-                    <td [pEditableColumn]="item.detalle" pEditableColumnField="detalle">
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="item.detalle" required />
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{ item.detalle }}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
-                    <td [pEditableColumn]="item.horaInicio" pEditableColumnField="horaInicio">
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
 
-                                <!--  <p-calendar class="w-full" [(ngModel)]="dtoRegister.horaInicio" [timeOnly]="true"
-                                    [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" /> -->
-                                <input class="w-full" type="time" [(ngModel)]="dtoRegister.horaInicio" inputId="horaInicio" />
-
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{ item.horaInicio }}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
-                    <td [pEditableColumn]="item.horaFin" pEditableColumnField="horaFin">
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <!-- <p-calendar class="w-full" [(ngModel)]="dtoRegister.horaFin" [timeOnly]="true"
-                                    [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"
-                                    dateFormat="dd/mm/yy" /> -->
-                                <input class="w-full" type="time" [(ngModel)]="dtoRegister.horaFin" inputId="horaFin" />
-
-
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{ item.horaFin | currency: 'USD' }}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
-                </tr>
-            </ng-template>
-        </p-table>
-
-        <div>
-            <p-button label="Cancel" icon="pi pi-times" [text]="true" (onClick)="coreCloseSelector()" />
-            <p-button label="Save" icon="pi pi-check" [text]="true" (onClick)="saveItem()" />
+        <!-- Footer Actions -->
+        <div class="mt-8 flex justify-end space-x-4">
+            <button type="button"
+                class="inline-flex items-center px-6 py-3 text-base font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
+                (click)="coreCloseSelector()">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+                Cancelar
+            </button>
+            <button type="button"
+                class="inline-flex items-center px-6 py-3 text-base font-medium text-white bg-primary border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                (click)="coreSave()">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                Guardar
+            </button>
         </div>
     </div>
+
 </p-dialog>
+
+<app-lugar-selector-view></app-lugar-selector-view>
+<app-proveedor-selector-view></app-proveedor-selector-view>

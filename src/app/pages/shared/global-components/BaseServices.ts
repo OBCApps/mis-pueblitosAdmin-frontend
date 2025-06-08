@@ -11,6 +11,10 @@ import { LoadingService } from './loadings/loading-service.service';
     providedIn: 'root'
 })
 export class BaseServices {
+    public ACTION_CREATE = 'CREATE';
+    public ACTION_UPDATE = 'UPDATE';
+    public ACTION_VIEW = 'VIEW';
+    public ACTION_DELETE = 'DELETE';
 
     constructor(
         private http: HttpClient,

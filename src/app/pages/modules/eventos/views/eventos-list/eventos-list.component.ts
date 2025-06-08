@@ -59,6 +59,8 @@ export class EventosListComponent implements OnInit {
       label: 'Eliminar',
       icon: 'pi pi-trash',
       command: () => {
+        console.log("qe fue");
+        
         this.coreDelete()
       },
     }

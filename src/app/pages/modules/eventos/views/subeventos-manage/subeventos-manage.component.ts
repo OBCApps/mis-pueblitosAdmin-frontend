@@ -4,6 +4,10 @@ import { LugarSelectorViewComponent } from '../../../../shared/global-components
 import { ProveedorSelectorViewComponent } from '../../../../shared/global-components/selectors/proveedor-selector/views/proveedor-selector-view/proveedor-selector-view.component';
 import { DtoSubEvento, DtoSubEventoDetalle } from '../../models/DtoSubEvento';
 import { BaseVariables } from '../../../../shared/global-components/BaseVariables';
+import { BaseServices } from '../../../../shared/global-components/BaseServices';
+import { SubeventosdetalleManageComponent } from '../subeventosdetalle-manage/subeventosdetalle-manage.component';
+import { SubEventoDetalleService } from '../../services/subeventoDetalleService';
+import { SubEventoService } from '../../services/subeventoService';
 
 @Component({
   selector: 'app-subeventos-manage',
@@ -13,40 +17,121 @@ import { BaseVariables } from '../../../../shared/global-components/BaseVariable
 export class SubeventosManageComponent extends BaseVariables {
   visible: boolean = false;
   activeTab: string = 'info';
+  action: string;
   opDisable: boolean = false;
   dtoRegister: DtoSubEvento = new DtoSubEvento();
   dtoSubEventoDetalle: DtoSubEventoDetalle = new DtoSubEventoDetalle();
+
+  list_estados: any[] = this.baseServices.getListStatus();
+  constructor(
+    private baseServices: BaseServices,
+    private subEventoDetalleService: SubEventoDetalleService,
+    private subEventoService: SubEventoService,
+  ) {
+    super();
+  }
   coreInitSelector(message: MessageController) {
-    if (message.method == 'CREATE') {
+    console.log("message", message);
+
+    this.action = message.method;
+    this.messageController = message;
+
+    if (message.method == this.baseServices.ACTION_CREATE) {
       this.dtoRegister = new DtoSubEvento();
+      this.dtoRegister.eventoId = message.selected.id; // Aqui viene la informacion del padre
     }
 
-    if (message.method == 'UPDATE' || message.method == 'VIEW') {
+    if (message.method == this.baseServices.ACTION_UPDATE || message.method == this.baseServices.ACTION_VIEW) {
 
 
       this.dtoRegister = Object.assign({}, message.selected);
-      this.dtoRegister.horaInicio = this.convertToDate(this.dtoRegister.dia, this.dtoRegister.horaInicio);
-      this.dtoRegister.horaFin = this.convertToDate(this.dtoRegister.dia, this.dtoRegister.horaFin);
-      this.dtoRegister.dia = this.convertDayToDate(this.dtoRegister.dia);
-      console.log("this.dtoRegistert", this.dtoRegister);
+
+      // ----------------- FORMATEAR LAS HORAS Y DIAS
+      this.dtoRegister.horaInicio = this.dtoRegister.horaInicio.slice(0, 5);
+      this.dtoRegister.horaFin = this.dtoRegister.horaFin.slice(0, 5);
     }
 
-    this.messageController = message;
     this.visible = true;
 
   }
 
 
-  saveItem() {
-    console.log("FECHA", this.dtoRegister.horaInicio);
 
-    this.dtoRegister.horaInicio = this.formatTimeToBackend(this.dtoRegister.horaInicio);
-    this.dtoRegister.horaFin = this.formatTimeToBackend(this.dtoRegister.horaFin);
-    this.dtoRegister.dia = this.convertDateToBackend(this.dtoRegister.dia);
+  coreSave() {
+    // ------- VALIDACIONES DE LOS CAMPOS
 
-    this.messageController.selected = this.dtoRegister;
-    console.log("TO SAVE", this.dtoRegister);
-    this.messageController.currentComponent.coreMessage(this.messageController);
+
+    // ------ AJUSTES
+    this.dtoRegister.horaInicio = this.dtoRegister.horaInicio + ':00-05';
+    this.dtoRegister.horaFin = this.dtoRegister.horaFin + ':00-05';
+
+
+
+
+    if (this.dtoRegister.eventoId) {
+      if (this.action == 'CREATE') {
+        this.coreNew()
+      }
+      if (this.action == 'UPDATE') {
+        this.coreEdit()
+      }
+    } else {
+      const data = { action: this.action, ...this.dtoRegister }
+      this.messageController.selected = data;
+      this.messageController.currentComponent.coreMessage(this.messageController);
+      this.coreExit();
+    }
+
+  }
+  coreNew() {
+
+    this.baseServices.showLoading();
+    this.subEventoService.create(this.dtoRegister).subscribe(
+      (response) => {
+        this.baseServices.hideLoading();
+        const data = { action: this.baseServices.ACTION_UPDATE, ...response }
+        this.messageController.selected = data;
+        this.messageController.currentComponent.coreMessage(this.messageController);
+        this.baseServices.showMessageSucces('Agregado Correctamente');
+
+        this.coreExit();
+      },
+      (err) => {
+        this.baseServices.hideLoading();
+        this.baseServices.showMessageError('Error al agregar');
+
+
+      }
+    );
+  }
+
+  coreEdit() {
+    this.baseServices.showLoading();
+    console.log("UPDATE", this.dtoRegister);
+
+    this.subEventoService.update(this.dtoRegister).subscribe(
+      (response) => {
+        this.baseServices.hideLoading();
+        const data = { action: this.baseServices.ACTION_UPDATE, ...response }
+        this.messageController.selected = data;
+        this.messageController.currentComponent.coreMessage(this.messageController);
+        this.baseServices.showMessageSucces('Actualizado Correctamente');
+        this.coreExit();
+      },
+      (err) => {
+        this.baseServices.hideLoading();
+        this.baseServices.showMessageError('Error al actualizar');
+
+      }
+    );
+  }
+
+  coreDelete() {
+
+    /* this.dtoRegister.subEventos = this.dtoRegister.subEventos.filter(subevento => subevento.id !== this.subEventoSelected.id);
+ */
+  }
+  coreExit() {
     this.coreCloseSelector();
   }
 
@@ -56,6 +141,7 @@ export class SubeventosManageComponent extends BaseVariables {
 
   @ViewChild(LugarSelectorViewComponent, { static: false }) LugarSelectorViewComponent: LugarSelectorViewComponent;
   @ViewChild(ProveedorSelectorViewComponent, { static: false }) ProveedorSelectorViewComponent: ProveedorSelectorViewComponent;
+  @ViewChild(SubeventosdetalleManageComponent, { static: false }) SubeventosdetalleManageComponent: SubeventosdetalleManageComponent;
   coreShowSelectors(nameSelector: string) {
     switch (nameSelector) {
       case ('LugarSelector'): {
@@ -71,6 +157,7 @@ export class SubeventosManageComponent extends BaseVariables {
         this.LugarSelectorViewComponent.coreInitSelector(new MessageController(this, nameSelector));
         break;
       }
+
     }
 
   }
@@ -89,11 +176,22 @@ export class SubeventosManageComponent extends BaseVariables {
         this.dtoRegister.foto.lugar = message.selected.nombre;
         break;
       }
+      case ('SubEventoDetalleManage'): {
+        if (message.method == this.baseServices.ACTION_CREATE) {
+          this.dtoRegister.subEventoDetalles.push(message.selected)
+        }
+        if (message.method == this.baseServices.ACTION_UPDATE) {
 
-      case ('SubEventoManage'): {
+          let index = this.dtoRegister.subEventoDetalles.findIndex((detalle: DtoSubEventoDetalle) => detalle === this.itemSelected);
+          if (index !== -1) {
+            this.dtoRegister.subEventoDetalles[index] = message.selected;
+          }
 
+        }
         break;
       }
+
+
     }
   }
 
@@ -152,16 +250,52 @@ export class SubeventosManageComponent extends BaseVariables {
 
 
   // ------ SUBEVENTOS
-  addSubEventoDetalle() {
-    /* const newDetail = {
-      id: Date.now(), // Simple ID generation
-      organizador: "",
-      detalle: "",
-      horaInicio: "",
-      horaFin: "",
-      editing: false,
+  itemSelected: any;
+  coreNewSubEventoDetalle() {
+    this.SubeventosdetalleManageComponent.coreInitSelector(new MessageController(this, 'SubEventoDetalleManage', this.baseServices.ACTION_CREATE, this.dtoRegister));
+  }
+  coreViewSubEventoDetalle() {
+    if (!this.itemSelected) {
+      this.baseServices.showMessageError('No hay una entidad para editar');
+      return;
     }
-    this.dtoRegister.subEventoDetalles.push(newDetail) */
+    this.SubeventosdetalleManageComponent.coreInitSelector(new MessageController(this, 'SubEventoDetalleManage', this.baseServices.ACTION_VIEW, this.itemSelected));
+  }
+  coreEditSubEventoDetalle() {
+    if (!this.itemSelected) {
+      this.baseServices.showMessageError('No hay una entidad para editar');
+      return;
+    }
+    this.SubeventosdetalleManageComponent.coreInitSelector(new MessageController(this, 'SubEventoDetalleManage', this.baseServices.ACTION_UPDATE, this.itemSelected));
+  }
+
+  coreDeleteSubEventoDetalle() {
+    if (!this.itemSelected) {
+      this.baseServices.showMessageError('No hay una entidad para eliminar');
+      return;
+    }
+    if (this.itemSelected.id) {
+      this.baseServices.showLoading();
+      this.subEventoDetalleService.delete(this.itemSelected).subscribe(
+        (response) => {
+          this.baseServices.hideLoading();
+
+          this.dtoRegister.subEventoDetalles = this.dtoRegister.subEventoDetalles.filter((detalle: DtoSubEventoDetalle) => detalle !== this.itemSelected);
+          this.itemSelected = null;
+
+          this.baseServices.showMessageSucces('Acción realizada correctamente.');
+
+        },
+        (err) => {
+          this.baseServices.hideLoading();
+          this.baseServices.showMessageError('Error al realizar la acción.');
+
+        }
+      );
+    } else {
+      this.dtoRegister.subEventoDetalles = this.itemSelected.subEventoDetalles.filter((detalle: DtoSubEventoDetalle) => detalle !== this.itemSelected);
+      this.itemSelected = null;
+    }
   }
   selectedFileName: string = '';
   previewImageUrl: string | ArrayBuffer | null = null;

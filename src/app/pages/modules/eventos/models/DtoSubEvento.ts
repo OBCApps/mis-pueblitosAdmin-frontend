@@ -6,8 +6,8 @@ export class DtoSubEvento {
     descripcion: string
     foto: DtoFoto = new DtoFoto()
     dia: Date
-    horaInicio: Date
-    horaFin: Date
+    horaInicio: string
+    horaFin: string
     eventoId: string
     estado: string;
     subEventoDetalles: DtoSubEventoDetalle[] = []
@@ -17,8 +17,8 @@ export class DtoSubEventoDetalle {
     organizador: string
     foto: DtoFoto = new DtoFoto()
     recomendaciones: string
-    horaInicio: Date
-    horaFin: Date
+    horaInicio: string;
+    horaFin: string;
     subEventoId: null
     editing: boolean = false;
 }
